@@ -2,12 +2,11 @@ import Registration from "./authorization/Registration.tsx";
 
 
 function App() {
-
-  return (
-    <>
-     <Registration/>
-    </>
-  )
+    return (
+        <>
+            <Registration/>
+        </>
+    )
 }
 
 export default App

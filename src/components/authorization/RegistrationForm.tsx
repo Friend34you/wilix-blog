@@ -1,5 +1,7 @@
-import {Button, Flex, Form, Input} from "antd";
+import {Button, Flex, Input} from "antd";
 import {FC} from "react";
+import StyledForm from "../reusable-styled/StyledForm.tsx";
+
 
 interface RegistrationFormInterface {
     onFinishFailed: (errorInfo: object) => void;
@@ -14,48 +16,47 @@ type FieldType = {
 
 const RegistrationForm: FC<RegistrationFormInterface> = ({onFinishFailed, onFinish}) => {
 
-    const [form] = Form.useForm()
+    const [form] = StyledForm.useForm()
 
     const handleReset = () => form.resetFields()
 
     return (
-        <Form
+        <StyledForm
             name="basic"
             labelCol={{span: 7}}
             wrapperCol={{span: 17}}
             form={form}
-            style={{maxWidth: 500}}
             initialValues={{remember: true}}
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
             autoComplete="off"
         >
-            <Form.Item<FieldType>
+            <StyledForm.Item<FieldType>
                 label="Username"
                 name="username"
                 rules={[{required: true, message: 'Please input your username!'}]}
             >
                 <Input/>
-            </Form.Item>
+            </StyledForm.Item>
 
-            <Form.Item<FieldType>
+            <StyledForm.Item<FieldType>
                 label="Email"
                 name="email"
                 rules={[{required: true, message: 'Please input your email!'}]}
             >
                 <Input/>
-            </Form.Item>
+            </StyledForm.Item>
 
-            <Form.Item<FieldType>
+            <StyledForm.Item<FieldType>
                 label="Password"
                 name="password"
                 rules={[{required: true, message: 'Please input your password!'}]}
             >
                 <Input.Password/>
-            </Form.Item>
+            </StyledForm.Item>
 
 
-            <Form.Item wrapperCol={{offset: 2}}>
+            <StyledForm.Item wrapperCol={{offset: 2}}>
                 <Flex justify={"center"}>
                     <Button
                         type="primary"
@@ -69,8 +70,8 @@ const RegistrationForm: FC<RegistrationFormInterface> = ({onFinishFailed, onFini
                         Reset
                     </Button>
                 </Flex>
-            </Form.Item>
-        </Form>
+            </StyledForm.Item>
+        </StyledForm>
     );
 };
 
