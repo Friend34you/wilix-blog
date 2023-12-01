@@ -1,17 +1,17 @@
 import {Divider, Flex, Typography} from "antd";
 import AuthForm from "./AuthForm.tsx";
-
+import {FieldType} from "./authTypes.ts";
+import {ValidateErrorEntity} from "rc-field-form/lib/interface";
 
 const {Title} = Typography
 
-
 const Registration = () => {
 
-    const onFinish = (values: object) => {
+    const onFinish = (values: FieldType) => {
         console.log('Success:', values);
     };
 
-    const onFinishFailed = (errorInfo: object) => {
+    const onFinishFailed = (errorInfo: ValidateErrorEntity) => {
         console.log('Failed:', errorInfo);
     };
 
@@ -25,7 +25,7 @@ const Registration = () => {
             </Title>
             <Divider/>
             <AuthForm
-                type={"authorization"}
+                type={"registration"}
                 onFinish={onFinish}
                 onFinishFailed={onFinishFailed}
             />
