@@ -1,5 +1,5 @@
 import {Divider, Flex, Typography} from "antd";
-import RegistrationForm from "./RegistrationForm.tsx";
+import AuthForm from "./AuthForm.tsx";
 
 
 const {Title} = Typography
@@ -24,7 +24,8 @@ const Registration = () => {
                 Registration
             </Title>
             <Divider/>
-            <RegistrationForm
+            <AuthForm
+                type={"authorization"}
                 onFinish={onFinish}
                 onFinishFailed={onFinishFailed}
             />
