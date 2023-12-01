@@ -4,16 +4,17 @@ import RegistrationForm from "./RegistrationForm.tsx";
 
 const {Title} = Typography
 
-const onFinish = (values: object) => {
-    console.log('Success:', values);
-};
-
-const onFinishFailed = (errorInfo: object) => {
-    console.log('Failed:', errorInfo);
-};
-
 
 const Registration = () => {
+
+    const onFinish = (values: object) => {
+        console.log('Success:', values);
+    };
+
+    const onFinishFailed = (errorInfo: object) => {
+        console.log('Failed:', errorInfo);
+    };
+
     return (
         <Flex
             align={"center"}
