@@ -15,7 +15,10 @@ const onFinishFailed = (errorInfo: object) => {
 
 const Registration = () => {
     return (
-        <Flex align={"center"} vertical={true}>
+        <Flex
+            align={"center"}
+            vertical={true}
+        >
             <Title>
                 Registration
             </Title>

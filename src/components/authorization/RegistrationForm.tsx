@@ -12,7 +12,7 @@ type FieldType = {
     email?: string;
 };
 
-const RegistrationForm:FC<RegistrationFormInterface> = ({onFinishFailed, onFinish}) => {
+const RegistrationForm: FC<RegistrationFormInterface> = ({onFinishFailed, onFinish}) => {
 
     const [form] = Form.useForm()
 
@@ -21,11 +21,11 @@ const RegistrationForm:FC<RegistrationFormInterface> = ({onFinishFailed, onFinis
     return (
         <Form
             name="basic"
-            labelCol={{ span: 7 }}
-            wrapperCol={{ span: 17 }}
+            labelCol={{span: 7}}
+            wrapperCol={{span: 17}}
             form={form}
-            style={{ maxWidth: 500 }}
-            initialValues={{ remember: true }}
+            style={{maxWidth: 500}}
+            initialValues={{remember: true}}
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
             autoComplete="off"
@@ -33,25 +33,25 @@ const RegistrationForm:FC<RegistrationFormInterface> = ({onFinishFailed, onFinis
             <Form.Item<FieldType>
                 label="Username"
                 name="username"
-                rules={[{ required: true, message: 'Please input your username!' }]}
+                rules={[{required: true, message: 'Please input your username!'}]}
             >
-                <Input />
+                <Input/>
             </Form.Item>
 
             <Form.Item<FieldType>
                 label="Email"
                 name="email"
-                rules={[{ required: true, message: 'Please input your email!' }]}
+                rules={[{required: true, message: 'Please input your email!'}]}
             >
-                <Input />
+                <Input/>
             </Form.Item>
 
             <Form.Item<FieldType>
                 label="Password"
                 name="password"
-                rules={[{ required: true, message: 'Please input your password!' }]}
+                rules={[{required: true, message: 'Please input your password!'}]}
             >
-                <Input.Password />
+                <Input.Password/>
             </Form.Item>
 
 
@@ -59,14 +59,14 @@ const RegistrationForm:FC<RegistrationFormInterface> = ({onFinishFailed, onFinis
                 <Flex justify={"center"}>
                     <Button
                         type="primary"
-                        htmlType="submit" >
-                            SignUp
+                        htmlType="submit">
+                        SignUp
                     </Button>
 
                     <Button
                         htmlType="button"
                         onClick={handleReset}>
-                            Reset
+                        Reset
                     </Button>
                 </Flex>
             </Form.Item>
