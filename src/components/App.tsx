@@ -1,10 +1,10 @@
-import Registration from "./authorization/Registration.tsx";
+import ArticleCard from "./ArticleCard.tsx";
 
 
 function App() {
     return (
         <>
-            <Registration/>
+            <ArticleCard />
         </>
     )
 }
