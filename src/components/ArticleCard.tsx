@@ -1,5 +1,6 @@
-import {FC} from "react";
+import {FC, useMemo} from "react";
 import {Avatar, Button, Card, Flex, Space, Tag, Typography} from "antd";
+import {CheckOutlined, StarOutlined} from "@ant-design/icons";
 import styled from "styled-components";
 import {IArticle} from "../types/articleType.ts";
 import {formatDate} from "../helpers/formatDate.ts";
@@ -7,43 +8,68 @@ import {formatDate} from "../helpers/formatDate.ts";
 const {Text, Title} = Typography
 
 const StyledCard = styled(Card)`
+  margin: 40px 5px;
   max-width: 600px;
   box-shadow: 0px 4px 6px -1px rgba(34, 60, 80, 0.2);
 `
 
+type followButtonPropsType = {
+  type: "default" | "primary",
+  icon: React.ReactNode,
+}
+
 const ArticleCard: FC<IArticle> = ({
-                                     createdAt,
-                                     description,
-                                     title,
-                                     updatedAt,
-                                     author,
-                                     tagList,
-                                     favoritesCount
-                                   }) => {
+  createdAt,
+  description,
+  title,
+  updatedAt,
+  author,
+  tagList,
+  favoritesCount,
+  favorited
+}) => {
+
+  const followButtonProps = useMemo((): followButtonPropsType => {
+    return favorited
+      ? {
+          type: "default",
+          icon: <CheckOutlined />
+        }
+      : {
+          type: "primary",
+          icon: <StarOutlined />
+        }
+  }, [favorited, favoritesCount])
 
   return (
     <StyledCard hoverable>
-      <Space
+      <Flex
+        justify={"space-between"}
         align={"center"}
       >
-        <Avatar>
-          {author.username.charAt(0)}
-        </Avatar>
-        <Text>
-          {author.username}
-        </Text>
-        <Text>
-          created: {formatDate(createdAt)}
-        </Text>
-        <Text>
-          edited: {formatDate(updatedAt)}
-        </Text>
-        <Button type={"primary"}>
+        <Space>
+          <Avatar>
+            {author.username.charAt(0)}
+          </Avatar>
+          <Text>
+            {author.username}
+          </Text>
+          <Flex vertical={true}>
+            <Text>
+              created: {formatDate(createdAt)}
+            </Text>
+            <Text>
+              edited: {formatDate(updatedAt)}
+            </Text>
+          </Flex>
+        </Space>
+        <Button {...followButtonProps}>
           {favoritesCount}
         </Button>
-      </Space>
+      </Flex>
 
-      <Title level={3}>
+
+      <Title level={4}>
         {title}
       </Title>
       <Text>
@@ -52,8 +78,9 @@ const ArticleCard: FC<IArticle> = ({
 
       <hr/>
 
-      <Flex justify={"end"}>
-        {tagList.map(tag => <Tag>{tag}</Tag>)}
+      <Flex justify={"end"} wrap={"wrap"}>
+        {tagList.map((tag, index) =>
+          <Tag key={index}>{tag}</Tag>)}
       </Flex>
     </StyledCard>
   );
