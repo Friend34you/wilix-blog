@@ -5,6 +5,16 @@ import styled from "styled-components";
 import {IArticle} from "../types/articleType.ts";
 import {formatDate} from "../helpers/formatDate.ts";
 
+interface ArticleCardProps extends IArticle{
+  //Пока не знаю как конкретно будет реализована эта функция
+  onFavoriteClick: () => void
+}
+
+type followButtonPropsType = {
+  type: "default" | "primary",
+  icon: React.ReactNode,
+}
+
 const {Text, Title} = Typography
 
 const StyledCard = styled(Card)`
@@ -13,12 +23,11 @@ const StyledCard = styled(Card)`
   box-shadow: 0px 4px 6px -1px rgba(34, 60, 80, 0.2);
 `
 
-type followButtonPropsType = {
-  type: "default" | "primary",
-  icon: React.ReactNode,
-}
+const StyledDateText = styled(Text)`
+  font-size: 12px;
+`
 
-const ArticleCard: FC<IArticle> = ({
+const ArticleCard: FC<ArticleCardProps> = ({
   createdAt,
   description,
   title,
@@ -26,7 +35,8 @@ const ArticleCard: FC<IArticle> = ({
   author,
   tagList,
   favoritesCount,
-  favorited
+  favorited,
+  onFavoriteClick
 }) => {
 
   const followButtonProps = useMemo((): followButtonPropsType => {
@@ -39,8 +49,9 @@ const ArticleCard: FC<IArticle> = ({
           type: "primary",
           icon: <StarOutlined />
         }
-  }, [favorited, favoritesCount])
+  }, [favorited])
 
+  //В будущем необходимо будет добавить <Navigate> из react-router
   return (
     <StyledCard hoverable>
       <Flex
@@ -48,26 +59,28 @@ const ArticleCard: FC<IArticle> = ({
         align={"center"}
       >
         <Space>
-          <Avatar>
+          <Avatar src={author.image}>
             {author.username.charAt(0)}
           </Avatar>
           <Text>
             {author.username}
           </Text>
           <Flex vertical={true}>
-            <Text>
+            <StyledDateText>
               created: {formatDate(createdAt)}
-            </Text>
-            <Text>
+            </StyledDateText>
+            <StyledDateText>
               edited: {formatDate(updatedAt)}
-            </Text>
+            </StyledDateText>
           </Flex>
         </Space>
-        <Button {...followButtonProps}>
+        <Button
+          onClick={onFavoriteClick}
+          {...followButtonProps}
+        >
           {favoritesCount}
         </Button>
       </Flex>
-
 
       <Title level={4}>
         {title}
