@@ -9,7 +9,7 @@ interface TagsListProps {
   onTagClick?: () => void;
 }
 
-const TagsList:FC<TagsListProps> = ({
+const TagsList: FC<TagsListProps> = ({
   tags,
   onTagClick,
   tagsColor

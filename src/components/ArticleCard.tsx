@@ -40,8 +40,6 @@ const ArticleCard: FC<ArticleCardProps> = ({
   onFavoriteClick
 }) => {
 
-
-
   const favoriteButtonProps = useMemo((): favoriteButtonPropsType => {
     if (favorited) {
       return {
