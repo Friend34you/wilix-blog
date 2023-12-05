@@ -4,8 +4,9 @@ import {PresetColorType} from "antd/lib/_util/colors";
 
 interface TagsListProps {
   tags: string[];
-  onTagClick?: () => void;
   tagsColor: PresetColorType | "default"
+  //поправлю как точно буду знать передаваемые данные
+  onTagClick?: () => void;
 }
 
 const TagsList:FC<TagsListProps> = ({
@@ -14,19 +15,17 @@ const TagsList:FC<TagsListProps> = ({
   tagsColor
 }) => {
 
-  const tagItems = tags.map(tag =>
-    <Tag
-      key={tag}
-      onClick={onTagClick}
-      color={tagsColor}
-    >
-      {tag}
-    </Tag>
-  )
-
   return (
     <>
-      {tagItems}
+      {tags.map(tag =>
+        <Tag
+          key={tag}
+          onClick={onTagClick}
+          color={tagsColor}
+        >
+          {tag}
+        </Tag>
+      )}
     </>
   );
 };
