@@ -9,7 +9,7 @@ interface TagsCloudProps {
 
 const StyledFlex = styled(Flex)`
   padding: 10px;
-  max-width: 300px;
+  max-width: 350px;
   border: 1px solid cornflowerblue;
   border-radius: 4px;
 
@@ -19,8 +19,14 @@ const StyledFlex = styled(Flex)`
 `
 const StyledWrapper= styled.div`
   position: absolute;
-  right: 10vw;
-  top: 10vh;
+  right: 5vw;
+  top: 5vh;
+  padding: 5px;
+  
+  @media (max-width: 1024px) {
+    display: block;
+    position: static;
+  }
 `
 
 const {Title} = Typography
