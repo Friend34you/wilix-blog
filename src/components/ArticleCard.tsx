@@ -10,7 +10,7 @@ interface ArticleCardProps extends IArticle{
   onFavoriteClick: () => void
 }
 
-type followButtonPropsType = {
+type favoriteButtonPropsType = {
   type: "default" | "primary",
   icon: React.ReactNode,
 }
@@ -39,16 +39,23 @@ const ArticleCard: FC<ArticleCardProps> = ({
   onFavoriteClick
 }) => {
 
-  const followButtonProps = useMemo((): followButtonPropsType => {
-    return favorited
-      ? {
-          type: "default",
-          icon: <CheckOutlined />
-        }
-      : {
-          type: "primary",
-          icon: <StarOutlined />
-        }
+  const tagItems = tagList.map( tag =>
+    <Tag key={tag}>
+      {tag}
+    </Tag>
+  )
+
+  const favoriteButtonProps = useMemo((): favoriteButtonPropsType => {
+    if (favorited) {
+      return {
+        type: "default",
+        icon: <CheckOutlined />
+      }
+    }
+    return {
+      type: "primary",
+      icon: <StarOutlined />
+    }
   }, [favorited])
 
   //В будущем необходимо будет добавить <Navigate> из react-router
@@ -76,7 +83,7 @@ const ArticleCard: FC<ArticleCardProps> = ({
         </Space>
         <Button
           onClick={onFavoriteClick}
-          {...followButtonProps}
+          {...favoriteButtonProps}
         >
           {favoritesCount}
         </Button>
@@ -91,9 +98,11 @@ const ArticleCard: FC<ArticleCardProps> = ({
 
       <hr/>
 
-      <Flex justify={"end"} wrap={"wrap"}>
-        {tagList.map((tag, index) =>
-          <Tag key={index}>{tag}</Tag>)}
+      <Flex
+        justify={"end"}
+        wrap={"wrap"}
+      >
+        {tagItems}
       </Flex>
     </StyledCard>
   );

@@ -7,11 +7,11 @@ export interface IArticle {
   };
   tagList : string[]
   title: string;
-  body?: string;
   description: string;
   createdAt: string;
   updatedAt: string;
   favorited: boolean;
   favoritesCount: number;
+  body?: string;
   slug?: string;
 }
