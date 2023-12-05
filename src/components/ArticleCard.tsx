@@ -1,9 +1,10 @@
 import {FC, useMemo} from "react";
-import {Avatar, Button, Card, Flex, Space, Tag, Typography} from "antd";
+import {Avatar, Button, Card, Flex, Space, Typography} from "antd";
 import {CheckOutlined, StarOutlined} from "@ant-design/icons";
 import styled from "styled-components";
 import {IArticle} from "../types/articleType.ts";
 import {formatDate} from "../helpers/formatDate.ts";
+import TagsList from "./TagsList.tsx";
 
 interface ArticleCardProps extends IArticle{
   //Пока не знаю как конкретно будет реализована эта функция
@@ -39,11 +40,7 @@ const ArticleCard: FC<ArticleCardProps> = ({
   onFavoriteClick
 }) => {
 
-  const tagItems = tagList.map( tag =>
-    <Tag key={tag}>
-      {tag}
-    </Tag>
-  )
+
 
   const favoriteButtonProps = useMemo((): favoriteButtonPropsType => {
     if (favorited) {
@@ -102,7 +99,10 @@ const ArticleCard: FC<ArticleCardProps> = ({
         justify={"end"}
         wrap={"wrap"}
       >
-        {tagItems}
+        <TagsList
+          tags={tagList}
+          tagsColor={"default"}
+        />
       </Flex>
     </StyledCard>
   );
