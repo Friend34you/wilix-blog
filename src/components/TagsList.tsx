@@ -1,12 +1,12 @@
 import {Tag} from "antd";
-import {FC} from "react";
-import {PresetColorType} from "antd/lib/_util/colors";
+import type {FC} from "react";
+import type {PresetColorType} from "antd/lib/_util/colors";
 
 interface TagsListProps {
-  tags: string[];
-  tagsColor: PresetColorType | "default"
+  readonly tags: string[];
+  readonly tagsColor: PresetColorType | "default"
   //поправлю как точно буду знать передаваемые данные
-  onTagClick?: () => void;
+  readonly onTagClick?: () => void;
 }
 
 const TagsList: FC<TagsListProps> = ({
@@ -19,9 +19,9 @@ const TagsList: FC<TagsListProps> = ({
     <>
       {tags.map(tag =>
         <Tag
+          color={tagsColor}
           key={tag}
           onClick={onTagClick}
-          color={tagsColor}
         >
           {tag}
         </Tag>

@@ -1,7 +1,7 @@
 import {Divider, Flex, Typography} from "antd";
 import AuthForm from "./AuthForm.tsx";
-import {FieldType} from "./authTypes.ts";
-import {ValidateErrorEntity} from "rc-field-form/lib/interface";
+import type {FieldType} from "./authTypes.ts";
+import type {ValidateErrorEntity} from "rc-field-form/lib/interface";
 
 const {Title} = Typography
 
@@ -17,7 +17,7 @@ const Registration = () => {
 
     return (
         <Flex
-            align={"center"}
+            align="center"
             vertical={true}
         >
             <Title>
@@ -25,9 +25,9 @@ const Registration = () => {
             </Title>
             <Divider/>
             <AuthForm
-                type={"registration"}
                 onFinish={onFinish}
                 onFinishFailed={onFinishFailed}
+                type="registration"
             />
         </Flex>
     );

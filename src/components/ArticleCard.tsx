@@ -1,14 +1,15 @@
-import {FC, useMemo} from "react";
+import type {FC} from "react";
+import { useMemo} from "react";
 import {Avatar, Button, Card, Flex, Space, Typography} from "antd";
 import {CheckOutlined, StarOutlined} from "@ant-design/icons";
 import styled from "styled-components";
-import {IArticle} from "../types/articleType.ts";
+import type {IArticle} from "../types/articleType.ts";
 import {formatDate} from "../helpers/formatDate.ts";
 import TagsList from "./TagsList.tsx";
 
 interface ArticleCardProps extends IArticle{
   //Пока не знаю как конкретно будет реализована эта функция
-  onFavoriteClick: () => void
+  readonly onFavoriteClick: () => void
 }
 
 type favoriteButtonPropsType = {
@@ -57,8 +58,8 @@ const ArticleCard: FC<ArticleCardProps> = ({
   return (
     <StyledCard hoverable>
       <Flex
-        justify={"space-between"}
-        align={"center"}
+        align="center"
+        justify="space-between"
       >
         <Space>
           <Avatar src={author.image}>
@@ -94,12 +95,12 @@ const ArticleCard: FC<ArticleCardProps> = ({
       <hr/>
 
       <Flex
-        justify={"end"}
-        wrap={"wrap"}
+        justify="end"
+        wrap="wrap"
       >
         <TagsList
           tags={tagList}
-          tagsColor={"default"}
+          tagsColor="default"
         />
       </Flex>
     </StyledCard>

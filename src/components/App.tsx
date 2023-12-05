@@ -1,14 +1,12 @@
 import ArticleCard from "./ArticleCard.tsx";
 import {mockDataArticles} from "../../mockData/mockArticles.ts";
 
-function App() {
+const App = () => {
     return (
-        <>
-          <ArticleCard
+        <ArticleCard
             {...mockDataArticles[0]}
             onFavoriteClick={()=> {console.log(mockDataArticles[0].slug)}}
           />
-        </>
     )
 }
 
