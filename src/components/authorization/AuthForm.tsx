@@ -1,13 +1,13 @@
 import {Button, Flex, Form, Input} from "antd";
-import {FC} from "react";
+import type {FC} from "react";
 import styled from "styled-components";
-import {ValidateErrorEntity} from "rc-field-form/lib/interface";
-import {FieldType} from "./authTypes.ts";
+import type {ValidateErrorEntity} from "rc-field-form/lib/interface";
+import type {FieldType} from "./authTypes.ts";
 
 interface AuthFormProps {
-    type: "registration" | "authorization";
-    onFinishFailed: (errorInfo: ValidateErrorEntity) => void;
-    onFinish: (values: FieldType) => void;
+    readonly type: "registration" | "authorization";
+    readonly onFinishFailed: (errorInfo: ValidateErrorEntity) => void;
+    readonly onFinish: (values: FieldType) => void;
 }
 
 const StyledForm = styled(Form)`
@@ -22,14 +22,14 @@ const AuthForm: FC<AuthFormProps> = ({onFinishFailed, onFinish, type}) => {
 
     return (
         <StyledForm
-            name="basic"
-            labelCol={{span: 7}}
-            wrapperCol={{span: 17}}
+            autoComplete="off"
             form={form}
             initialValues={{remember: true}}
+            labelCol={{span: 7}}
+            name="basic"
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
-            autoComplete="off"
+            wrapperCol={{span: 17}}
         >
             <StyledForm.Item<FieldType>
                 label="Username"
@@ -58,10 +58,10 @@ const AuthForm: FC<AuthFormProps> = ({onFinishFailed, onFinish, type}) => {
             </StyledForm.Item>
 
             <StyledForm.Item wrapperCol={{offset: 2}}>
-                <Flex justify={"center"}>
+                <Flex justify="center">
                     <Button
-                        type="primary"
-                        htmlType="submit">
+                        htmlType="submit"
+                        type="primary">
                         SignUp
                     </Button>
 
