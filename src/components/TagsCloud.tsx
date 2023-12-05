@@ -28,6 +28,7 @@ const {Title} = Typography
 const TagsCloud: FC<TagsCloudProps> = ({tags}) => {
   // TODO:  разобраться с пробросом функции
   //  для получения отфильтрованных статей по тегу
+  //  (функция будет из стора и на вход будет принимать строку(теш для запроса на сервер))
   return (
     <StyledWrapper>
       <Title level={4}>
