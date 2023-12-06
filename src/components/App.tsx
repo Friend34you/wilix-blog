@@ -10,7 +10,8 @@ import {useEffect} from "react";
 const App = observer(() => {
 
   useEffect(() => {
-    article.getArticles()
+    article.getArticles();
+    article.getOneArticle("123-jgaqif")
   }, []);
 
   return (
