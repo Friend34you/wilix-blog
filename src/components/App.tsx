@@ -5,15 +5,31 @@ import {mockDataTags} from "../../mockData/mockDataTags.ts";
 import {Flex} from "antd";
 import {observer} from "mobx-react-lite";
 import article from "../store/article.ts";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 
 const App = observer(() => {
-
+  const [loading, setLoading] = useState(true)
   useEffect(() => {
-    article.getArticles();
+    setLoading(true)
+    article.getArticles()
+      .then((response) => response)
+      .catch((error) => console.log(error))
+      .finally(() => setLoading(false));
     article.getOneArticle("123-jgaqif")
   }, []);
 
+
+  if (loading) {
+    return <h1>Loading...</h1>
+  }
+  /*
+  setLoading(true)
+  articleStore
+    .fetchPost(1233)
+    .then(setPost)
+    .catch(e => showToast(e))
+    .finally(() => setLoading(false))
+  */
   return (
     <Flex align="center" vertical={true}>
       <TagsCloud tags={mockDataTags.tags}/>
