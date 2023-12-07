@@ -3,8 +3,8 @@ import TagsCloud from "./TagsCloud.tsx";
 import {mockDataTags} from "../../mockData/mockDataTags.ts";
 import {Flex} from "antd";
 import {observer} from "mobx-react-lite";
-import article from "../store/article.ts";
 import { useEffect, useState} from "react";
+import ArticleStore from "../store/ArticleStore.ts";
 
 //Тестовый компонент где я тыкаюсь
 const App = observer(() => {
@@ -13,13 +13,8 @@ const App = observer(() => {
 
   useEffect(() => {
     setLoading(true);
-    article.getArticles(10, 0)
-      .then((response) => response)
-      .catch((e) => setError(e))
-      .finally(() => setLoading(false));
-    article.getOneArticle("123-jgaqif")
-      .then((response) => response)
-      .catch((e) => setError(e))
+    ArticleStore.getArticles(10, 0)
+      .catch(setError)
       .finally(() => setLoading(false));
   }, []);
 
@@ -35,12 +30,13 @@ const App = observer(() => {
   return (
     <Flex align="center" vertical={true}>
       <TagsCloud tags={mockDataTags.tags}/>
+      <button onClick={() => ArticleStore.createArticle({body: "fdsdsfds", title: "gfgfdfgdf", tagList: ["gfgfddff"], description: "gfgfdgdgdfgdf"})} type="button">Click</button>
       <div>
-        {article.articles.map(articleItem =>
+        {ArticleStore.articles.map(articleItem =>
           <ArticleCard
             key={articleItem.slug}
             {...articleItem}
-            onFavoriteClick={() => article.toggleFavoriteArticle(articleItem.slug)}
+            onFavoriteClick={() => ArticleStore.toggleFavoriteArticle(articleItem.slug)}
           />
         )}
       </div>

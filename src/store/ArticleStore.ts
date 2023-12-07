@@ -1,10 +1,12 @@
 import {makeAutoObservable, runInAction} from "mobx";
 import type {IArticle} from "../types/articleType.ts";
-import {instance} from "../api/axiosInstance.ts";
+import {AxiosInstance} from "../api/axiosInstance.ts";
 
-class Article {
-  private _articles: IArticle[] = [];
-  //Стоит ли для этмх переменных тоже прописывать get set?
+type newArticleDataType = Pick<IArticle, "title" | "description" | "body" | "tagList">
+type articleResponseType = { article: IArticle }
+
+class ArticleStore {
+  private articlesList: IArticle[] = [];
   articlesCount: number = 0;
   currentArticle: IArticle | null = null;
 
@@ -13,16 +15,16 @@ class Article {
   }
 
   set articles(articlesData: IArticle[]) {
-    this._articles = articlesData;
+    this.articlesList = articlesData;
   }
 
   get articles() {
-    return this._articles;
+    return this.articlesList;
   }
 
-  async getArticles(limit: number = 10, offset: number = 0, tag?: string) {
+  getArticles = async (limit: number = 10, offset: number = 0, tag?: string) => {
     try {
-      const response = await instance.get("/articles", {
+      const response = await AxiosInstance.get("/articles", {
         params: {
           limit: limit,
           offset: offset,
@@ -39,27 +41,24 @@ class Article {
     } catch (error) {
       throw new Error("Error: Something went wrong :( " + error);
     }
-  }
+  };
 
-  async getOneArticle(articleSlug: string) {
+  getOneArticle = async (articleSlug: string) => {
     try {
-      const response = await instance.get<{ article: IArticle }>("/articles/" + articleSlug);
+      const response = await AxiosInstance.get<articleResponseType>("/articles/" + articleSlug);
       const oneArticleData = response.data;
-
-      runInAction(() => {
-        this.currentArticle = oneArticleData.article;
-      });
+      this.currentArticle = oneArticleData.article;
     } catch (error) {
       throw new Error("Something went wrong :(" + error);
     }
-  }
+  };
 
-  async toggleFavoriteArticle(articleSlug: string) {
+  toggleFavoriteArticle = async (articleSlug: string) => {
     try {
       const targetArticle = this.articles.find((article) => article.slug === articleSlug)!;
 
       if (!targetArticle.favorited) {
-        await instance.post<{ article: IArticle }>("/articles/" + articleSlug + "/favorite");
+        await AxiosInstance.post("/articles/" + articleSlug + "/favorite");
         runInAction(() => {
           targetArticle.favorited = true;
           targetArticle.favoritesCount += 1;
@@ -67,7 +66,7 @@ class Article {
         return;
       }
 
-      await instance.delete<{ article: IArticle }>("/articles/" + articleSlug + "/favorite");
+      await AxiosInstance.delete("/articles/" + articleSlug + "/favorite");
       runInAction(() => {
         targetArticle.favorited = false;
         targetArticle.favoritesCount -= 1;
@@ -75,11 +74,11 @@ class Article {
     } catch (error) {
       throw new Error("Something went wrong :(" + error);
     }
-  }
+  };
 
-  async getFavoriteArticles(limit: number = 10, offset: number = 0) {
+  getFavoriteArticles = async (limit: number = 10, offset: number = 0) => {
     try {
-      const response = await instance.get("/articles/feed", {
+      const response = await AxiosInstance.get("/articles/feed", {
         params: {
           limit: limit,
           offset: offset
@@ -95,15 +94,15 @@ class Article {
     } catch (error) {
       throw new Error("Error: Something went wrong :( " + error);
     }
-  }
+  };
 
-  async createArticle(newArticleData: Pick<IArticle, "title" | "description" | "body" | "tagList">) {
+  createArticle = async (newArticleData: newArticleDataType) => {
     try {
-      const response = await instance.post("/articles/", {
+      const response = await AxiosInstance.post<articleResponseType>("/articles/", {
         article: newArticleData
       });
 
-      const successfullyCreatedArticle = response.data;
+      const successfullyCreatedArticle = response.data.article;
 
       runInAction(() => {
         this.articles.push(successfullyCreatedArticle);
@@ -112,7 +111,7 @@ class Article {
     } catch (error) {
       throw new Error("Error: Something went wrong :( " + error);
     }
-  }
+  };
 }
 
-export default new Article();
+export default new ArticleStore();
