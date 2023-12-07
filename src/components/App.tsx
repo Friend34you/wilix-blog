@@ -13,7 +13,7 @@ const App = observer(() => {
 
   useEffect(() => {
     setLoading(true);
-    article.getArticles()
+    article.getArticles(10, 0)
       .then((response) => response)
       .catch((e) => setError(e))
       .finally(() => setLoading(false));

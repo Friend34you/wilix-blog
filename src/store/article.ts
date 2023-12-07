@@ -20,12 +20,13 @@ class Article {
     return this._articles;
   }
 
-  async getArticles(limit: number = 10, offset: number = 0) {
+  async getArticles(limit: number = 10, offset: number = 0, tag?: string) {
     try {
       const response = await instance.get("/articles", {
         params: {
           limit: limit,
-          offset: offset
+          offset: offset,
+          tag: tag
         }
       });
 
@@ -99,9 +100,7 @@ class Article {
   async createArticle(newArticleData: Pick<IArticle, "title" | "description" | "body" | "tagList">) {
     try {
       const response = await instance.post("/articles/", {
-        body: {
-          article: newArticleData
-        }
+        article: newArticleData
       });
 
       const successfullyCreatedArticle = response.data;
