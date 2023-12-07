@@ -82,6 +82,6 @@ module.exports = {
     "react/react-in-jsx-scope": "off",
     "react/jsx-one-expression-per-line": "off",
     "react/prefer-read-only-props": "error",
-
+    "semi": "warn"
   },
 }

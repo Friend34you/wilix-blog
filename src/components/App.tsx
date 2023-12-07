@@ -8,11 +8,11 @@ import { useEffect, useState} from "react";
 
 //Тестовый компонент где я тыкаюсь
 const App = observer(() => {
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<Error | null>(null)
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
-    setLoading(true)
+    setLoading(true);
     article.getArticles()
       .then((response) => response)
       .catch((e) => setError(e))
@@ -25,11 +25,11 @@ const App = observer(() => {
 
 
   if (loading) {
-    return <h1>Loading...</h1>
+    return <h1>Loading...</h1>;
   }
 
   if (error) {
-    return <h1>{error.message}</h1>
+    return <h1>{error.message}</h1>;
   }
 
   return (
@@ -45,7 +45,7 @@ const App = observer(() => {
         )}
       </div>
     </Flex>
-  )
-})
+  );
+});
 
-export default App
+export default App;

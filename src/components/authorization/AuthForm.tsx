@@ -12,13 +12,13 @@ interface AuthFormProps {
 
 const StyledForm = styled(Form)`
   max-width: 500px;
-`
+`;
 
 const AuthForm: FC<AuthFormProps> = ({onFinishFailed, onFinish, type}) => {
 
-    const [form] = StyledForm.useForm()
+    const [form] = StyledForm.useForm();
 
-    const handleReset = () => form.resetFields()
+    const handleReset = () => form.resetFields();
 
     return (
         <StyledForm
