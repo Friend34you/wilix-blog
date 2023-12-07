@@ -48,4 +48,4 @@ export const mockDataArticles = [{
       "following": false
     }
   }
-]
+];

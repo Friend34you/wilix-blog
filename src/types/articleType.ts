@@ -12,6 +12,6 @@ export interface IArticle {
   updatedAt: string;
   favorited: boolean;
   favoritesCount: number;
+  slug: string;
   body?: string;
-  slug?: string;
 }

@@ -16,7 +16,7 @@ const StyledFlex = styled(Flex)`
   & > * {
     margin: 4px 2px;
   }
-`
+`;
 const StyledWrapper= styled.div`
   position: absolute;
   right: 5vw;
@@ -27,9 +27,9 @@ const StyledWrapper= styled.div`
     display: block;
     position: static;
   }
-`
+`;
 
-const {Title} = Typography
+const {Title} = Typography;
 
 const TagsCloud: FC<TagsCloudProps> = ({tags}) => {
   // TODO:  разобраться с пробросом функции

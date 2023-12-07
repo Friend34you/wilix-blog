@@ -3,7 +3,7 @@ import AuthForm from "./AuthForm.tsx";
 import type {FieldType} from "./authTypes.ts";
 import type {ValidateErrorEntity} from "rc-field-form/lib/interface";
 
-const {Title} = Typography
+const {Title} = Typography;
 
 const Registration = () => {
 

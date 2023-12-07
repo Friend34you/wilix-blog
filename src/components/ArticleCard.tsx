@@ -17,17 +17,17 @@ type favoriteButtonPropsType = {
   icon: React.ReactNode,
 }
 
-const {Text, Title} = Typography
+const {Text, Title} = Typography;
 
 const StyledCard = styled(Card)`
   margin: 40px 5px;
   max-width: 600px;
   box-shadow: 0px 4px 6px -1px rgba(34, 60, 80, 0.2);
-`
+`;
 
 const StyledDateText = styled(Text)`
   font-size: 12px;
-`
+`;
 
 const ArticleCard: FC<ArticleCardProps> = ({
   createdAt,
@@ -46,13 +46,13 @@ const ArticleCard: FC<ArticleCardProps> = ({
       return {
         type: "default",
         icon: <CheckOutlined />
-      }
+      };
     }
     return {
       type: "primary",
       icon: <StarOutlined />
-    }
-  }, [favorited])
+    };
+  }, [favorited]);
 
   //В будущем необходимо будет добавить <Navigate> из react-router
   return (
