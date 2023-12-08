@@ -13,6 +13,7 @@ const App = observer(() => {
 
   useEffect(() => {
     setLoading(true);
+
     ArticleStore
       .getArticles()
       .catch(setError)

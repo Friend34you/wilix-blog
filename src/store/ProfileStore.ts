@@ -24,8 +24,7 @@ class ProfileStore {
   getUserProfile = async (username: string) => {
     try {
       const response = await AxiosInstance.get<getUserProfileResponseType>("/profiles/" + username);
-      const profileData = response.data;
-      this.profile = profileData.profile;
+      this.profile = response.data.profile;
     } catch
       (error) {
       throw new Error("Something went wrong :(" + error);

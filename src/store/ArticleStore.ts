@@ -4,12 +4,6 @@ import {AxiosInstance} from "../api/axiosInstance.ts";
 
 type newArticleDataType = Pick<IArticle, "title" | "description" | "body" | "tagList">
 type articleResponseType = { article: IArticle }
-type getArticlesOptionsType = {
-  limit?: number,
-  offset?: number,
-  author?: string,
-  tag?: string,
-}
 
 class ArticleStore {
   private articlesList: IArticle[] = [];
@@ -28,13 +22,19 @@ class ArticleStore {
     return this.articlesList;
   }
 
-  getArticles = async (options: getArticlesOptionsType = {}) => {
+  getArticles = async (
+    limit: number = 10,
+    offset: number = 0,
+    tag: string | undefined = undefined,
+    author: string | undefined = undefined
+  ) => {
     try {
       const response = await AxiosInstance.get("/articles", {
         params: {
-          limit: 10,
-          offset: 0,
-          ...options
+          limit,
+          offset,
+          tag,
+          author
         }
       });
 
@@ -52,8 +52,7 @@ class ArticleStore {
   getOneArticle = async (articleSlug: string) => {
     try {
       const response = await AxiosInstance.get<articleResponseType>("/articles/" + articleSlug);
-      const oneArticleData = response.data;
-      this.currentArticle = oneArticleData.article;
+      this.currentArticle = response.data.article;
     } catch (error) {
       throw new Error("Something went wrong :(" + error);
     }
