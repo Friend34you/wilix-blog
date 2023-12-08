@@ -86,8 +86,8 @@ class ArticleStore {
     try {
       const response = await AxiosInstance.get("/articles/feed", {
         params: {
-          limit: limit,
-          offset: offset
+          limit,
+          offset
         }
       });
 
