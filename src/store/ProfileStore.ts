@@ -2,7 +2,7 @@ import {makeAutoObservable} from "mobx";
 import {AxiosInstance} from "../api/axiosInstance.ts";
 import type {IProfile} from "../types/profileType.ts";
 
-type getUserProfileResponse = {
+type getUserProfileResponseType = {
   profile: IProfile;
 }
 
@@ -23,7 +23,7 @@ class ProfileStore {
 
   getUserProfile = async (username: string) => {
     try {
-      const response = await AxiosInstance.get<getUserProfileResponse>("/profiles/" + username);
+      const response = await AxiosInstance.get<getUserProfileResponseType>("/profiles/" + username);
       const profileData = response.data;
       this.profile = profileData.profile;
     } catch
@@ -35,12 +35,12 @@ class ProfileStore {
   toggleFollowUserProfile = async (username: string) => {
     try {
       if (this.userProfile?.following) {
-        await AxiosInstance.delete<getUserProfileResponse>("/profiles/" + username + "/follow");
+        await AxiosInstance.delete<getUserProfileResponseType>("/profiles/" + username + "/follow");
         this.profile.following = false;
         return;
       }
 
-      await AxiosInstance.post<getUserProfileResponse>("/profiles/" + username + "/follow");
+      await AxiosInstance.post<getUserProfileResponseType>("/profiles/" + username + "/follow");
       this.profile.following = true;
     } catch
       (error) {
