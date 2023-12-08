@@ -14,7 +14,7 @@ const App = observer(() => {
   useEffect(() => {
     setLoading(true);
     ArticleStore
-      .getArticles(10, 0)
+      .getArticles()
       .catch(setError)
       .finally(() => setLoading(false));
 
