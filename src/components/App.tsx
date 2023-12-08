@@ -5,6 +5,7 @@ import {observer} from "mobx-react-lite";
 import { useEffect, useState} from "react";
 import ArticleStore from "../store/ArticleStore.ts";
 import TagStore from "../store/TagStore.ts";
+
 //Тестовый компонент где я тыкаюсь
 const App = observer(() => {
   const [loading, setLoading] = useState(true);
@@ -12,11 +13,13 @@ const App = observer(() => {
 
   useEffect(() => {
     setLoading(true);
-    ArticleStore.getArticles(10, 0)
+    ArticleStore
+      .getArticles(10, 0)
       .catch(setError)
       .finally(() => setLoading(false));
 
-    TagStore.getTags()
+    TagStore
+      .getTags()
       .catch(setError);
   }, []);
 
