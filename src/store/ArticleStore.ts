@@ -96,6 +96,7 @@ class ArticleStore {
     }
   };
 
+  //TODO: крч либо действительно весь ArticleStore переделать под object, либо в данном месте тож параметрами передавать
   createArticle = async (newArticleData: newArticleDataType) => {
     try {
       const response = await AxiosInstance.post<articleResponseType>("/articles/", {
