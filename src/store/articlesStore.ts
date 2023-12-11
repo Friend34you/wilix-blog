@@ -27,6 +27,7 @@ class ArticlesStore {
     return this.articlesList;
   }
 
+  //TODO: переименовать, чтобы не было проблем
   getArticles = async (
     limit = 10,
     offset = 0,

@@ -27,7 +27,7 @@ class UsersStore {
     makeAutoObservable(this);
 
     if (localStorage.getItem("token") && !this.userItem) {
-      this.getUser();
+      this.fetchUser();
     }
   }
 
@@ -39,42 +39,38 @@ class UsersStore {
     this.userItem = userData;
   }
 
+  private createUserSession = (responseData: UserResponseType) => {
+    const {email, token, username} = responseData.user;
+    this.user = {
+      email,
+      username
+    };
+    localStorage.setItem("token", token);
+  };
+
   registerUser = async (userData: RegisterUserType) => {
     try {
       const response = await AxiosInstance.post<UserResponseType>("/users", {
         user: userData
       });
-      const userResponseData = response.data.user;
-      this.user = {
-        email: userResponseData.email,
-        username: userResponseData.username
-      };
-
-      localStorage.setItem("token", userResponseData.token);
+      this.createUserSession(response.data);
     } catch (error) {
       throw new Error("Error: Something went wrong :( " + error);
     }
   };
 
-  //по сути полностью идентичен предыдущему (за исключением url и параметоров),имеет ли смысл их объединять в один?
   loginUser = async (userData: LoginUserType) => {
     try {
       const response = await AxiosInstance.post<UserResponseType>("/users/login", {
         user: userData
       });
-      const userResponseData = response.data.user;
-      this.user = {
-        email: userResponseData.email,
-        username: userResponseData.username
-      };
-
-      localStorage.setItem("token", userResponseData.token);
+      this.createUserSession(response.data);
     } catch (error) {
       throw new Error("Error: Something went wrong :( " + error);
     }
   };
 
-  getUser = async () => {
+  fetchUser = async () => {
     try {
       const response = await AxiosInstance.get<UserResponseType>("/user");
       const userResponseData = response.data.user;

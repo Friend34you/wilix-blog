@@ -1,15 +1,15 @@
 import ArticleCard from "./ArticleCard.tsx";
 import TagsCloud from "./TagsCloud.tsx";
-import {Flex} from "antd";
+import {Flex, Spin} from "antd";
 import {observer} from "mobx-react-lite";
 import {useEffect, useState} from "react";
 import articlesStore from "../store/articlesStore.ts";
 import tagsStore from "../store/tagsStore.ts";
-import userStore from "../store/usersStore.ts";
+import usersStore from "../store/usersStore.ts";
 
 function testLogout() {
   localStorage.removeItem("token");
-  userStore.user = null;
+  usersStore.user = null;
 }
 
 //Тестовый компонент где я тыкаюсь
@@ -18,10 +18,10 @@ const App = observer(() => {
   const [error, setError] = useState<Error | null>(null);
 
   function testLogin() {
-    userStore
+    usersStore
       .loginUser({
-        email: "vovan23doni@gmail.com",
-        password: "123456789v"
+        email: import.meta.env.VITE_TEST_LOGIN,
+        password: import.meta.env.VITE_TEST_PASSWORD
       })
       .catch(setError);
   }
@@ -49,32 +49,36 @@ const App = observer(() => {
       .catch(setError);
   }, []);
 
-  if (loading) {
-    return <h1>Loading...</h1>;
-  }
-
-  if (error) {
-    return <h1>{error.message}</h1>;
-  }
-
   return (
     <Flex align="center" vertical={true}>
       <TagsCloud tags={tagsStore.tags}/>
-      <p>{userStore.user?.username}</p>
+      {usersStore.user && (
+        <p>{usersStore.user.username}</p>
+      )}
       <button
         onClick={testLogin}
         type="button"
       >
         LOGIN
       </button>
-      <button onClick={testLogout} type="button">LOGOUT</button>
-
+      <button
+        onClick={testLogout}
+        type="button"
+      >
+        LOGOUT
+      </button>
       <button
         onClick={testCreateArticle}
         type="button"
       >
         Click
       </button>
+      {error && (
+        <h1>{error.message}</h1>
+      )}
+      {loading && (
+        <Spin size="large" />
+      )}
       <div>
         {articlesStore.articles.map(articleItem =>
           <ArticleCard

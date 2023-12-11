@@ -3,6 +3,7 @@ import TagsList from "./TagsList.tsx";
 import type {FC} from "react";
 import styled from "styled-components";
 
+//TODO: убрать пропсы, они тут не нужны
 interface TagsCloudProps {
   readonly tags: string[]
 }

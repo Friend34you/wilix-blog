@@ -8,8 +8,9 @@ export enum ApiMethods {
 }
 
 const getAuthToken = () => {
-  if (localStorage.getItem("token")) {
-    return `Token ${localStorage.getItem("token")}`;
+  const token = localStorage.getItem("token");
+  if (token) {
+    return `Token ${token}`;
   }
   return null;
 };
