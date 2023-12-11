@@ -1,11 +1,17 @@
 import {makeAutoObservable, runInAction} from "mobx";
 import type {IArticle} from "../types/articleType.ts";
-import {AxiosInstance} from "../api/axiosInstance.ts";
+import {ApiMethods, AxiosInstance} from "../api/axiosInstance.ts";
 
-type newArticleDataType = Pick<IArticle, "title" | "description" | "body" | "tagList">
-type articleResponseType = { article: IArticle }
 
-class ArticleStore {
+type NewArticleDataType = Pick<IArticle, "title" | "description" | "body" | "tagList">
+type ArticleResponseType = { article: IArticle }
+
+enum DigitsToOperateWith {
+  INCREASE_BY_ONE = 1,
+  DECREASE_BY_ONE = -1
+}
+
+class ArticlesStore {
   private articlesList: IArticle[] = [];
   articlesCount: number = 0;
   currentArticle: IArticle | null = null;
@@ -22,13 +28,19 @@ class ArticleStore {
     return this.articlesList;
   }
 
-  getArticles = async (limit: number = 10, offset: number = 0, tag?: string) => {
+  getArticles = async (
+    limit = 10,
+    offset = 0,
+    tag?: string,
+    author?: string
+  ) => {
     try {
       const response = await AxiosInstance.get("/articles", {
         params: {
-          limit: limit,
-          offset: offset,
-          tag: tag
+          limit,
+          offset,
+          tag,
+          author
         }
       });
 
@@ -45,9 +57,8 @@ class ArticleStore {
 
   getOneArticle = async (articleSlug: string) => {
     try {
-      const response = await AxiosInstance.get<articleResponseType>("/articles/" + articleSlug);
-      const oneArticleData = response.data;
-      this.currentArticle = oneArticleData.article;
+      const response = await AxiosInstance.get<ArticleResponseType>("/articles/" + articleSlug);
+      this.currentArticle = response.data.article;
     } catch (error) {
       throw new Error("Something went wrong :(" + error);
     }
@@ -56,32 +67,26 @@ class ArticleStore {
   toggleFavoriteArticle = async (articleSlug: string) => {
     try {
       const targetArticle = this.articles.find((article) => article.slug === articleSlug)!;
+      const counterDigitIteration = targetArticle.favorited ? DigitsToOperateWith.DECREASE_BY_ONE : DigitsToOperateWith.INCREASE_BY_ONE;
 
-      if (!targetArticle.favorited) {
-        await AxiosInstance.post("/articles/" + articleSlug + "/favorite");
-        runInAction(() => {
-          targetArticle.favorited = true;
-          targetArticle.favoritesCount += 1;
-        });
-        return;
-      }
-
-      await AxiosInstance.delete("/articles/" + articleSlug + "/favorite");
+      await AxiosInstance("/articles/" + articleSlug + "/favorite", {
+        method: targetArticle.favorited ? ApiMethods.DELETE : ApiMethods.POST,
+      });
       runInAction(() => {
-        targetArticle.favorited = false;
-        targetArticle.favoritesCount -= 1;
+        targetArticle.favorited = !targetArticle.favorited;
+        targetArticle.favoritesCount += counterDigitIteration;
       });
     } catch (error) {
       throw new Error("Something went wrong :(" + error);
     }
   };
 
-  getFavoriteArticles = async (limit: number = 10, offset: number = 0) => {
+  getFavoriteArticles = async (limit = 10, offset = 0) => {
     try {
       const response = await AxiosInstance.get("/articles/feed", {
         params: {
-          limit: limit,
-          offset: offset
+          limit,
+          offset
         }
       });
 
@@ -96,9 +101,9 @@ class ArticleStore {
     }
   };
 
-  createArticle = async (newArticleData: newArticleDataType) => {
+  createArticle = async (newArticleData: NewArticleDataType) => {
     try {
-      const response = await AxiosInstance.post<articleResponseType>("/articles/", {
+      const response = await AxiosInstance.post<ArticleResponseType>("/articles/", {
         article: newArticleData
       });
 
@@ -114,4 +119,4 @@ class ArticleStore {
   };
 }
 
-export default new ArticleStore();
+export default new ArticlesStore();

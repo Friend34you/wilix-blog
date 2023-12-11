@@ -1,10 +1,10 @@
 import {AxiosInstance} from "../api/axiosInstance.ts";
 
-type getTagsResponseType = {
+type GetTagsResponseType = {
   tags: string[]
 }
 
-class TagStore {
+class TagsStore {
   private tagsList: string[] = [];
 
   get tags() {
@@ -17,7 +17,7 @@ class TagStore {
 
   getTags = async () => {
     try {
-      const response = await AxiosInstance.get<getTagsResponseType>("/tags");
+      const response = await AxiosInstance.get<GetTagsResponseType>("/tags");
       const tagsData = response.data;
       this.tags = tagsData.tags;
     } catch (error) {
@@ -26,4 +26,4 @@ class TagStore {
   };
 }
 
-export default new TagStore();
+export default new TagsStore();
