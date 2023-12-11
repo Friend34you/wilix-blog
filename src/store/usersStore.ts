@@ -21,7 +21,6 @@ type LoginUserType = Pick<UserType, "email"> & {
 }
 
 class UsersStore {
-
   private userItem: UserType | null = null;
 
   constructor() {
@@ -56,6 +55,7 @@ class UsersStore {
       throw new Error("Error: Something went wrong :( " + error);
     }
   };
+
   //по сути полностью идентичен предыдущему (за исключением url и параметоров),имеет ли смысл их объединять в один?
   loginUser = async (userData: LoginUserType) => {
     try {
