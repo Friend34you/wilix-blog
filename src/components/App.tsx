@@ -5,6 +5,7 @@ import {observer} from "mobx-react-lite";
 import { useEffect, useState} from "react";
 import ArticleStore from "../store/ArticleStore.ts";
 import TagStore from "../store/TagStore.ts";
+import userStore from "../store/userStore.ts";
 
 //Тестовый компонент где я тыкаюсь
 const App = observer(() => {
@@ -35,6 +36,16 @@ const App = observer(() => {
   return (
     <Flex align="center" vertical={true}>
       <TagsCloud tags={TagStore.tags}/>
+      <button onClick={() => userStore.loginUser({
+        email: "vovan23doni@gmail.com",
+        password: "123456789v"
+      })} type="button"
+      >
+        LOGIN
+      </button>
+      <button onClick={() => localStorage.removeItem("token")} type="button">LOGOUT</button>
+
+
       <button onClick={() => ArticleStore.createArticle({body: "fdsdsfds", title: "gfgfdfgdf", tagList: ["gfgfddff"], description: "gfgfdgdgdfgdf"})} type="button">Click</button>
       <div>
         {ArticleStore.articles.map(articleItem =>
