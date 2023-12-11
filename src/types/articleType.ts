@@ -1,10 +1,7 @@
+import type {IProfile} from "./profileType.ts";
+
 export interface IArticle {
-  author: {
-    bio: string | null;
-    following: boolean;
-    image: string;
-    username: string;
-  };
+  author: IProfile
   tagList : string[]
   title: string;
   description: string;

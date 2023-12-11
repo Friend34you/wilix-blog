@@ -3,8 +3,8 @@ import TagsCloud from "./TagsCloud.tsx";
 import {Flex} from "antd";
 import {observer} from "mobx-react-lite";
 import {useEffect, useState} from "react";
-import ArticleStore from "../store/ArticleStore.ts";
-import TagStore from "../store/TagStore.ts";
+import articlesStore from "../store/articlesStore.ts";
+import tagsStore from "../store/tagsStore.ts";
 import userStore from "../store/usersStore.ts";
 
 function testLogout() {
@@ -27,7 +27,7 @@ const App = observer(() => {
   }
 
   function testCreateArticle() {
-    ArticleStore
+    articlesStore
       .createArticle({
         body: "fdsdsfds",
         title: "gfgfdfgdf",
@@ -39,12 +39,12 @@ const App = observer(() => {
 
   useEffect(() => {
     setLoading(true);
-    ArticleStore
-      .getArticles(10, 0)
+    articlesStore
+      .getArticles()
       .catch(setError)
       .finally(() => setLoading(false));
 
-    TagStore
+    tagsStore
       .getTags()
       .catch(setError);
   }, []);
@@ -59,7 +59,7 @@ const App = observer(() => {
 
   return (
     <Flex align="center" vertical={true}>
-      <TagsCloud tags={TagStore.tags}/>
+      <TagsCloud tags={tagsStore.tags}/>
       <p>{userStore.user?.username}</p>
       <button
         onClick={testLogin}
@@ -76,11 +76,11 @@ const App = observer(() => {
         Click
       </button>
       <div>
-        {ArticleStore.articles.map(articleItem =>
+        {articlesStore.articles.map(articleItem =>
           <ArticleCard
             {...articleItem}
             key={articleItem.slug}
-            onFavoriteClick={() => ArticleStore.toggleFavoriteArticle(articleItem.slug)}
+            onFavoriteClick={() => articlesStore.toggleFavoriteArticle(articleItem.slug)}
           />
         )}
       </div>
