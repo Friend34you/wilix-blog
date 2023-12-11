@@ -4,7 +4,7 @@ type GetTagsResponseType = {
   tags: string[]
 }
 
-class TagStore {
+class TagsStore {
   private tagsList: string[] = [];
 
   get tags() {
@@ -26,4 +26,4 @@ class TagStore {
   };
 }
 
-export default new TagStore();
+export default new TagsStore();

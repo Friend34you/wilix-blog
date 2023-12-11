@@ -3,22 +3,33 @@ import TagsCloud from "./TagsCloud.tsx";
 import {Flex} from "antd";
 import {observer} from "mobx-react-lite";
 import {useEffect, useState} from "react";
-import articleStore from "../store/articleStore.ts";
-import tagStore from "../store/tagStore.ts";
+import articlesStore from "../store/articlesStore.ts";
+import tagsStore from "../store/tagsStore.ts";
 
 //Тестовый компонент где я тыкаюсь
 const App = observer(() => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 
+  function testCreateArticle() {
+    articlesStore
+      .createArticle({
+        body: "fdsdsfds",
+        title: "gfgfdfgdf",
+        tagList: ["gfgfddff"],
+        description: "gfgfdgdgdfgdf"
+      })
+      .catch(setError);
+  }
+
   useEffect(() => {
     setLoading(true);
-    articleStore
+    articlesStore
       .getArticles()
       .catch(setError)
       .finally(() => setLoading(false));
 
-    tagStore
+    tagsStore
       .getTags()
       .catch(setError);
   }, []);
@@ -34,20 +45,19 @@ const App = observer(() => {
 
   return (
     <Flex align="center" vertical={true}>
-      <TagsCloud tags={tagStore.tags}/>
-      <button onClick={() => articleStore.createArticle({
-        body: "fdsdsfds",
-        title: "gfgfdfgdf",
-        tagList: ["gfgfddff"],
-        description: "gfgfdgdgdfgdf"
-      })} type="button">Click
+      <TagsCloud tags={tagsStore.tags}/>
+      <button
+        onClick={testCreateArticle}
+        type="button"
+      >
+        Click
       </button>
       <div>
-        {articleStore.articles.map(articleItem =>
+        {articlesStore.articles.map(articleItem =>
           <ArticleCard
-            key={articleItem.slug}
             {...articleItem}
-            onFavoriteClick={() => articleStore.toggleFavoriteArticle(articleItem.slug)}
+            key={articleItem.slug}
+            onFavoriteClick={() => articlesStore.toggleFavoriteArticle(articleItem.slug)}
           />
         )}
       </div>

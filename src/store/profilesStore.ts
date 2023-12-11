@@ -6,7 +6,7 @@ type GetUserProfileResponseType = {
   profile: IProfile;
 }
 
-class ProfileStore {
+class ProfilesStore {
   private userProfile: IProfile | null = null;
 
   constructor() {
@@ -46,4 +46,4 @@ class ProfileStore {
   };
 }
 
-export default new ProfileStore();
+export default new ProfilesStore();

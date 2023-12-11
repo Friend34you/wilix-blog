@@ -11,7 +11,7 @@ enum DigitsToOperateWith {
   DECREASE_BY_ONE = -1
 }
 
-class ArticleStore {
+class ArticlesStore {
   private articlesList: IArticle[] = [];
   articlesCount: number = 0;
   currentArticle: IArticle | null = null;
@@ -29,8 +29,8 @@ class ArticleStore {
   }
 
   getArticles = async (
-    limit: number = 10,
-    offset: number = 0,
+    limit = 10,
+    offset = 0,
     tag?: string,
     author?: string
   ) => {
@@ -81,7 +81,7 @@ class ArticleStore {
     }
   };
 
-  getFavoriteArticles = async (limit: number = 10, offset: number = 0) => {
+  getFavoriteArticles = async (limit = 10, offset = 0) => {
     try {
       const response = await AxiosInstance.get("/articles/feed", {
         params: {
@@ -119,4 +119,4 @@ class ArticleStore {
   };
 }
 
-export default new ArticleStore();
+export default new ArticlesStore();
