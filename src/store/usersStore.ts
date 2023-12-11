@@ -7,30 +7,29 @@ type UserType = {
 }
 
 type UserResponseType = {
-  user: {
-    username: string,
-    email: string,
+  user: UserType & {
     token: string
   }
 }
 
-type RegisterUserType = {
-  username: string,
-  email: string,
+type RegisterUserType = UserType & {
   password: string
 }
 
-type LoginUserType = {
-  email: string,
+type LoginUserType = Pick<UserType, "email"> & {
   password: string
 }
 
-class UserStore {
+class UsersStore {
 
   private userItem: UserType | null = null;
 
   constructor() {
     makeAutoObservable(this);
+
+    if (localStorage.getItem("token") && !this.userItem) {
+      this.getUser();
+    }
   }
 
   get user() {
@@ -57,7 +56,7 @@ class UserStore {
       throw new Error("Error: Something went wrong :( " + error);
     }
   };
-
+  //по сути полностью идентичен предыдущему (за исключением url и параметоров),имеет ли смысл их объединять в один?
   loginUser = async (userData: LoginUserType) => {
     try {
       const response = await AxiosInstance.post<UserResponseType>("/users/login", {
@@ -75,6 +74,18 @@ class UserStore {
     }
   };
 
+  getUser = async () => {
+    try {
+      const response = await AxiosInstance.get<UserResponseType>("/user");
+      const userResponseData = response.data.user;
+      this.user = {
+        email: userResponseData.email,
+        username: userResponseData.username
+      };
+    } catch (error) {
+      throw new Error("Error: Something went wrong :( " + error);
+    }
+  };
 }
 
-export default new UserStore();
+export default new UsersStore();
