@@ -45,7 +45,10 @@ const App = observer(() => {
 
   return (
     <Flex align="center" vertical={true}>
-      <TagsCloud tags={tagsStore.tags}/>
+      <TagsCloud
+        setArticlesError={setError}
+        setArticlesLoading={setLoading}
+      />
       <button
         onClick={testCreateArticle}
         type="button"

@@ -1,10 +1,16 @@
-import {Flex, Typography} from "antd";
+import {Flex, Spin, Typography} from "antd";
 import TagsList from "./TagsList.tsx";
-import type {FC} from "react";
 import styled from "styled-components";
+import tagsStore from "../store/tagsStore.ts";
+import type {Dispatch, FC, SetStateAction} from "react";
+import { useEffect, useState} from "react";
+import articlesStore from "../store/articlesStore.ts";
 
+
+//насколько это неудачная идея? Хочется,чтобы при фильтрации по тегу и лоадер крутился, и ошибки показывались
 interface TagsCloudProps {
-  readonly tags: string[]
+  readonly setArticlesLoading: Dispatch<SetStateAction<boolean>>;
+  readonly setArticlesError: Dispatch<SetStateAction<Error | null>>
 }
 
 const StyledFlex = styled(Flex)`
@@ -17,12 +23,13 @@ const StyledFlex = styled(Flex)`
     margin: 4px 2px;
   }
 `;
-const StyledWrapper= styled.div`
+
+const StyledWrapper = styled.div`
   position: absolute;
   right: 5vw;
   top: 5vh;
   padding: 5px;
-  
+
   @media (max-width: 1024px) {
     display: block;
     position: static;
@@ -31,10 +38,28 @@ const StyledWrapper= styled.div`
 
 const {Title} = Typography;
 
-const TagsCloud: FC<TagsCloudProps> = ({tags}) => {
-  // TODO:  разобраться с пробросом функции
-  //  для получения отфильтрованных статей по тегу
-  //  (функция будет из стора и на вход будет принимать строку(теш для запроса на сервер))
+const TagsCloud: FC<TagsCloudProps> = ({setArticlesLoading, setArticlesError}) => {
+  const [tagsLoading, setTagsLoading] = useState(false);
+  const [tagsError, setTagsError] = useState<Error | null>(null);
+
+  useEffect(() => {
+    setTagsLoading(true);
+    tagsStore
+      .getTags()
+      .catch(setTagsError)
+      .finally(() => setTagsLoading(false));
+  }, []);
+
+  const handleOnTagClick = (tag: string) => {
+    return () => {
+      setArticlesLoading(true);
+      articlesStore
+        .getArticles(10, 0, tag)
+        .catch(setArticlesError)
+        .finally(() => setArticlesLoading(false));
+    };
+  };
+
   return (
     <StyledWrapper>
       <Title level={4}>
@@ -44,8 +69,15 @@ const TagsCloud: FC<TagsCloudProps> = ({tags}) => {
         justify="space-evenly"
         wrap="wrap"
       >
+        {tagsLoading && (
+          <Spin/>
+        )}
+        {tagsError && (
+          <p>{tagsError.message}</p>
+        )}
         <TagsList
-          tags={tags}
+          onTagClick={handleOnTagClick}
+          tags={tagsStore.tags}
           tagsColor="blue"
         />
       </StyledFlex>
