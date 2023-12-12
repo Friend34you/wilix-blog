@@ -2,7 +2,6 @@ import {Flex, Typography} from "antd";
 import TagsList from "./TagsList.tsx";
 import type {FC} from "react";
 import styled from "styled-components";
-import {memo} from "react";
 
 //TODO: убрать пропсы, они тут не нужны
 interface TagsCloudProps {

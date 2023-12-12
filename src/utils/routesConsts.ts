@@ -1,8 +1,9 @@
 export enum RoutesConsts {
-  REGISTRATION_ROUTE = "",
-  AUTHORIZATION_ROUTE = "",
-  ONE_ARTICLE_ROUTE = "",
+  REGISTRATION_ROUTE = "/register",
+  AUTHORIZATION_ROUTE = "/login",
+  ONE_ARTICLE_ROUTE = "/articles/:articleSlug",
   ARTICLES_ROUTE = "/articles",
-  PROFILE_ROUTE = "/profile/:profileId",
-  CREATE_ARTICLE_ROUTE = "/profile/:profileId",
+  CREATE_ARTICLE_ROUTE = "/new-article",
+  PROFILE_ROUTE = "/profile/:profileName",
+  FAVORITE_ARTICLES_ROUTE = "/articles/favorite"
 }
