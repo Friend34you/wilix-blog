@@ -100,7 +100,6 @@ const ArticleCard: FC<ArticleCardProps> = ({
       >
         <TagsList
           tags={tagList}
-          tagsColor="default"
         />
       </Flex>
     </StyledCard>

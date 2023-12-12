@@ -2,16 +2,8 @@ import {Flex, Spin, Typography} from "antd";
 import TagsList from "./TagsList.tsx";
 import styled from "styled-components";
 import tagsStore from "../store/tagsStore.ts";
-import type {Dispatch, FC, SetStateAction} from "react";
 import {useEffect, useState} from "react";
-import articlesStore from "../store/articlesStore.ts";
-import {typedMemo} from "../utils/typedMemo.ts";
-
-//насколько это неудачная идея? Хочется,чтобы при фильтрации по тегу и лоадер крутился, и ошибки показывались
-interface TagsCloudProps {
-  readonly setArticlesLoading: Dispatch<SetStateAction<boolean>>;
-  readonly setArticlesError: Dispatch<SetStateAction<Error | null>>
-}
+import {observer} from "mobx-react-lite";
 
 const StyledFlex = styled(Flex)`
   padding: 10px;
@@ -37,8 +29,8 @@ const StyledWrapper = styled.div`
 `;
 
 const {Title} = Typography;
-//Понимаю, что лишние рендеры происходят, но не знаю как с этим бороться
-const TagsCloud: FC<TagsCloudProps> = typedMemo(({setArticlesLoading, setArticlesError}) => {
+
+const TagsCloud = observer(() => {
   const [tagsLoading, setTagsLoading] = useState(false);
   const [tagsError, setTagsError] = useState<Error | null>(null);
 
@@ -51,13 +43,8 @@ const TagsCloud: FC<TagsCloudProps> = typedMemo(({setArticlesLoading, setArticle
   }, []);
 
   const handleOnTagClick = (tag: string) => {
-    return () => {
-      setArticlesLoading(true);
-      articlesStore
-        .getArticles(10, 0, tag)
-        .catch(setArticlesError)
-        .finally(() => setArticlesLoading(false));
-    };
+    //завёл задачку на изменения стора тегов, после этого изменю здесь
+    tagsStore.tags.push(tag);
   };
 
   return (

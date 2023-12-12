@@ -47,10 +47,7 @@ const App = observer(() => {
 
   return (
     <Flex align="center" vertical={true}>
-      <TagsCloud
-        setArticlesError={setError}
-        setArticlesLoading={setLoading}
-      />
+      <TagsCloud />
       {usersStore.user && (
         <p>{usersStore.user.username}</p>
       )}
