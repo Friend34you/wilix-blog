@@ -2,7 +2,6 @@ import {makeAutoObservable, runInAction} from "mobx";
 import type {IArticle} from "../types/articleType.ts";
 import {ApiMethods, AxiosInstance} from "../api/axiosInstance.ts";
 
-
 type NewArticleDataType = Pick<IArticle, "title" | "description" | "body" | "tagList">
 type ArticleResponseType = { article: IArticle }
 
@@ -28,6 +27,7 @@ class ArticlesStore {
     return this.articlesList;
   }
 
+  //TODO: переименовать, чтобы не было проблем
   getArticles = async (
     limit = 10,
     offset = 0,
