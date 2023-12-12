@@ -3,9 +3,9 @@ import TagsList from "./TagsList.tsx";
 import styled from "styled-components";
 import tagsStore from "../store/tagsStore.ts";
 import type {Dispatch, FC, SetStateAction} from "react";
-import { useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import articlesStore from "../store/articlesStore.ts";
-
+import {typedMemo} from "../utils/typedMemo.ts";
 
 //насколько это неудачная идея? Хочется,чтобы при фильтрации по тегу и лоадер крутился, и ошибки показывались
 interface TagsCloudProps {
@@ -37,8 +37,8 @@ const StyledWrapper = styled.div`
 `;
 
 const {Title} = Typography;
-
-const TagsCloud: FC<TagsCloudProps> = ({setArticlesLoading, setArticlesError}) => {
+//Понимаю, что лишние рендеры происходят, но не знаю как с этим бороться
+const TagsCloud: FC<TagsCloudProps> = typedMemo(({setArticlesLoading, setArticlesError}) => {
   const [tagsLoading, setTagsLoading] = useState(false);
   const [tagsError, setTagsError] = useState<Error | null>(null);
 
@@ -83,6 +83,6 @@ const TagsCloud: FC<TagsCloudProps> = ({setArticlesLoading, setArticlesError}) =
       </StyledFlex>
     </StyledWrapper>
   );
-};
+});
 
 export default TagsCloud;

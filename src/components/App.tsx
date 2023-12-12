@@ -4,7 +4,6 @@ import {Flex, Spin} from "antd";
 import {observer} from "mobx-react-lite";
 import {useEffect, useState} from "react";
 import articlesStore from "../store/articlesStore.ts";
-import tagsStore from "../store/tagsStore.ts";
 import usersStore from "../store/usersStore.ts";
 
 function testLogout() {
@@ -44,9 +43,6 @@ const App = observer(() => {
       .catch(setError)
       .finally(() => setLoading(false));
 
-    tagsStore
-      .getTags()
-      .catch(setError);
   }, []);
 
   return (
