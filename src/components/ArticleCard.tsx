@@ -98,9 +98,7 @@ const ArticleCard: FC<ArticleCardProps> = ({
         justify="end"
         wrap="wrap"
       >
-        <TagsList
-          tags={tagList}
-        />
+        <TagsList tags={tagList} />
       </Flex>
     </StyledCard>
   );
