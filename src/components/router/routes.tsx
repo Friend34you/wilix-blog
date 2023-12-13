@@ -1,12 +1,7 @@
 // import {RoutesConsts} from "../../utils/routesConsts.ts";
 import type {RouteObject} from "react-router-dom";
 
-// interface Routes {
-//   path: string;
-//   Component: JSX.Element
-// }
-//пока так для построения структуры, потом откоменчу и добавлю компонентв путям
-
+//TODO: пока так для построения структуры, потом откоменчу и добавлю компонентв путям
 export const publicRoutes: RouteObject[] = [
     {
     path: "/public1",
@@ -37,7 +32,8 @@ export const publicRoutes: RouteObject[] = [
 //     Component: </>
 //   },
 ];
-//тож самое что и выше
+
+//TODO: тож самое что и выше
 export const privateRoutes: RouteObject[] = [
   {
     path: "/private1",
