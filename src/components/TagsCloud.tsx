@@ -37,14 +37,13 @@ const TagsCloud = observer(() => {
   useEffect(() => {
     setTagsLoading(true);
     tagsStore
-      .getTags()
+      .fetchTags()
       .catch(setTagsError)
       .finally(() => setTagsLoading(false));
   }, []);
 
   const handleOnTagClick = (tag: string) => {
-    //завёл задачку на изменения стора тегов, после этого изменю здесь
-    tagsStore.tags.push(tag);
+    tagsStore.selectedTag = tag;
   };
 
   return (
