@@ -1,4 +1,5 @@
 import {AxiosInstance} from "../api/axiosInstance.ts";
+import {makeAutoObservable} from "mobx";
 
 type GetTagsResponseType = {
   tags: string[]
@@ -6,6 +7,11 @@ type GetTagsResponseType = {
 
 class TagsStore {
   private tagsList: string[] = [];
+  private currentTag?: string;
+
+  constructor() {
+    makeAutoObservable(this);
+  }
 
   get tags() {
     return this.tagsList;
@@ -15,7 +21,15 @@ class TagsStore {
     this.tagsList = tagsData;
   }
 
-  getTags = async () => {
+  get selectedTag() {
+    return this.currentTag;
+  }
+
+  set selectedTag(tagToSelect) {
+    this.currentTag = tagToSelect;
+  }
+
+  fetchTags = async () => {
     try {
       const response = await AxiosInstance.get<GetTagsResponseType>("/tags");
       const tagsData = response.data;
