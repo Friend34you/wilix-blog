@@ -43,8 +43,7 @@ const TagsCloud = observer(() => {
   }, []);
 
   const handleOnTagClick = (tag: string) => {
-    //завёл задачку на изменения стора тегов, после этого изменю здесь
-    tagsStore.tags.push(tag);
+    tagsStore.selectedTag = tag;
   };
 
   return (
