@@ -32,6 +32,7 @@ class UsersStore {
   }
 
   get user() {
+    console.log(this.userItem);
     return this.userItem;
   }
 

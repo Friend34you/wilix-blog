@@ -1,11 +1,21 @@
 // import {RoutesConsts} from "../../utils/routesConsts.ts";
+import type {RouteObject} from "react-router-dom";
 
-interface Routes {
-  path: string;
-  Component: JSX.Element
-}
+// interface Routes {
+//   path: string;
+//   Component: JSX.Element
+// }
+//пока так для построения структуры, потом откоменчу и добавлю компонентв путям
 
-export const publicRoutes: Routes[] = [
+export const publicRoutes: RouteObject[] = [
+    {
+    path: "/public1",
+    element: <div>public 111</div>
+  },
+  {
+    path: "/public2",
+    element: <div>public 222</div>
+  },
 //   {
 //     path: RoutesConsts.ARTICLES_ROUTE,
 //     Component: </>
@@ -27,8 +37,16 @@ export const publicRoutes: Routes[] = [
 //     Component: </>
 //   },
 ];
-
-export const privateRoutes = [
+//тож самое что и выше
+export const privateRoutes: RouteObject[] = [
+  {
+    path: "/private1",
+    element: <div>private 111</div>
+  },
+  {
+    path: "/private2",
+    element: <div>private 222</div>
+  },
   // {
   //   path: RoutesConsts.CREATE_ARTICLE_ROUTE,
   //   Component: </>

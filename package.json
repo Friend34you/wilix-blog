@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@ant-design/icons": "^5.2.6",
+    "@mobx-devtools/tools": "^0.0.4",
     "@types/styled-components": "^5.1.32",
     "antd": "^5.11.5",
     "axios": "^1.6.2",
