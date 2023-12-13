@@ -37,7 +37,7 @@ const TagsCloud = observer(() => {
   useEffect(() => {
     setTagsLoading(true);
     tagsStore
-      .getTags()
+      .fetchTags()
       .catch(setTagsError)
       .finally(() => setTagsLoading(false));
   }, []);

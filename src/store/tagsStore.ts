@@ -29,7 +29,7 @@ class TagsStore {
     this.currentTag = tagToSelect;
   }
 
-  getTags = async () => {
+  fetchTags = async () => {
     try {
       const response = await AxiosInstance.get<GetTagsResponseType>("/tags");
       const tagsData = response.data;
