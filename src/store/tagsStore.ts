@@ -7,7 +7,7 @@ type GetTagsResponseType = {
 
 class TagsStore {
   private tagsList: string[] = [];
-  private currentTag: string | undefined = undefined;
+  private currentTag?: string;
 
   constructor() {
     makeAutoObservable(this);
