@@ -48,6 +48,11 @@ class UsersStore {
     localStorage.setItem("token", token);
   };
 
+  logoutUser = () => {
+    localStorage.removeItem("token");
+    this.user = null;
+  };
+
   registerUser = async (userData: RegisterUserType) => {
     try {
       const response = await AxiosInstance.post<UserResponseType>("/users", {
