@@ -5,33 +5,21 @@ import {observer} from "mobx-react-lite";
 import {useEffect, useState} from "react";
 import articlesStore from "../store/articlesStore.ts";
 import usersStore from "../store/usersStore.ts";
-
-function testLogout() {
-  localStorage.removeItem("token");
-  usersStore.user = null;
-}
+import {useNavigate} from "react-router-dom";
+import {Routes} from "./router/routes.tsx";
 
 //Тестовый компонент где я тыкаюсь
 const App = observer(() => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 
+  const navigate = useNavigate();
+
   function testLogin() {
     usersStore
       .loginUser({
         email: import.meta.env.VITE_TEST_LOGIN,
         password: import.meta.env.VITE_TEST_PASSWORD
-      })
-      .catch(setError);
-  }
-
-  function testCreateArticle() {
-    articlesStore
-      .createArticle({
-        body: "fdsdsfds",
-        title: "gfgfdfgdf",
-        tagList: ["gfgfddff"],
-        description: "gfgfdgdgdfgdf"
       })
       .catch(setError);
   }
@@ -45,6 +33,21 @@ const App = observer(() => {
 
   }, []);
 
+  function testCreateArticle() {
+    articlesStore
+      .createArticle({
+        body: "fdsdsfds",
+        title: "gfgfdfgdf",
+        tagList: ["gfgfddff"],
+        description: "gfgfdgdgdfgdf"
+      })
+      .catch(setError);
+  }
+
+  function navigateToPrivateRoute() {
+    navigate(Routes.CREATE_ARTICLE);
+  }
+
   return (
     <Flex align="center" vertical={true}>
       <TagsCloud />
@@ -52,13 +55,19 @@ const App = observer(() => {
         <p>{usersStore.user.username}</p>
       )}
       <button
+        onClick={navigateToPrivateRoute}
+        type="button"
+      >
+        PRIVATE
+      </button>
+      <button
         onClick={testLogin}
         type="button"
       >
         LOGIN
       </button>
       <button
-        onClick={testLogout}
+        onClick={usersStore.logoutUser}
         type="button"
       >
         LOGOUT
