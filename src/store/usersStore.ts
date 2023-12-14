@@ -23,6 +23,7 @@ type LoginUserType = Pick<UserType, "email"> & {
 class UsersStore {
   private userItem: UserType | null = null;
   isUserAuth: boolean = false;
+
   constructor() {
     makeAutoObservable(this);
     const token = localStorage.getItem("token");
@@ -35,7 +36,6 @@ class UsersStore {
   }
 
   get user() {
-    console.log(this.userItem);
     return this.userItem;
   }
 

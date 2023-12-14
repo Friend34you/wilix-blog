@@ -8,7 +8,7 @@ const PrivateRoute = () => {
 
   useEffect(() => {
     if (!usersStore.isUserAuth) {
-      navigate(Routes.AUTHORIZATION_ROUTE);
+      navigate(Routes.AUTHORIZATION);
     }
   }, [navigate]);
 

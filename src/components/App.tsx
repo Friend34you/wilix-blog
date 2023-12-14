@@ -12,6 +12,7 @@ import {Routes} from "./router/routes.tsx";
 const App = observer(() => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
+
   const navigate = useNavigate();
 
   function testLogin() {
@@ -19,17 +20,6 @@ const App = observer(() => {
       .loginUser({
         email: import.meta.env.VITE_TEST_LOGIN,
         password: import.meta.env.VITE_TEST_PASSWORD
-      })
-      .catch(setError);
-  }
-
-  function testCreateArticle() {
-    articlesStore
-      .createArticle({
-        body: "fdsdsfds",
-        title: "gfgfdfgdf",
-        tagList: ["gfgfddff"],
-        description: "gfgfdgdgdfgdf"
       })
       .catch(setError);
   }
@@ -43,13 +33,33 @@ const App = observer(() => {
 
   }, []);
 
+  function testCreateArticle() {
+    articlesStore
+      .createArticle({
+        body: "fdsdsfds",
+        title: "gfgfdfgdf",
+        tagList: ["gfgfddff"],
+        description: "gfgfdgdgdfgdf"
+      })
+      .catch(setError);
+  }
+
+  function navigateToPrivateRoute() {
+    navigate(Routes.CREATE_ARTICLE);
+  }
+
   return (
     <Flex align="center" vertical={true}>
       <TagsCloud />
       {usersStore.user && (
         <p>{usersStore.user.username}</p>
       )}
-      <button onClick={() => navigate(Routes.CREATE_ARTICLE_ROUTE)} type="button">PRIVATE</button>
+      <button
+        onClick={navigateToPrivateRoute}
+        type="button"
+      >
+        PRIVATE
+      </button>
       <button
         onClick={testLogin}
         type="button"
