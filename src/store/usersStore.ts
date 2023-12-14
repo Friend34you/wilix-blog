@@ -22,11 +22,14 @@ type LoginUserType = Pick<UserType, "email"> & {
 
 class UsersStore {
   private userItem: UserType | null = null;
-
+  isUserAuth: boolean = false;
   constructor() {
     makeAutoObservable(this);
-
-    if (localStorage.getItem("token") && !this.userItem) {
+    const token = localStorage.getItem("token");
+    if (token) {
+      this.isUserAuth = true;
+    }
+    if (token && !this.userItem) {
       this.fetchUser();
     }
   }
@@ -52,6 +55,7 @@ class UsersStore {
   logoutUser = () => {
     localStorage.removeItem("token");
     this.user = null;
+    this.isUserAuth = false;
   };
 
   registerUser = async (userData: RegisterUserType) => {
@@ -85,6 +89,7 @@ class UsersStore {
         username: userResponseData.username
       };
     } catch (error) {
+      this.logoutUser();
       throw new Error("Error: Something went wrong :( " + error);
     }
   };

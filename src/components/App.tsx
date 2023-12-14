@@ -6,11 +6,7 @@ import {useEffect, useState} from "react";
 import articlesStore from "../store/articlesStore.ts";
 import usersStore from "../store/usersStore.ts";
 import {useNavigate} from "react-router-dom";
-
-function testLogout() {
-  localStorage.removeItem("token");
-  usersStore.user = null;
-}
+import {Routes} from "./router/routes.tsx";
 
 //Тестовый компонент где я тыкаюсь
 const App = observer(() => {
@@ -53,7 +49,7 @@ const App = observer(() => {
       {usersStore.user && (
         <p>{usersStore.user.username}</p>
       )}
-      <button onClick={() => navigate("/private1")} type="button">PRIVATE</button>
+      <button onClick={() => navigate(Routes.CREATE_ARTICLE_ROUTE)} type="button">PRIVATE</button>
       <button
         onClick={testLogin}
         type="button"
@@ -61,7 +57,7 @@ const App = observer(() => {
         LOGIN
       </button>
       <button
-        onClick={testLogout}
+        onClick={usersStore.logoutUser}
         type="button"
       >
         LOGOUT

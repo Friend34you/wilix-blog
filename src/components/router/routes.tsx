@@ -1,54 +1,48 @@
-// import {RoutesConsts} from "../../utils/routesConsts.ts";
 import type {RouteObject} from "react-router-dom";
+import App from "../App.tsx";
 
-//TODO: пока так для построения структуры, потом откоменчу и добавлю компонентв путям
+export enum Routes {
+  REGISTRATION_ROUTE = "/register",
+  AUTHORIZATION_ROUTE = "/login",
+  ONE_ARTICLE_ROUTE = "/articles/:articleSlug",
+  ARTICLES_ROUTE = "/articles",
+  CREATE_ARTICLE_ROUTE = "/new-article",
+  PROFILE_ROUTE = "/profile/:profileName",
+  FAVORITE_ARTICLES_ROUTE = "/articles/favorite",
+}
+
+//TODO: добавить компоненты вместо заглушек
 export const publicRoutes: RouteObject[] = [
-    {
-    path: "/public1",
-    element: <div>public 111</div>
+  {
+    path: Routes.ARTICLES_ROUTE,
+    element: <App />
   },
   {
-    path: "/public2",
-    element: <div>public 222</div>
+    path: Routes.ONE_ARTICLE_ROUTE,
+    element: <div>Конкретная Статья</div>
   },
-//   {
-//     path: RoutesConsts.ARTICLES_ROUTE,
-//     Component: </>
-//   },
-//   {
-//     path: RoutesConsts.ONE_ARTICLE_ROUTE,
-//     Component: </>
-//   },
-//   {
-//     path: RoutesConsts.PROFILE_ROUTE,
-//     Component: </>
-//   },
-//   {
-//     path: RoutesConsts.REGISTRATION_ROUTE,
-//     Component: </>
-//   },
-//   {
-//     path: RoutesConsts.AUTHORIZATION_ROUTE,
-//     Component: </>
-//   },
+  {
+    path: Routes.PROFILE_ROUTE,
+    element: <div>Профиль пользователя</div>
+  },
+  {
+    path: Routes.REGISTRATION_ROUTE,
+    element: <div>Регистрация</div>
+  },
+  {
+    path: Routes.AUTHORIZATION_ROUTE,
+    element: <div>Авторизация</div>
+  },
 ];
 
 //TODO: тож самое что и выше
 export const privateRoutes: RouteObject[] = [
   {
-    path: "/private1",
-    element: <div>private 111</div>
+    path: Routes.CREATE_ARTICLE_ROUTE,
+    element: <div>Создать новую статью</div>
   },
   {
-    path: "/private2",
-    element: <div>private 222</div>
+    path: Routes.FAVORITE_ARTICLES_ROUTE,
+    element: <div>Лайкнутые статьи</div>
   },
-  // {
-  //   path: RoutesConsts.CREATE_ARTICLE_ROUTE,
-  //   Component: </>
-  // },
-  // {
-  //   path: RoutesConsts.FAVORITE_ARTICLES_ROUTE,
-  //   Component: </>
-  // },
 ];

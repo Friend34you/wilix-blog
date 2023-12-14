@@ -1,22 +1,20 @@
 import {Outlet, RouterProvider, createBrowserRouter, Navigate} from "react-router-dom";
-import {privateRoutes, publicRoutes} from "./routes.tsx";
+import {privateRoutes, publicRoutes, Routes} from "./routes.tsx";
 import PrivateRoute from "./privateRoute.tsx";
-import App from "../App.tsx";
 
+//TODO: вместо рутовой заглушки добавить полноценный компонент
 const router = createBrowserRouter([
   {
     path: "/",
     element: (
-      <div>
-        Hello world!
-        <Outlet />
-      </div>),
-    errorElement: <Navigate to="/" />,
+      <>
+        <h1>Header</h1>
+        <div>Wrapper <Outlet /></div>
+        <h1>Footer</h1>
+        <Navigate to={Routes.ARTICLES_ROUTE} />
+      </>),
+    errorElement: <Navigate to={Routes.ARTICLES_ROUTE} />,
     children: [
-      {
-        path: "/test",
-        element: <App />,
-      },
       {
         element: <PrivateRoute />,
         children: privateRoutes
