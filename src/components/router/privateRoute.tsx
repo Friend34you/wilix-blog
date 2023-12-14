@@ -1,11 +1,12 @@
 import {Outlet, useNavigate} from "react-router-dom";
 import {useEffect} from "react";
+import usersStore from "../../store/usersStore.ts";
 
 const PrivateRoute = () => {
-  //TODO: убрать проверку по ключу
+  //TODO: убрать проверку по ключу и поменять на страницу логина путь
   const navigate = useNavigate();
   useEffect(() => {
-    if (!localStorage.getItem("token")) {
+    if (!usersStore.user) {
       navigate("/test");
     }
   }, [navigate]);

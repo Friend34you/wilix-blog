@@ -5,6 +5,7 @@ import {observer} from "mobx-react-lite";
 import {useEffect, useState} from "react";
 import articlesStore from "../store/articlesStore.ts";
 import usersStore from "../store/usersStore.ts";
+import {useNavigate} from "react-router-dom";
 
 function testLogout() {
   localStorage.removeItem("token");
@@ -15,6 +16,7 @@ function testLogout() {
 const App = observer(() => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
+  const navigate = useNavigate();
 
   function testLogin() {
     usersStore
@@ -51,6 +53,7 @@ const App = observer(() => {
       {usersStore.user && (
         <p>{usersStore.user.username}</p>
       )}
+      <button onClick={() => navigate("/private1")} type="button">PRIVATE</button>
       <button
         onClick={testLogin}
         type="button"
