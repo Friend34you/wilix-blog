@@ -1,5 +1,5 @@
 import {Avatar, Button, Flex, Spin, Typography} from "antd";
-import {useEffect, useState} from "react";
+import {useEffect, useMemo, useState} from "react";
 import articlesStore from "../store/articlesStore.ts";
 import TagsList from "./TagsList.tsx";
 import styled from "styled-components";
@@ -12,9 +12,24 @@ const {Title, Paragraph, Text} = Typography;
 const TitleWrapper = styled.div`
   text-align: center;
   width: 100vw;
-  padding: 10px 0;
+  padding: 20px 0;
   margin-bottom: 20px;
-  background-image: linear-gradient(195deg, #ffa800 0, #ff9700 8.33%, #ff8400 16.67%, #ff6d00 25%, #ff551e 33.33%, #fe382c 41.67%, #e80d33 50%, #d00037 58.33%, #ba003b 66.67%, #a6003f 75%, #950043 83.33%, #860048 91.67%, #78004f 100%);
+  background-image: linear-gradient(
+    195deg, 
+    #ffa800 0, 
+    #ff9700 8.33%, 
+    #ff8400 16.67%, 
+    #ff6d00 25%, 
+    #ff551e 33.33%, 
+    #fe382c 41.67%, 
+    #e80d33 50%, 
+    #d00037 58.33%, 
+    #ba003b 66.67%, 
+    #a6003f 75%, 
+    #950043 83.33%, 
+    #860048 91.67%, 
+    #78004f 100%
+  );
   & > h1 {
     color: white;
   }
@@ -34,21 +49,8 @@ const StyledParagraph = styled(Paragraph)`
   max-width: 1200px;
   font-size: 1rem;
   margin: 10px;
+  padding: 10px;
 `;
-
-const getFollowButtonIcon = () => {
-  if (articlesStore.currentArticle?.author.following) {
-    return <CheckOutlined />;
-  }
-  return <HeartOutlined />;
-};
-
-const getFavoriteButtonIcon = () => {
-  if (articlesStore.currentArticle?.favorited) {
-    return <CheckOutlined />;
-  }
-  return <StarOutlined />;
-};
 
 const Article = observer(() => {
   //Добавить useLocation, для получения slug для подгрузки контента странмцы
@@ -56,7 +58,31 @@ const Article = observer(() => {
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<Error | null>(null);
 
+  const FollowButtonProps = useMemo(() => {
+    if (articlesStore.currentArticle?.author.following) {
+      return {
+        icon: <CheckOutlined />,
+        text: "followed"
+      };
+    }
+    return {
+      icon: <HeartOutlined />,
+      text: "follow"
+    };
+  }, []);
 
+  const FavoriteButtonProps = useMemo(() => {
+    if (articlesStore.currentArticle?.favorited) {
+      return {
+        icon: <CheckOutlined />,
+        text: "favorited"
+      };
+    }
+    return {
+      icon: <StarOutlined />,
+      text: "favorite"
+    };
+  }, []);
 
   useEffect(() => {
     setLoading(true);
@@ -69,8 +95,6 @@ const Article = observer(() => {
       .catch(setError)
       .finally(() => setLoading(false));
   }, []);
-
-  
 
   //TODO: добавить роутовскую ссылку вместо обычной
   return (
@@ -117,13 +141,13 @@ const Article = observer(() => {
               </StyledDateText>
             </Flex>
             <Button
-              icon={getFollowButtonIcon()}
+              icon={FollowButtonProps.icon}
               type="primary"
             >
-              Follow Author
+              {FollowButtonProps.text}
             </Button>
-            <Button icon={getFavoriteButtonIcon()}>
-              Favorite Article
+            <Button icon={FavoriteButtonProps.icon}>
+              {FavoriteButtonProps.text}
             </Button>
           </Flex>
 
