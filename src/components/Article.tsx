@@ -4,6 +4,8 @@ import articlesStore from "../store/articlesStore.ts";
 import TagsList from "./TagsList.tsx";
 import styled from "styled-components";
 import {formatDate} from "../helpers/formatDate.ts";
+import {CheckOutlined, HeartOutlined, StarOutlined} from "@ant-design/icons";
+import {observer} from "mobx-react-lite";
 
 const {Title, Paragraph, Text} = Typography;
 
@@ -12,8 +14,7 @@ const TitleWrapper = styled.div`
   width: 100vw;
   padding: 10px 0;
   margin-bottom: 20px;
-  background-image: linear-gradient(185deg, #ffa701 0, #ff9620 10%, #ff8430 20%, #ff703b 30%, #ff5c42 40%, #f94646 50%, #e43148 60%, #d01c4b 70%, #be044d 80%, #ae0050 90%, #9f0054 100%);
-  
+  background-image: linear-gradient(195deg, #ffa800 0, #ff9700 8.33%, #ff8400 16.67%, #ff6d00 25%, #ff551e 33.33%, #fe382c 41.67%, #e80d33 50%, #d00037 58.33%, #ba003b 66.67%, #a6003f 75%, #950043 83.33%, #860048 91.67%, #78004f 100%);
   & > h1 {
     color: white;
   }
@@ -35,12 +36,28 @@ const StyledParagraph = styled(Paragraph)`
   margin: 10px;
 `;
 
-const Article = () => {
-  //Добавить useLocation, для получения slug для подгрузки контента странмцы
+const getFollowButtonIcon = () => {
+  if (articlesStore.currentArticle?.author.following) {
+    return <CheckOutlined />;
+  }
+  return <HeartOutlined />;
+};
 
+const getFavoriteButtonIcon = () => {
+  if (articlesStore.currentArticle?.favorited) {
+    return <CheckOutlined />;
+  }
+  return <StarOutlined />;
+};
+
+const Article = observer(() => {
+  //Добавить useLocation, для получения slug для подгрузки контента странмцы
   const [loading, setLoading] = useState(true);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<Error | null>(null);
+
+
+
   useEffect(() => {
     setLoading(true);
     articlesStore
@@ -52,6 +69,8 @@ const Article = () => {
       .catch(setError)
       .finally(() => setLoading(false));
   }, []);
+
+  
 
   //TODO: добавить роутовскую ссылку вместо обычной
   return (
@@ -87,20 +106,23 @@ const Article = () => {
               <Text>
                 {articlesStore.currentArticle!.author.username}
               </Text>
-              <Flex vertical={true}>
-                <StyledDateText>
-                  created: {formatDate(articlesStore.currentArticle!.createdAt)}
-                </StyledDateText>
-                <StyledDateText>
-                  edited: {formatDate(articlesStore.currentArticle!.updatedAt)}
-                </StyledDateText>
-              </Flex>
             </Flex>
            </a>
-            <Button type="primary">
+            <Flex vertical={true}>
+              <StyledDateText>
+                created: {formatDate(articlesStore.currentArticle!.createdAt)}
+              </StyledDateText>
+              <StyledDateText>
+                edited: {formatDate(articlesStore.currentArticle!.updatedAt)}
+              </StyledDateText>
+            </Flex>
+            <Button
+              icon={getFollowButtonIcon()}
+              type="primary"
+            >
               Follow Author
             </Button>
-            <Button>
+            <Button icon={getFavoriteButtonIcon()}>
               Favorite Article
             </Button>
           </Flex>
@@ -118,6 +140,6 @@ const Article = () => {
       )}
   </Flex>
   );
-};
+});
 
 export default Article;
