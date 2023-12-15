@@ -78,7 +78,6 @@ module.exports = {
     "react/jsx-curly-brace-presence": "warn",
     "react/no-typos": "warn",
     "react/display-name": "warn",
-    "react/jsx-sort-props": "warn",
     "react/react-in-jsx-scope": "off",
     "react/jsx-one-expression-per-line": "off",
     "react/prefer-read-only-props": "error",

@@ -12,8 +12,8 @@ enum DigitsToOperateWith {
 
 class ArticlesStore {
   private articlesList: IArticle[] = [];
+  private article: IArticle | null = null;
   articlesCount: number = 0;
-  currentArticle: IArticle | null = null;
 
   constructor() {
     makeAutoObservable(this);
@@ -25,6 +25,14 @@ class ArticlesStore {
 
   get articles() {
     return this.articlesList;
+  }
+
+  set currentArticle(articleData) {
+    this.article = articleData;
+  }
+
+  get currentArticle() {
+    return this.article;
   }
 
   //TODO: переименовать, чтобы не было проблем
@@ -66,7 +74,14 @@ class ArticlesStore {
 
   toggleFavoriteArticle = async (articleSlug: string) => {
     try {
-      const targetArticle = this.articles.find((article) => article.slug === articleSlug)!;
+      let targetArticle: IArticle;
+      if (this.currentArticle && articleSlug === this.currentArticle?.slug) {
+        targetArticle = this.currentArticle;
+      }
+      else {
+        targetArticle = this.articles.find((article) => article.slug === articleSlug)!;
+      }
+
       const counterDigitIteration = targetArticle.favorited ? DigitsToOperateWith.DECREASE_BY_ONE : DigitsToOperateWith.INCREASE_BY_ONE;
 
       await AxiosInstance("/articles/" + articleSlug + "/favorite", {

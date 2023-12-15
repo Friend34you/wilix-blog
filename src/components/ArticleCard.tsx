@@ -6,6 +6,7 @@ import styled from "styled-components";
 import type {IArticle} from "../types/articleType.ts";
 import {formatDate} from "../helpers/formatDate.ts";
 import TagsList from "./TagsList.tsx";
+import {Link} from "react-router-dom";
 
 interface ArticleCardProps extends IArticle{
   //Пока не знаю как конкретно будет реализована эта функция
@@ -38,7 +39,8 @@ const ArticleCard: FC<ArticleCardProps> = ({
   tagList,
   favoritesCount,
   favorited,
-  onFavoriteClick
+  onFavoriteClick,
+  slug
 }) => {
 
   const favoriteButtonProps = useMemo((): favoriteButtonPropsType => {
@@ -54,7 +56,6 @@ const ArticleCard: FC<ArticleCardProps> = ({
     };
   }, [favorited]);
 
-  //В будущем необходимо будет добавить <Navigate> из react-router
   return (
     <StyledCard hoverable>
       <Flex
@@ -85,12 +86,17 @@ const ArticleCard: FC<ArticleCardProps> = ({
         </Button>
       </Flex>
 
-      <Title level={4}>
-        {title}
-      </Title>
-      <Text>
-        {description}
-      </Text>
+      <Link
+        state={slug}
+        to={"/articles/" + slug}
+      >
+        <Title level={4}>
+          {title}
+        </Title>
+        <Text>
+          {description}
+        </Text>
+      </Link>
 
       <hr/>
 
