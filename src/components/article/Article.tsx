@@ -72,11 +72,19 @@ const StyledParagraph = styled(Paragraph)`
   font-size: 1rem;
   margin: 10px;
   padding: 25px;
+  border-radius: 10px;
   box-shadow: 0 4px 6px -1px rgba(34, 60, 80, 0.2);
 
   @media (max-width: 320px) {
     box-shadow: none;
     padding: 10px 5px;
+  }
+`;
+
+const StyledArticleAuthorFlex = styled(Flex)`
+  &:hover {
+    transform: scale(1.1);
+    transition: 0.2s linear;
   }
 `;
 
@@ -228,7 +236,7 @@ const ArticleAuthor:FC<ArticleAuthorProps> = ({authorName, profileImg}) => {
       state={authorName}
       to={Routes.CURRENT_PROFILE + authorName}
     >
-      <Flex
+      <StyledArticleAuthorFlex
         align="center"
         gap="small"
       >
@@ -238,7 +246,7 @@ const ArticleAuthor:FC<ArticleAuthorProps> = ({authorName, profileImg}) => {
         <Text>
           {authorName}
         </Text>
-      </Flex>
+      </StyledArticleAuthorFlex>
     </Link>
   );
 };
