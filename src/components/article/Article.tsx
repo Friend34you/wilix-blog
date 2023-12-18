@@ -26,10 +26,11 @@ const Article = observer(() => {
       .then(() => {
         profilesStore
           .fetchUserProfile(articlesStore.currentArticle!.author.username)
-          .then(() => setIsSuccess(true));
+          .then(() => setIsSuccess(true))
+          .catch((error: Error) => notification.error({message: error.message}))
+          .finally(() => setIsLoading(false));
       })
-      .catch((error: Error) => notification.error({message: error.message}))
-      .finally(() => setIsLoading(false));
+      .catch((error: Error) => notification.error({message: error.message}));
 
     return () => {
       setIsSuccess(false);
@@ -50,7 +51,7 @@ const Article = observer(() => {
       .catch((error: Error) => notification.error({message: error.message}));
   }
 
-  if (isLoading) {
+  if (isLoading || !isSuccess) {
     return (
       <Flex
         align="center"
@@ -67,44 +68,40 @@ const Article = observer(() => {
       align="center"
       vertical
     >
-      {isSuccess && (
-        <>
-          <TitleWrapper>
-            <Title>
-              {article.title}
-            </Title>
-          </TitleWrapper>
+      <TitleWrapper>
+        <Title>
+          {article.title}
+        </Title>
+      </TitleWrapper>
 
-          <Flex
-            align="center"
-            gap="small"
-            justify="space-evenly"
-            wrap="wrap"
-          >
-            <ArticleAuthor
-              authorName={profilesStore.profile!.username}
-              profileImg={profilesStore.profile!.image}
-            />
-            <ArticleInteraction
-              onFavoriteClick={handleOnFavoriteClick}
-              onFollowClick={handleOnFollowClick}
-              updatedAt={article.updatedAt}
-              createdAt={article.createdAt}
-              isFavorited={article.favorited}
-              isFollowed={profilesStore.profile!.following}
-            />
-          </Flex>
-          <StyledHr />
+      <Flex
+        align="center"
+        gap="small"
+        justify="space-evenly"
+        wrap="wrap"
+      >
+        <ArticleAuthor
+          authorName={profilesStore.profile!.username}
+          profileImg={profilesStore.profile!.image}
+        />
+        <ArticleInteraction
+          onFavoriteClick={handleOnFavoriteClick}
+          onFollowClick={handleOnFollowClick}
+          updatedAt={article.updatedAt}
+          createdAt={article.createdAt}
+          isFavorited={article.favorited}
+          isFollowed={profilesStore.profile!.following}
+        />
+      </Flex>
+      <StyledHr />
 
-          <StyledParagraph>
-            {article.body}
-          </StyledParagraph>
+      <StyledParagraph>
+        {article.body}
+      </StyledParagraph>
 
-          <Flex>
-            <TagsList tags={article.tagList} />
-          </Flex>
-        </>
-      )}
+      <Flex>
+        <TagsList tags={article.tagList} />
+      </Flex>
     </Flex>
   );
 });
