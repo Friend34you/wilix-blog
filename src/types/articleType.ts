@@ -1,7 +1,7 @@
 import type {IProfile} from "./profileType.ts";
 
 export interface IArticle {
-  author: IProfile
+  author: Omit<IProfile, "following">
   tagList : string[]
   title: string;
   description: string;
