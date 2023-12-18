@@ -1,4 +1,4 @@
-import {Avatar, Flex, Layout, Space, Spin, Typography} from "antd";
+import {Flex, Layout, Space, Spin, Typography} from "antd";
 import styled from "styled-components";
 import logo from "../assets/logo.png";
 import {Link} from "react-router-dom";
@@ -6,6 +6,7 @@ import {useEffect, useState} from "react";
 import profilesStore from "../store/profilesStore.ts";
 import usersStore from "../store/usersStore.ts";
 import {observer} from "mobx-react-lite";
+import {UserOutlined} from "@ant-design/icons";
 
 const {Text} = Typography;
 const {Header} = Layout;
@@ -42,15 +43,12 @@ const AppHeader = observer(() => {
             <Spin/>
           )}
           {usersStore.isUserAuth && isSuccess && (
-            <>
-              <Avatar>
-                {/*{.charAt(0)}*/}
-              </Avatar>
+            <Space align="center">
+              <UserIcon />
               <Text>
-                {/*{}*/}
-                username
+                {usersStore.user?.username}
               </Text>
-            </>
+            </Space>
           )}
         </Space>
       </StyledFlex>
@@ -82,6 +80,10 @@ const StyledLink = styled(Link)`
   height: 100%;
   display: flex;
   align-items: center;
+`;
+
+const UserIcon = styled(UserOutlined)`
+  font-size: 25px;;
 `;
 
 export default AppHeader;
