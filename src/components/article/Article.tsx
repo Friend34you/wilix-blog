@@ -50,14 +50,23 @@ const Article = observer(() => {
       .catch((error: Error) => notification.error({message: error.message}));
   }
 
+  if (isLoading) {
+    return (
+      <Flex
+        align="center"
+        justify="center"
+        vertical
+      >
+        <Spin size="large" />
+      </Flex>
+    );
+  }
+
   return (
     <Flex
       align="center"
       vertical
     >
-      {isLoading && (
-        <Spin size="large"/>
-      )}
       {isSuccess && (
         <>
           <TitleWrapper>
@@ -85,14 +94,14 @@ const Article = observer(() => {
               isFollowed={profilesStore.profile!.following}
             />
           </Flex>
-          <StyledHr/>
+          <StyledHr />
 
           <StyledParagraph>
             {article.body}
           </StyledParagraph>
 
           <Flex>
-            <TagsList tags={article.tagList}/>
+            <TagsList tags={article.tagList} />
           </Flex>
         </>
       )}

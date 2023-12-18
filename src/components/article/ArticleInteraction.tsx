@@ -1,13 +1,8 @@
-import type {FC, ReactNode} from "react";
+import type {FC} from "react";
 import {CheckOutlined, HeartOutlined, StarOutlined} from "@ant-design/icons";
 import {Button, Flex, Typography} from "antd";
 import {formatDate} from "../../helpers/formatDate.ts";
 import styled from "styled-components";
-
-type ButtonPropsType = {
-  text: string,
-  icon: ReactNode,
-}
 
 type ArticleInteractionProps = {
   readonly createdAt: string,
@@ -28,28 +23,6 @@ const ArticleInteraction: FC<ArticleInteractionProps> = ({
  onFollowClick,
  onFavoriteClick,
 }) => {
-  let followButtonProps: ButtonPropsType = {
-    icon: <HeartOutlined/>,
-    text: "follow"
-  };
-  if (isFollowed) {
-    followButtonProps = {
-      icon: <CheckOutlined/>,
-      text: "followed"
-    };
-  }
-
-  let favoriteButtonProps: ButtonPropsType = {
-    icon: <StarOutlined/>,
-    text: "favorite",
-  };
-  if (isFavorited) {
-    favoriteButtonProps = {
-      icon: <CheckOutlined/>,
-      text: "favorited",
-    };
-  }
-
   return (
     <>
       <Flex vertical>
@@ -62,17 +35,17 @@ const ArticleInteraction: FC<ArticleInteractionProps> = ({
       </Flex>
 
       <Button
-        icon={followButtonProps.icon}
+        icon={isFollowed ? <CheckOutlined /> : <HeartOutlined />}
         type="primary"
         onClick={onFollowClick}
       >
-        {followButtonProps.text}
+        {isFollowed ? "followed" : "follow"}
       </Button>
       <Button
-        icon={favoriteButtonProps.icon}
+        icon={isFavorited ? <CheckOutlined /> : <StarOutlined />}
         onClick={onFavoriteClick}
       >
-        {favoriteButtonProps.text}
+        {isFavorited ? "favorited" : "favorite"}
       </Button>
     </>
   );
