@@ -50,6 +50,7 @@ class UsersStore {
       username
     };
     localStorage.setItem("token", token);
+    this.isUserAuth = true;
   };
 
   logoutUser = () => {
