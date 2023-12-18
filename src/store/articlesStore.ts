@@ -36,7 +36,7 @@ class ArticlesStore {
   }
 
   //TODO: переименовать, чтобы не было проблем
-  getArticles = async (
+  fetchArticles = async (
     limit = 10,
     offset = 0,
     tag?: string,
@@ -74,22 +74,19 @@ class ArticlesStore {
 
   toggleFavoriteArticle = async (articleSlug: string) => {
     try {
-      let targetArticle: IArticle;
-      if (this.currentArticle && articleSlug === this.currentArticle?.slug) {
-        targetArticle = this.currentArticle;
-      }
-      else {
+      let targetArticle = this.currentArticle;
+      if (articleSlug !== this.currentArticle?.slug) {
         targetArticle = this.articles.find((article) => article.slug === articleSlug)!;
       }
 
-      const counterDigitIteration = targetArticle.favorited ? DigitsToOperateWith.DECREASE_BY_ONE : DigitsToOperateWith.INCREASE_BY_ONE;
+      const counterDigitIteration = targetArticle?.favorited ? DigitsToOperateWith.DECREASE_BY_ONE : DigitsToOperateWith.INCREASE_BY_ONE;
 
       await AxiosInstance("/articles/" + articleSlug + "/favorite", {
-        method: targetArticle.favorited ? ApiMethods.DELETE : ApiMethods.POST,
+        method: targetArticle?.favorited ? ApiMethods.DELETE : ApiMethods.POST,
       });
       runInAction(() => {
-        targetArticle.favorited = !targetArticle.favorited;
-        targetArticle.favoritesCount += counterDigitIteration;
+        targetArticle!.favorited = !targetArticle?.favorited;
+        targetArticle!.favoritesCount += counterDigitIteration;
       });
     } catch (error) {
       throw new Error("Something went wrong :(" + error);

@@ -12,7 +12,6 @@ const router = createBrowserRouter([
         <h1>Header</h1>
         <div>Wrapper <Outlet /></div>
         <h1>Footer</h1>
-        {/*<Navigate to={Routes.ARTICLES} />*/}
       </>
     ),
     children: [

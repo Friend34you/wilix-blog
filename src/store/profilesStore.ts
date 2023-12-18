@@ -21,7 +21,7 @@ class ProfilesStore {
     this.userProfile = profileData;
   }
 
-  getUserProfile = async (username: string) => {
+  fetchUserProfile = async (username: string) => {
     try {
       const response = await AxiosInstance.get<GetUserProfileResponseType>("/profiles/" + username);
       this.profile = response.data.profile;
@@ -34,7 +34,7 @@ class ProfilesStore {
   toggleFollowUserProfile = async (username: string) => {
     try {
       if (!this.profile) {
-        await this.getUserProfile(username);
+        await this.fetchUserProfile(username);
       }
 
       const isFollowed = this.profile!.following;
@@ -45,7 +45,6 @@ class ProfilesStore {
       this.profile!.following = !isFollowed;
     } catch
       (error) {
-      console.log(123, error);
       throw new Error("Something went wrong :(" + error);
     }
   };

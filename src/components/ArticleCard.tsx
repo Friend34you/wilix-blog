@@ -87,7 +87,6 @@ const ArticleCard: FC<ArticleCardProps> = ({
       </Flex>
 
       <Link
-        state={slug}
         to={"/articles/" + slug}
       >
         <Title level={4}>
