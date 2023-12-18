@@ -1,5 +1,5 @@
-import {Outlet, RouterProvider, createBrowserRouter, Navigate} from "react-router-dom";
-import {privateRoutes, publicRoutes, Routes} from "./routes.tsx";
+import {Outlet, RouterProvider, createBrowserRouter} from "react-router-dom";
+import {privateRoutes, publicRoutes} from "./routes.tsx";
 import PrivateRoute from "./privateRoute.tsx";
 import AppHeader from "../header/AppHeader.tsx";
 
@@ -13,7 +13,6 @@ const router = createBrowserRouter([
         <AppHeader />
         <div>Wrapper <Outlet /></div>
         <h1>Footer</h1>
-        <Navigate to={Routes.ARTICLES} />
       </>
     ),
     children: [
