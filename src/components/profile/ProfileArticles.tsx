@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import type { PaginationProps} from "antd";
-import {Flex, notification, Pagination, Segmented, Spin} from "antd";
+import {Divider, Flex, notification, Pagination, Segmented, Spin} from "antd";
 import type {FC} from "react";
 import { useEffect, useState} from "react";
 import articlesStore from "../../store/articlesStore.ts";
@@ -39,6 +39,7 @@ const ProfileArticles: FC<ProfileArticlesProps> = observer(({profileName}) => {
         favorited: profileName
       };
     }
+
     setIsLoading(true);
     articlesStore
       .fetchArticles(10, (currentPage - 1) * 10, undefined, config.author, config.favorited)
@@ -84,6 +85,7 @@ const ProfileArticles: FC<ProfileArticlesProps> = observer(({profileName}) => {
         value={mode}
         onChange={handleOnModeChange}
       />
+      <Divider />
       <Pagination
         simple
         showSizeChanger={false}

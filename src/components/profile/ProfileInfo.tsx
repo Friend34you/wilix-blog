@@ -48,7 +48,7 @@ const ProfileInfo: FC<ProfileAuthorProos> = ({
       >
         <Avatar
           shape="square"
-          size={160}
+          size={130}
           gap={100}
           src={image}
         >
@@ -56,15 +56,10 @@ const ProfileInfo: FC<ProfileAuthorProos> = ({
         </Avatar>
         {username}
       </ProfileCard>
-      {bio && (
-        <Paragraph>
-          {bio}
-        </Paragraph>
-      )}
       {profileButton}
       {bio && (
         <AuthorBio>
-          dsfdfdsfsddsfvccx
+          {bio}
         </AuthorBio>
       )}
     </ProfileInfoWrapper>
@@ -72,11 +67,10 @@ const ProfileInfo: FC<ProfileAuthorProos> = ({
 };
 
 const ProfileInfoWrapper = styled(Flex)`
-  background: -webkit-linear-gradient(143deg, #21053b,#d43573);/* Chrome 10-25, Safari 5.1-6 */                         
-  background: linear-gradient(143deg, #21053b,#d43573);/* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  background: -webkit-linear-gradient(143deg, #21053b,#d43573);                        
+  background: linear-gradient(143deg, #21053b,#d43573);
   height: 94vh;
   width: 18vw;
-  padding: 20px;
   position: fixed;
   flex-direction: column;
 
