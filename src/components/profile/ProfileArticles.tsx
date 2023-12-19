@@ -1,15 +1,11 @@
 import styled from "styled-components";
 import type { PaginationProps} from "antd";
 import {Divider, Flex, notification, Pagination, Segmented, Spin} from "antd";
-import type {FC} from "react";
 import { useEffect, useState} from "react";
 import articlesStore from "../../store/articlesStore.ts";
 import ArticleCard from "../ArticleCard.tsx";
 import {observer} from "mobx-react-lite";
-
-type ProfileArticlesProps = {
-  readonly profileName: string
-}
+import profilesStore from "../../store/profilesStore.ts";
 
 type FetchArticleConfigType = {
   author?: string;
@@ -21,7 +17,7 @@ enum RequestMode {
   FAVORITE_ARTICLES = "Favorite Articles"
 }
 
-const ProfileArticles: FC<ProfileArticlesProps> = observer(({profileName}) => {
+const ProfileArticles = observer(() => {
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
@@ -30,13 +26,13 @@ const ProfileArticles: FC<ProfileArticlesProps> = observer(({profileName}) => {
 
   useEffect(() => {
     let config: FetchArticleConfigType = {
-      author: profileName,
+      author: profilesStore.profile!.username,
       favorited: undefined
     };
     if (mode === RequestMode.FAVORITE_ARTICLES) {
       config = {
         author: undefined,
-        favorited: profileName
+        favorited: profilesStore.profile!.username
       };
     }
 
@@ -53,7 +49,7 @@ const ProfileArticles: FC<ProfileArticlesProps> = observer(({profileName}) => {
 
     return () => {
     };
-  }, [mode, profileName, currentPage]);
+  }, [mode, currentPage]);
 
   const handleOnPageNumberChange: PaginationProps['onChange'] = (page) => {
     setCurrentPage(page);
@@ -102,6 +98,11 @@ const ProfileArticles: FC<ProfileArticlesProps> = observer(({profileName}) => {
           />
         ))}
       </Flex>
+      {!articlesStore.articlesCount && (
+        <EmptyBlock align="center" justify="center">
+          <h1>Oops there is empty</h1>
+        </EmptyBlock>
+      )}
       <Pagination
         simple
         showSizeChanger={false}
@@ -116,8 +117,7 @@ const ProfileArticles: FC<ProfileArticlesProps> = observer(({profileName}) => {
 const ProfileArticlesWrapper = styled(Flex)`
   margin-left: 18vw;
   padding: 10px;
-  height: 90vh;
-  overflow: scroll;
+  height: inherit;
 
   @media (max-width: 1600px) {
     height: auto;
@@ -125,6 +125,11 @@ const ProfileArticlesWrapper = styled(Flex)`
     margin: 0;
     overflow: hidden;
   }
+`;
+
+const EmptyBlock = styled(Flex)`
+  height: inherit;
+  width: inherit;
 `;
 
 export default ProfileArticles;

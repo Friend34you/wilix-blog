@@ -49,6 +49,7 @@ export const privateRoutes: RouteObject[] = [
     path: Routes.CREATE_ARTICLE,
     element: <div>Создать новую статью</div>
   },
+
   {
     path: Routes.FAVORITE_ARTICLES,
     element: <div>Лайкнутые статьи</div>

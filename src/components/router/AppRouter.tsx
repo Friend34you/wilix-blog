@@ -11,7 +11,7 @@ const router = createBrowserRouter([
     element: (
       <>
         <AppHeader />
-        <div>Wrapper <Outlet /></div>
+        <Outlet />
         <h1>Footer</h1>
       </>
     ),

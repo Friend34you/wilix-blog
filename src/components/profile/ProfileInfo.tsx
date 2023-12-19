@@ -1,33 +1,46 @@
-import {Avatar, Button, Flex, Typography} from "antd";
+import {Avatar, Button, Flex, notification, Typography} from "antd";
 import styled from "styled-components";
-import type {IProfile} from "../../types/profileType.ts";
-import type {FC} from "react";
 import usersStore from "../../store/usersStore.ts";
-
-type ProfileAuthorProos = IProfile & {
-  readonly onFollowClick: () => void
-}
+import profilesStore from "../../store/profilesStore.ts";
+import {Link} from "react-router-dom";
+import {Routes} from "../router/routes.tsx";
+import {observer} from "mobx-react-lite";
+import {useState} from "react";
 
 const {Paragraph} = Typography;
 
-const ProfileInfo: FC<ProfileAuthorProos> = ({
-  username,
-  image,
-  bio,
-  following,
-  onFollowClick
-}) => {
+//знаем, что используется ток в Profile, поэтому выцепляем данные напрямую
+const ProfileInfo = observer(() => {
+const [isDisabled, setIsDisabled] = useState(false);
+  const handleOnFollowClick = () => {
+    setIsDisabled(true);
+    profilesStore
+      .toggleFollowUserProfile(profilesStore.profile!.username)
+      .catch((error: Error) => notification.error({message: error.message}))
+      .finally(() => setIsDisabled(false));
+  };
 
   let profileButton = (
     <StyledButton
-      onClick={onFollowClick}
+      onClick={handleOnFollowClick}
+      disabled={isDisabled}
     >
-      {following ? "Unfollow" : "Follow"}
+      {profilesStore.profile!.following ? "Unfollow" : "Follow"}
     </StyledButton>
   );
 
+  if (!usersStore.isUserAuth) {
+    profileButton = (
+      <Link to={Routes.AUTHORIZATION}>
+        <StyledButton>
+          Follow
+        </StyledButton>
+      </Link>
+    );
+  }
+
   //Редактирования профиля у нас нет, так что пока без ссылочной обёртки
-  if (usersStore.isUserAuth && usersStore.user?.username === username) {
+  if (usersStore.isUserAuth && usersStore.user?.username === profilesStore.profile!.username) {
     profileButton = (
       <StyledButton>
         Edit Settings
@@ -50,30 +63,34 @@ const ProfileInfo: FC<ProfileAuthorProos> = ({
           shape="square"
           size={130}
           gap={100}
-          src={image}
+          src={profilesStore.profile!.image}
         >
-          {username}
+          {profilesStore.profile!.username}
         </Avatar>
-        {username}
+        {profilesStore.profile!.username}
       </ProfileCard>
       {profileButton}
-      {bio && (
+      {profilesStore.profile!.bio && (
         <AuthorBio>
-          {bio}
+          {profilesStore.profile!.bio}
         </AuthorBio>
       )}
     </ProfileInfoWrapper>
   );
-};
+});
 
 const ProfileInfoWrapper = styled(Flex)`
   background: -webkit-linear-gradient(143deg, #21053b,#d43573);                        
   background: linear-gradient(143deg, #21053b,#d43573);
-  height: 94vh;
+  border-bottom-right-radius: 15px;
+  border-top-right-radius: 15px;
+  box-shadow: 4px 4px 8px -2px rgba(34, 60, 80, 0.2);
+  height: 80vh;
   width: 18vw;
   position: fixed;
   flex-direction: column;
-
+  margin-top: 2vh;
+  
   @media (max-width: 1600px) {
     height: auto;
     width: 100vw;

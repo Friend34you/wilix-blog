@@ -32,6 +32,8 @@ const Profile = observer(() => {
     return (
       <ProfileWrapper
         vertical
+        align="center"
+        justify="center"
       >
         <Spin size="large" />
       </ProfileWrapper>
@@ -40,21 +42,24 @@ const Profile = observer(() => {
 
   return (
     <ProfileWrapper vertical>
-      <ProfileInfo
-        username={profilesStore.profile!.username}
-        following={profilesStore.profile!.following}
-        bio={profilesStore.profile!.bio}
-        image={profilesStore.profile!.image}
-        onFollowClick={() => console.log("click")}
-      />
-      <ProfileArticles profileName={profileFromURL} />
+      <ProfileInfo />
+      <ProfileArticles />
     </ProfileWrapper>
   );
 });
 
 const ProfileWrapper = styled(Flex)`
+  padding: 10px;
+  overflow: scroll;
+  height: 85vh;
 
-  overflow: hidden;
+  @media (max-width: 1600px) {
+    height: auto;
+  }
+  
+  @media (max-width: 768px) {
+    padding: 0;
+  }
 `;
 
 export default Profile;
