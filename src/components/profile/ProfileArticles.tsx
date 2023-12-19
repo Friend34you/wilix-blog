@@ -65,6 +65,7 @@ const ProfileArticles = observer(() => {
       <ProfileArticlesWrapper
         vertical
         align="center"
+        justify="center"
       >
         <Spin size="large" />
       </ProfileArticlesWrapper>
