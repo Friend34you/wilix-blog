@@ -1,10 +1,11 @@
+import type { InputRef} from "antd";
 import {Button, Flex, Form, Input, notification, Tag, Typography} from "antd";
 import styled from "styled-components";
 import type {IArticle} from "../types/articleType.ts";
 import articlesStore from "../store/articlesStore.ts";
 import {useNavigate} from "react-router-dom";
 import {Routes} from "./router/routes.tsx";
-import {useState} from "react";
+import {useRef, useState} from "react";
 
 type CreateArticleFieldType = Pick<IArticle, "title" | "description" | "body" | "tagList">
 
@@ -17,6 +18,8 @@ const NewArticle = () => {
   const navigate = useNavigate();
   const [form] = StyledForm.useForm();
 
+  const tagInput = useRef<InputRef>(null);
+
   const handleOnTagsInputPressEnter = () => {
     const newTag = form.getFieldValue("tagList").trim();
     if (!tags) {
@@ -25,7 +28,7 @@ const NewArticle = () => {
     if (tags && !tags.includes(newTag)) {
       setTags([...tags, newTag]);
     }
-    form.resetFields(["tagList"]);
+    tagInput.current!.focus({cursor: "all"});
   };
 
   const handleOnTagClose = (removedTag: string) => {
@@ -103,10 +106,12 @@ const NewArticle = () => {
         <StyledForm.Item<CreateArticleFieldType>
           label="TagList"
           name="tagList"
-          rules={[{required: true, message: 'Please input at least one tag'}]}
         >
           <Flex vertical gap={10}>
-            <Input onPressEnter={handleOnTagsInputPressEnter} />
+            <Input
+              onPressEnter={handleOnTagsInputPressEnter}
+              ref={tagInput}
+            />
             {tags && (
               <TagsWrapper
                 wrap="wrap"
