@@ -1,10 +1,22 @@
 import type {FieldType} from "./authorization/authTypes.ts";
 import {Button, Flex, Form, Input} from "antd";
 import styled from "styled-components";
+import type {ValidateErrorEntity} from "rc-field-form/lib/interface";
+import type {IArticle} from "../types/articleType.ts";
+
+type CreateAricleFieldType = Pick<IArticle, "title" | "description" | "body" | "tagList">
 
 const NewArticle = () => {
 
   const [form] = StyledForm.useForm();
+
+  const onFinish = (values: FieldType) => {
+    console.log('Success:', values);
+  };
+
+  const onFinishFailed = (errorInfo: ValidateErrorEntity) => {
+    console.log('Failed:', errorInfo);
+  };
 
   const handleReset = () => form.resetFields();
 
@@ -19,25 +31,23 @@ const NewArticle = () => {
       onFinishFailed={onFinishFailed}
       wrapperCol={{span: 17}}
     >
-      <StyledForm.Item<FieldType>
-        label="Username"
-        name="username"
+      <StyledForm.Item<CreateAricleFieldType>
+        label="Title"
+        name="title"
         rules={[{required: true, message: 'Please input your username!'}]}
       >
         <Input/>
       </StyledForm.Item>
 
-      {type === "registration" && (
-        <StyledForm.Item<FieldType>
-          label="Email"
-          name="email"
-          rules={[{required: true, message: 'Please input your email!'}]}
-        >
-          <Input/>
-        </StyledForm.Item>
-      )}
+      <StyledForm.Item<CreateAricleFieldType>
+        label="Email"
+        name="email"
+        rules={[{required: true, message: 'Please input your email!'}]}
+      >
+        <Input/>
+      </StyledForm.Item>
 
-      <StyledForm.Item<FieldType>
+      <StyledForm.Item<CreateAricleFieldType>
         label="Password"
         name="password"
         rules={[{required: true, message: 'Please input your password!'}]}
