@@ -1,17 +1,16 @@
-import {Avatar, Button, Flex, notification, Typography} from "antd";
+import {Avatar, Flex, notification, Typography} from "antd";
 import styled from "styled-components";
-import usersStore from "../../store/usersStore.ts";
 import profilesStore from "../../store/profilesStore.ts";
-import {Link} from "react-router-dom";
-import {Routes} from "../router/routes.tsx";
 import {observer} from "mobx-react-lite";
 import {useState} from "react";
+import ProfileInfoButton from "./ProfileInfoButton.tsx";
 
 const {Paragraph} = Typography;
 
 //знаем, что используется ток в Profile, поэтому выцепляем данные напрямую
 const ProfileInfo = observer(() => {
-const [isDisabled, setIsDisabled] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(false);
+
   const handleOnFollowClick = () => {
     setIsDisabled(true);
     profilesStore
@@ -19,34 +18,6 @@ const [isDisabled, setIsDisabled] = useState(false);
       .catch((error: Error) => notification.error({message: error.message}))
       .finally(() => setIsDisabled(false));
   };
-
-  let profileButton = (
-    <StyledButton
-      onClick={handleOnFollowClick}
-      disabled={isDisabled}
-    >
-      {profilesStore.profile!.following ? "Unfollow" : "Follow"}
-    </StyledButton>
-  );
-
-  if (!usersStore.isUserAuth) {
-    profileButton = (
-      <Link to={Routes.AUTHORIZATION}>
-        <StyledButton>
-          Follow
-        </StyledButton>
-      </Link>
-    );
-  }
-
-  //Редактирования профиля у нас нет, так что пока без ссылочной обёртки
-  if (usersStore.isUserAuth && usersStore.user?.username === profilesStore.profile!.username) {
-    profileButton = (
-      <StyledButton>
-        Edit Settings
-      </StyledButton>
-    );
-  }
 
   return (
     <ProfileInfoWrapper
@@ -69,7 +40,10 @@ const [isDisabled, setIsDisabled] = useState(false);
         </Avatar>
         {profilesStore.profile!.username}
       </ProfileCard>
-      {profileButton}
+      <ProfileInfoButton
+        onFollowClick={handleOnFollowClick}
+        isDisabled={isDisabled}
+      />
       {profilesStore.profile!.bio && (
         <AuthorBio>
           {profilesStore.profile!.bio}
@@ -118,20 +92,6 @@ const AuthorBio = styled(Paragraph)`
     height: 14vh;
     width: 60%;
     min-width: 270px;
-  }
-`;
-
-const StyledButton = styled(Button)`
-  min-width: 200px;
-  color: white;
-  background-color: #1e044b;
-  border: none;
-  border-radius: 10px;
-  margin: 10px;
-  transition: 0.2s linear;
-  
-  &:hover {
-    background-color: white;
   }
 `;
 
