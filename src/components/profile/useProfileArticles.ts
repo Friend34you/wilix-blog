@@ -9,6 +9,9 @@ type FetchArticleConfigType = {
   favorited?: string;
 }
 
+const ARTICLES_LIMIT = 10;
+const ARTICLES_OFFSET = 10;
+
 //Хук используется в компоненте, где мы уверены, что profileStore.profile есть.
 //Больше нигде нет смысла использовать
 export const useProfileArticles = () => {
@@ -30,12 +33,11 @@ export const useProfileArticles = () => {
       };
     }
 
-    //offset на серверее принимает числа 0, 10, 20, 30 и т.д
-    const pageNumberForRequest = (currentPage - 1) * 10;
+    const pageNumberForRequest = (currentPage - 1) * ARTICLES_OFFSET;
 
     setIsLoading(true);
     articlesStore
-      .fetchArticles(10, pageNumberForRequest, undefined, config.author, config.favorited)
+      .fetchArticles(ARTICLES_LIMIT, pageNumberForRequest, undefined, config.author, config.favorited)
       .then(() => {
         setIsSuccess(true);
       })
@@ -43,9 +45,6 @@ export const useProfileArticles = () => {
       .finally(() =>    {
         setIsLoading(false);
       });
-
-    return () => {
-    };
   }, [mode, currentPage]);
 
   return {
