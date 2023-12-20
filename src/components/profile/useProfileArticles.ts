@@ -9,6 +9,8 @@ type FetchArticleConfigType = {
   favorited?: string;
 }
 
+//Хук используется в компоненте, где мы уверены, что profileStore.profile есть.
+//Больше нигде нет смысла использовать
 export const useProfileArticles = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
@@ -28,6 +30,7 @@ export const useProfileArticles = () => {
       };
     }
 
+    //offset на серверее принимает числа 0, 10, 20, 30 и т.д
     const pageNumberForRequest = (currentPage - 1) * 10;
 
     setIsLoading(true);
