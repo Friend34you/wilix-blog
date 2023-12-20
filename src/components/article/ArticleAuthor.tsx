@@ -13,10 +13,7 @@ const {Text} = Typography;
 
 const ArticleAuthor:FC<ArticleAuthorProps> = ({authorName, profileImg}) => {
   return (
-    <Link
-      state={authorName}
-      to={Routes.CURRENT_PROFILE + authorName}
-    >
+    <Link to={Routes.CURRENT_PROFILE + authorName}>
       <StyledArticleAuthorFlex
         align="center"
         gap="small"

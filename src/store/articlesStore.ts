@@ -35,12 +35,12 @@ class ArticlesStore {
     return this.article;
   }
 
-  //TODO: переименовать, чтобы не было проблем
   fetchArticles = async (
     limit = 10,
     offset = 0,
     tag?: string,
-    author?: string
+    author?: string,
+    favorited?: string
   ) => {
     try {
       const response = await AxiosInstance.get("/articles", {
@@ -48,7 +48,8 @@ class ArticlesStore {
           limit,
           offset,
           tag,
-          author
+          author,
+          favorited
         }
       });
 
