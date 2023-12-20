@@ -7,6 +7,7 @@ import type {IArticle} from "../types/articleType.ts";
 import {formatDate} from "../helpers/formatDate.ts";
 import TagsList from "./TagsList.tsx";
 import {Link} from "react-router-dom";
+import {Routes} from "./router/routes.tsx";
 
 interface ArticleCardProps extends IArticle{
   //Пока не знаю как конкретно будет реализована эта функция
@@ -63,12 +64,14 @@ const ArticleCard: FC<ArticleCardProps> = ({
         justify="space-between"
       >
         <Space>
-          <Avatar src={author.image}>
-            {author.username.charAt(0)}
-          </Avatar>
-          <Text>
-            {author.username}
-          </Text>
+          <Link to={Routes.CURRENT_PROFILE + author.username}>
+            <Avatar src={author.image}>
+              {author.username.charAt(0)}
+            </Avatar>
+            <Text>
+              {author.username}
+            </Text>
+          </Link>
           <Flex vertical={true}>
             <StyledDateText>
               created: {formatDate(createdAt)}
