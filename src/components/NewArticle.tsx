@@ -1,82 +1,166 @@
-import type {FieldType} from "./authorization/authTypes.ts";
-import {Button, Flex, Form, Input} from "antd";
+import {Button, Flex, Form, Input, notification, Tag, Typography} from "antd";
 import styled from "styled-components";
-import type {ValidateErrorEntity} from "rc-field-form/lib/interface";
 import type {IArticle} from "../types/articleType.ts";
+import articlesStore from "../store/articlesStore.ts";
+import {useNavigate} from "react-router-dom";
+import {Routes} from "./router/routes.tsx";
+import {useState} from "react";
 
-type CreateAricleFieldType = Pick<IArticle, "title" | "description" | "body" | "tagList">
+type CreateArticleFieldType = Pick<IArticle, "title" | "description" | "body" | "tagList">
+
+const {Title} = Typography;
 
 const NewArticle = () => {
+  const [isDisabled, setIsDisabled] = useState(false);
+  const [tags, setTags] = useState<string[]>([]);
 
+  const navigate = useNavigate();
   const [form] = StyledForm.useForm();
 
-  const onFinish = (values: FieldType) => {
-    console.log('Success:', values);
+  const handleOnTagsInputPressEnter = () => {
+    const newTag = form.getFieldValue("tagList").trim();
+    if (!tags) {
+      setTags([newTag]);
+    }
+    if (tags && !tags.includes(newTag)) {
+      setTags([...tags, newTag]);
+    }
+    form.resetFields(["tagList"]);
   };
 
-  const onFinishFailed = (errorInfo: ValidateErrorEntity) => {
-    console.log('Failed:', errorInfo);
+  const handleOnTagClose = (removedTag: string) => {
+    return () => {
+      const newTags = tags!.filter((tag) => tag !== removedTag);
+      setTags(newTags);
+    };
   };
 
-  const handleReset = () => form.resetFields();
+  const onFinish = (values: CreateArticleFieldType) => {
+    const articleValues = {...values, tagList: tags};
+    setIsDisabled(true);
+    articlesStore
+      .createArticle(articleValues)
+      .then(() => {
+        navigate(Routes.ARTICLES + articlesStore.articles[0].slug);
+      })
+      .catch((error: Error) => notification.error({message: error.message}))
+      .finally(() =>  setIsDisabled(true));
+  };
+
+  const onFinishFailed = () => notification.error({message: "You must input all required fields"});
+
+  const handleOnSubmit = () => form.submit();
+
+  const handleReset = () => {
+    form.resetFields();
+    setTags([]);
+  };
 
   return (
-    <StyledForm
-      autoComplete="off"
-      form={form}
-      initialValues={{remember: true}}
-      labelCol={{span: 7}}
-      name="basic"
-      onFinish={onFinish}
-      onFinishFailed={onFinishFailed}
-      wrapperCol={{span: 17}}
+    <NewArticleWrapper
+      align="center"
+      justify="flex-start"
+      vertical
     >
-      <StyledForm.Item<CreateAricleFieldType>
-        label="Title"
-        name="title"
-        rules={[{required: true, message: 'Please input your username!'}]}
+      <Title>
+        New article
+      </Title>
+      <StyledForm
+        form={form}
+        autoComplete="off"
+        name="basic"
+        disabled={isDisabled}
+        labelCol={{span: 3}}
+        wrapperCol={{span: 20}}
+        onFinish={onFinish}
+        onFinishFailed={onFinishFailed}
+        size="large"
       >
-        <Input/>
-      </StyledForm.Item>
+        <StyledForm.Item<CreateArticleFieldType>
+          label="Title"
+          name="title"
+          rules={[{required: true, message: 'Please input title'}]}
+        >
+          <Input />
+        </StyledForm.Item>
 
-      <StyledForm.Item<CreateAricleFieldType>
-        label="Email"
-        name="email"
-        rules={[{required: true, message: 'Please input your email!'}]}
-      >
-        <Input/>
-      </StyledForm.Item>
+        <StyledForm.Item<CreateArticleFieldType>
+          label="Description"
+          name="description"
+          rules={[{required: true, message: 'Please input description'}]}
+        >
+          <Input />
+        </StyledForm.Item>
 
-      <StyledForm.Item<CreateAricleFieldType>
-        label="Password"
-        name="password"
-        rules={[{required: true, message: 'Please input your password!'}]}
-      >
-        <Input.Password/>
-      </StyledForm.Item>
+        <StyledForm.Item<CreateArticleFieldType>
+          label="Body"
+          name="body"
+          rules={[{required: true, message: 'Please input article content'}]}
+        >
+          <Input.TextArea />
+        </StyledForm.Item>
 
-      <StyledForm.Item wrapperCol={{offset: 2}}>
-        <Flex justify="center">
-          <Button
-            htmlType="submit"
-            type="primary">
-            SignUp
-          </Button>
-
-          <Button
-            htmlType="button"
-            onClick={handleReset}
+        <StyledForm.Item<CreateArticleFieldType>
+          label="TagList"
+          name="tagList"
+          rules={[{required: true, message: 'Please input at least one tag'}]}
+        >
+          <Flex vertical gap={10}>
+            <Input onPressEnter={handleOnTagsInputPressEnter} />
+            {tags && (
+              <TagsWrapper
+                wrap="wrap"
+              >
+                {tags.map((tag) => (
+                    <Tag
+                      onClose={handleOnTagClose(tag)}
+                      key={tag}
+                      color="orange"
+                      closable
+                    >
+                      {tag}
+                    </Tag>
+                  ))}
+              </TagsWrapper>
+            )}
+          </Flex>
+        </StyledForm.Item>
+        <StyledForm.Item wrapperCol={{offset: 2}}>
+          <Flex
+            justify="center"
+            gap={14}
           >
-            Reset
-          </Button>
-        </Flex>
-      </StyledForm.Item>
-    </StyledForm>
+            <Button
+              onClick={handleOnSubmit}
+              type="primary"
+            >
+              Create Article
+            </Button
+ >
+            <Button
+              htmlType="button"
+              onClick={handleReset}
+            >
+              Reset
+            </Button>
+          </Flex>
+        </StyledForm.Item>
+      </StyledForm>
+    </NewArticleWrapper>
   );
 };
 
-const StyledForm = styled(Form)`
-  max-width: 500px;
+const NewArticleWrapper = styled(Flex)`
+  min-height: 90vh;
+  padding-top: 10vh;
+`;
+
+const StyledForm= styled(Form)`
+  width: 70%;
+`;
+
+const TagsWrapper = styled(Flex)`
+  width: inherit;
 `;
 
 export default NewArticle;
