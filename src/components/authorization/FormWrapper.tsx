@@ -11,6 +11,8 @@ export const FormWrapper = styled(Flex)`
   backdrop-filter: blur(10px);
   
   @media (max-width: 768px) {
+    background: none;
+    backdrop-filter: none;
     box-shadow: none;
     padding: 0;
     width: 100%;
