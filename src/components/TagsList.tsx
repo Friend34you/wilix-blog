@@ -8,8 +8,8 @@ interface TagsListProps {
   readonly tags: string[];
   readonly tagsColor?: PresetColorType | "default"
   readonly onTagClick?: (tag: string) => void;
-  readonly onTagClose? : (removedTag: string) => void;
-  readonly closable? : boolean
+  readonly onTagClose?: (removedTag: string) => void;
+  readonly closable?: boolean
 }
 
 const TagsList: FC<TagsListProps> = observer(({
@@ -19,7 +19,6 @@ const TagsList: FC<TagsListProps> = observer(({
   closable = false,
   onTagClose
 }) => {
-
   const handleOnClick = useCallback((tag: string) => {
     if (!onTagClick) {
       return;

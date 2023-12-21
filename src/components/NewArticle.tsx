@@ -3,12 +3,20 @@ import {Button, Flex, Form, Input, notification, Typography} from "antd";
 import styled from "styled-components";
 import type {IArticle} from "../types/articleType.ts";
 import articlesStore from "../store/articlesStore.ts";
-import {useRef, useState} from "react";
+import type {ReactNode} from "react";
+import { useRef, useState} from "react";
 import {InfoCircleOutlined} from "@ant-design/icons";
 import TagsList from "./TagsList.tsx";
 import type {Rule} from "antd/lib/form";
 
 type CreateArticleFieldType = Pick<IArticle, "title" | "description" | "body" | "tagList">
+
+type formItemType = {
+  label: string;
+  name: string;
+  rules: Rule[];
+  children: ReactNode
+}
 
 type NewArticleFormRules = {
   title: Rule[],
@@ -55,16 +63,37 @@ const rules: NewArticleFormRules = {
     },
     {
       min: 60,
-      message: `min article length - 60`
+      message: "min article length - 60"
     }
   ],
   tagList: [
     {
       max: 15,
-      message: `max tag length - 15`
+      message: "max tag length - 15"
     }
   ]
 };
+
+const formItems: formItemType[] = [
+  {
+    label: "Title",
+    name: "title",
+    rules: rules.title,
+    children: <Input />
+  },
+  {
+    label: "Description",
+    name: "description",
+    rules: rules.description,
+    children: <Input />
+  },
+  {
+    label: "Body",
+    name: "body",
+    rules: rules.body,
+    children: <Input.TextArea />
+  },
+];
 
 const NewArticle = () => {
   const [isDisabled, setIsDisabled] = useState(false);
@@ -92,8 +121,10 @@ const NewArticle = () => {
   };
 
   const onTagClose = (removedTag: string) => {
-      const newTags = tags!.filter((tag) => tag !== removedTag);
-      setTags(newTags);
+    //Tags точно содержит как минимум один элемент, т.к.
+    // функция вызывается при нажатии на иконку крестика у существующего тега
+    const newTags = tags!.filter((tag) => tag !== removedTag);
+    setTags(newTags);
   };
 
   const onFinish = (values: CreateArticleFieldType) => {
@@ -126,39 +157,22 @@ const NewArticle = () => {
           New article
         </Title>
         <StyledForm
+          onFinish={onFinish}
+          onFinishFailed={onFinishFailed}
           form={form}
           autoComplete="off"
           name="basic"
-          disabled={isDisabled}
+          size="large"
           labelCol={{span: 3}}
           wrapperCol={{span: 20}}
-          onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
-          size="large"
+          disabled={isDisabled}
+          labelWrap
         >
-          <StyledForm.Item<CreateArticleFieldType>
-            label="Title"
-            name="title"
-            rules={rules.title}
-          >
-            <Input />
-          </StyledForm.Item>
-
-          <StyledForm.Item<CreateArticleFieldType>
-            label="Description"
-            name="description"
-            rules={rules.description}
-          >
-            <Input />
-          </StyledForm.Item>
-
-          <StyledForm.Item<CreateArticleFieldType>
-            label="Body"
-            name="body"
-            rules={rules.body}
-          >
-            <Input.TextArea />
-          </StyledForm.Item>
+          {formItems.map((formItem) => (
+            <StyledForm.Item key={formItem.name} {...formItem}>
+              {formItem.children}
+            </StyledForm.Item>
+          ))}
 
           <StyledForm.Item<CreateArticleFieldType>
             label="TagList"
