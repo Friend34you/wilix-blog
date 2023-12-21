@@ -11,10 +11,6 @@ interface AuthFormProps {
   readonly disabled: boolean
 }
 
-const StyledForm = styled(Form)`
-  max-width: 500px;
-`;
-
 const AuthForm: FC<AuthFormProps> = ({onFinishFailed, onFinish, type, disabled}) => {
 
   const [form] = StyledForm.useForm();
@@ -28,37 +24,37 @@ const AuthForm: FC<AuthFormProps> = ({onFinishFailed, onFinish, type, disabled})
       name="basic"
       disabled={disabled}
       initialValues={{remember: true}}
-      labelCol={{span: 7}}
+      labelCol={{span: 8}}
       wrapperCol={{span: 17}}
       onFinish={onFinish}
       onFinishFailed={onFinishFailed}
     >
-      <StyledForm.Item<FieldType>
-        label="Username"
-        name="username"
-        rules={[{required: true, message: 'Please input your username!'}]}
-      >
-        <Input />
-      </StyledForm.Item>
-
       {type === "registration" && (
         <StyledForm.Item<FieldType>
-          label="Email"
-          name="email"
-          rules={[
-            {
-              required: true,
-              message: 'Please input your email!'
-            },
-            {
-              type: 'email',
-              message: 'The input is not valid E-mail!',
-            }
-          ]}
+          label="Username"
+          name="username"
+          rules={[{required: true, message: 'Please input your username!'}]}
         >
           <Input />
         </StyledForm.Item>
       )}
+
+      <StyledForm.Item<FieldType>
+        label="Email"
+        name="email"
+        rules={[
+          {
+            required: true,
+            message: 'Please input your email!'
+          },
+          {
+            type: 'email',
+            message: 'The input is not valid E-mail!',
+          }
+        ]}
+      >
+        <Input />
+      </StyledForm.Item>
 
       <StyledForm.Item<FieldType>
         label="Password"
@@ -81,8 +77,8 @@ const AuthForm: FC<AuthFormProps> = ({onFinishFailed, onFinish, type, disabled})
           </Button>
 
           <Button
-            htmlType="button"
             onClick={handleReset}
+            htmlType="button"
           >
             Reset
           </Button>
@@ -91,5 +87,10 @@ const AuthForm: FC<AuthFormProps> = ({onFinishFailed, onFinish, type, disabled})
     </StyledForm>
   );
 };
+
+const StyledForm = styled(Form)`
+  margin-top: 20px;
+  max-width: 1400px;
+`;
 
 export default AuthForm;
