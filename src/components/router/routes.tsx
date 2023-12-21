@@ -3,6 +3,7 @@ import App from "../App.tsx";
 import Article from "../article/Article.tsx";
 import Profile from "../profile/Profile.tsx";
 import NewArticle from "../NewArticle.tsx";
+import Articles from "../Articles.tsx";
 
 export enum Routes {
   REGISTRATION = "/register",
@@ -23,7 +24,7 @@ export const publicRoutes: RouteObject[] = [
   },
   {
     path: Routes.ARTICLES,
-    element: <App />,
+    element: <Articles />,
     index: true
   },
   {
