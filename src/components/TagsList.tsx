@@ -15,9 +15,9 @@ interface TagsListProps {
 const TagsList: FC<TagsListProps> = observer(({
   tags,
   onTagClick,
+  onTagClose,
   tagsColor = "default",
-  closable = false,
-  onTagClose
+  closable = false
 }) => {
   const handleOnClick = useCallback((tag: string) => {
     if (!onTagClick) {
