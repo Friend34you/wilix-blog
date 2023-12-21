@@ -30,7 +30,7 @@ const formItems: formItemType[] = [
         required: true,
         message: 'Please input your username!'
       }],
-    children: <Input/>
+    children: <Input />
   },
   {
     label: "Email",
@@ -45,7 +45,7 @@ const formItems: formItemType[] = [
         message: 'The input is not valid E-mail!',
       }
     ],
-    children: <Input/>
+    children: <Input />
   },
   {
     label: "Password",
@@ -55,7 +55,7 @@ const formItems: formItemType[] = [
         required: true,
         message: 'Please input your password!'
       }],
-    children: <Input.Password/>
+    children: <Input.Password />
   },
 ];
 
