@@ -2,6 +2,7 @@ import type {RouteObject} from "react-router-dom";
 import App from "../App.tsx";
 import Article from "../article/Article.tsx";
 import Profile from "../profile/Profile.tsx";
+import NewArticle from "../NewArticle.tsx";
 
 export enum Routes {
   REGISTRATION = "/register",
@@ -47,9 +48,8 @@ export const publicRoutes: RouteObject[] = [
 export const privateRoutes: RouteObject[] = [
   {
     path: Routes.CREATE_ARTICLE,
-    element: <div>Создать новую статью</div>
+    element: <NewArticle />
   },
-
   {
     path: Routes.FAVORITE_ARTICLES,
     element: <div>Лайкнутые статьи</div>
