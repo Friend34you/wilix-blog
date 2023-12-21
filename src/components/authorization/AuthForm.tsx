@@ -1,19 +1,74 @@
 import {Button, Flex, Form, Input} from "antd";
-import type {FC} from "react";
+import type {FC, ReactNode} from "react";
+import {useMemo} from "react";
 import styled from "styled-components";
 import type {ValidateErrorEntity} from "rc-field-form/lib/interface";
 import type {FieldType} from "./authTypes.ts";
+import {AuthTypes} from "./authTypes.ts";
+import type {Rule} from "antd/lib/form";
 
 interface AuthFormProps {
-  readonly type: "registration" | "authorization";
+  readonly type: AuthTypes;
   readonly onFinishFailed: (errorInfo: ValidateErrorEntity) => void;
   readonly onFinish: (values: FieldType) => void;
   readonly disabled: boolean
 }
 
+type formItemType = {
+  label: string;
+  name: string;
+  rules: Rule[];
+  children: ReactNode
+}
+
+const formItems: formItemType[] = [
+  {
+    label: "Username",
+    name: "username",
+    rules: [
+      {
+        required: true,
+        message: 'Please input your username!'
+      }],
+    children: <Input/>
+  },
+  {
+    label: "Email",
+    name: "email",
+    rules: [
+      {
+        required: true,
+        message: 'Please input your email!'
+      },
+      {
+        type: 'email',
+        message: 'The input is not valid E-mail!',
+      }
+    ],
+    children: <Input/>
+  },
+  {
+    label: "Password",
+    name: "password",
+    rules: [
+      {
+        required: true,
+        message: 'Please input your password!'
+      }],
+    children: <Input.Password/>
+  },
+];
+
 const AuthForm: FC<AuthFormProps> = ({onFinishFailed, onFinish, type, disabled}) => {
 
   const [form] = StyledForm.useForm();
+
+  const authFormItems = useMemo(() => {
+    if (type === AuthTypes.AUTHORIZATION) {
+      return formItems.filter((formItem) => formItem.name !== "username");
+    }
+    return formItems;
+  }, [type]);
 
   const handleReset = () => form.resetFields();
 
@@ -25,45 +80,18 @@ const AuthForm: FC<AuthFormProps> = ({onFinishFailed, onFinish, type, disabled})
       disabled={disabled}
       initialValues={{remember: true}}
       labelCol={{span: 8}}
-      wrapperCol={{span: 17}}
+      wrapperCol={{span: 18}}
       onFinish={onFinish}
       onFinishFailed={onFinishFailed}
     >
-      {type === "registration" && (
-        <StyledForm.Item<FieldType>
-          label="Username"
-          name="username"
-          rules={[{required: true, message: 'Please input your username!'}]}
+      {authFormItems.map((formItem) => (
+        <StyledForm.Item
+          key={formItem.name}
+          {...formItem}
         >
-          <Input />
+          {formItem.children}
         </StyledForm.Item>
-      )}
-
-      <StyledForm.Item<FieldType>
-        label="Email"
-        name="email"
-        rules={[
-          {
-            required: true,
-            message: 'Please input your email!'
-          },
-          {
-            type: 'email',
-            message: 'The input is not valid E-mail!',
-          }
-        ]}
-      >
-        <Input />
-      </StyledForm.Item>
-
-      <StyledForm.Item<FieldType>
-        label="Password"
-        name="password"
-        rules={[{required: true, message: 'Please input your password!'}]}
-      >
-        <Input.Password />
-      </StyledForm.Item>
-
+      ))}
       <StyledForm.Item wrapperCol={{offset: 2}}>
         <Flex
           justify="center"

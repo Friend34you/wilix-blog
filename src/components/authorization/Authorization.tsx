@@ -7,6 +7,7 @@ import {useState} from "react";
 import styled from "styled-components";
 import {FormWrapper} from "./FormWrapper.tsx";
 import {Routes} from "../router/routes.tsx";
+import {AuthTypes} from "./authTypes.ts";
 
 const {Title, Text} = Typography;
 
@@ -14,6 +15,7 @@ const Authorization = () => {
   const [isDisabled, setIsDisabled] = useState(false);
   const navigate = useNavigate();
   const onFinish = (inputUserData: FieldType) => {
+
     //Уверены, что значения есть
     const loginData = {
       email: inputUserData.email!,
@@ -49,7 +51,7 @@ const Authorization = () => {
           Create account <Link to={Routes.REGISTRATION}>SignUp</Link>
         </Text>
         <AuthForm
-          type="authorization"
+          type={AuthTypes.AUTHORIZATION}
           disabled={isDisabled}
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}

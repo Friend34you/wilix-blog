@@ -7,6 +7,7 @@ import styled from "styled-components";
 import type {FieldType} from "./authTypes.ts";
 import { FormWrapper } from "./FormWrapper.tsx";
 import {Routes} from "../router/routes.tsx";
+import {AuthTypes} from "./authTypes.ts";
 
 const {Title, Text} = Typography;
 
@@ -14,6 +15,7 @@ const Registration = () => {
   const [isDisabled, setIsDisabled] = useState(false);
   const navigate = useNavigate();
   const onFinish = (inputUserData: FieldType) => {
+
     //Уверены, что значения есть
     const registerData = {
       username: inputUserData.username!,
@@ -53,7 +55,7 @@ const Registration = () => {
           You already have account? <Link to={Routes.AUTHORIZATION}>SignIn</Link>
         </Text>
         <AuthForm
-          type="registration"
+          type={AuthTypes.REGISTRATION}
           disabled={isDisabled}
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
