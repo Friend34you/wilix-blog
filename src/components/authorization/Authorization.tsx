@@ -1,25 +1,23 @@
 import {Divider, Flex, notification, Typography} from "antd";
 import AuthForm from "./AuthForm.tsx";
 import type {FieldType} from "./authTypes.ts";
-import {useState} from "react";
 import {useNavigate} from "react-router-dom";
 import usersStore from "../../store/usersStore.ts";
+import {useState} from "react";
 
 const {Title} = Typography;
 
-const Registration = () => {
+const Authorization = () => {
   const [isDisabled, setIsDisabled] = useState(false);
   const navigate = useNavigate();
   const onFinish = (inputUserData: FieldType) => {
-    const registerData = {
-      username: inputUserData.username!,
+    const loginData = {
       email: inputUserData.email!,
       password: inputUserData.password!
     };
-
     setIsDisabled(true);
     usersStore
-      .registerUser(registerData)
+      .loginUser(loginData)
       .then(() => navigate("/"))
       .catch((error: Error) => notification.error({message: error.message}))
       .finally(() => setIsDisabled(false));
@@ -35,11 +33,11 @@ const Registration = () => {
       vertical={true}
     >
       <Title>
-        Registration
+        Authorization
       </Title>
       <Divider/>
       <AuthForm
-        type="registration"
+        type="authorization"
         disabled={isDisabled}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
@@ -48,4 +46,4 @@ const Registration = () => {
   );
 };
 
-export default Registration;
+export default Authorization;
