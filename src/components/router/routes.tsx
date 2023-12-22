@@ -3,7 +3,7 @@ import App from "../App.tsx";
 import Article from "../article/Article.tsx";
 import Profile from "../profile/Profile.tsx";
 import NewArticle from "../NewArticle.tsx";
-import Articles from "../Articles.tsx";
+import Articles from "../articlesFeed/Articles.tsx";
 
 export enum Routes {
   REGISTRATION = "/register",

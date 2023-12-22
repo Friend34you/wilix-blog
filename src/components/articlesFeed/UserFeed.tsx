@@ -1,22 +1,18 @@
-import type {PaginationProps} from "antd";
-import {Divider, Flex, notification, Pagination, Segmented, Spin} from "antd";
+import tagsStore from "../../store/tagsStore.ts";
+import type { PaginationProps} from "antd";
+import {Divider, Flex, notification, Pagination, Spin} from "antd";
+import articlesStore from "../../store/articlesStore.ts";
+import ArticleCard from "../ArticleCard.tsx";
 import styled from "styled-components";
 import {useEffect, useState} from "react";
-import articlesStore from "../store/articlesStore.ts";
-import {observer} from "mobx-react-lite";
-import tagsStore from "../store/tagsStore.ts";
-import {RequestModes} from "../types/requestModes.ts";
 
 const ARTICLES_LIMIT = 10;
 const ARTICLES_OFFSET = 10;
 
-const articlesOptions = [RequestModes.ALL_ARTICLES_FEED, RequestModes.YOUR_ARTICLES_FEED];
-
-const Articles = observer(() => {
+const UserFeed = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
-  const [mode, setMode] = useState<string | number>(RequestModes.PROFILE_ARTICLES);
   const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
@@ -24,7 +20,7 @@ const Articles = observer(() => {
 
     setIsLoading(true);
     articlesStore
-      .fetchArticles(ARTICLES_LIMIT, pageNumberForRequest, tagsStore.selectedTag)
+      .getFavoriteArticles(ARTICLES_LIMIT, pageNumberForRequest)
       .then(() => {
         setIsSuccess(true);
       })
@@ -32,33 +28,23 @@ const Articles = observer(() => {
       .finally(() => {
         setIsLoading(false);
       });
-  }, [mode, currentPage]);
+
+    return () => {
+      setIsSuccess(false);
+      tagsStore.selectedTag = undefined;
+    };
+  }, [currentPage]);
 
   const handleOnPageNumberChange: PaginationProps['onChange'] = (page) => {
     setCurrentPage(page);
   };
 
-  const handleOnModeChange = (option: string | number) => {
-    tagsStore.selectedTag = undefined;
-    setMode(option);
-    setCurrentPage(1);
-  };
-
   if (isLoading && !isSuccess) {
-    return (
-      <Flex>
-        <Spin size="large" />
-      </Flex>
-    );
+    return <Spin size="large" />;
   }
 
   return (
-    <Flex>
-      <Segmented
-        options={articlesOptions}
-        value={mode}
-        onChange={handleOnModeChange}
-      />
+    <>
       <Divider/>
       <Pagination
         onChange={handleOnPageNumberChange}
@@ -67,8 +53,18 @@ const Articles = observer(() => {
         showSizeChanger={false}
         simple
       />
-      <ArticlesWrapper>
-        здесь чет б
+      <ArticlesWrapper
+        align="center"
+        justify="center"
+        wrap="wrap"
+      >
+        {articlesStore.articles.map((articleItem) => (
+          <ArticleCard
+            {...articleItem}
+            key={articleItem.slug}
+            onFavoriteClick={() => articlesStore.toggleFavoriteArticle(articleItem.slug)}
+          />
+        ))}
       </ArticlesWrapper>
       <Pagination
         onChange={handleOnPageNumberChange}
@@ -77,12 +73,12 @@ const Articles = observer(() => {
         showSizeChanger={false}
         simple
       />
-    </Flex>
+    </>
   );
-});
+};
 
 const ArticlesWrapper = styled(Flex)`
   background-color: cadetblue;
 `;
 
-export default Articles;
+export default UserFeed;
