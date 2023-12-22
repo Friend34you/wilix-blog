@@ -25,9 +25,16 @@ export const publicRoutes: RouteObject[] = [
     index: true
   },
   {
-    path: Routes.ARTICLES,
     element: <Articles />,
-    index: true
+    children: [
+      {
+        path: Routes.ARTICLES,
+
+      },
+      {
+        path: Routes.FAVORITE_ARTICLES,
+      }
+    ]
   },
   {
     path: Routes.ARTICLE,

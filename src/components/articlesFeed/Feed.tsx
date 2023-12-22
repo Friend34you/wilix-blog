@@ -16,16 +16,13 @@ const Feed = observer(() => {
   const [isSuccess, setIsSuccess] = useState(false);
 
   const [currentPage, setCurrentPage] = useState(1);
-console.log("const selTag created");
-  // const selectedTag = tagsStore.selectedTag;
+  const selectedTag = tagsStore.selectedTag;
 
   useEffect(() => {
-    console.log("useEffect main");
     const pageNumberForRequest = (currentPage - 1) * ARTICLES_OFFSET;
-
     setIsLoading(true);
     articlesStore
-      .fetchArticles(ARTICLES_LIMIT, pageNumberForRequest, tagsStore.selectedTag)
+      .fetchArticles(ARTICLES_LIMIT, pageNumberForRequest, selectedTag)
       .then(() => {
         setIsSuccess(true);
       })
@@ -35,11 +32,19 @@ console.log("const selTag created");
       });
 
     return () => {
-      console.log("useEffect return");
       setIsSuccess(false);
-      // tagsStore.selectedTag = undefined;
     };
-  }, [currentPage]);
+  }, [selectedTag, currentPage]);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [selectedTag]);
+
+  useEffect(() => {
+    return () => {
+      tagsStore.selectedTag = undefined;
+    };
+  }, []);
 
   const handleOnPageNumberChange: PaginationProps['onChange'] = (page) => {
     setCurrentPage(page);
@@ -50,7 +55,21 @@ console.log("const selTag created");
   };
 
   if (isLoading && !isSuccess) {
-    return <Spin size="large" />;
+    return (
+      <>
+        <TagsCloud />
+        {selectedTag && (
+          <Tag
+            onClose={handleOnClose}
+            color="#3C13AF"
+            closable
+          >
+            {selectedTag}
+          </Tag>
+        )}
+        <Spin size="large" />
+      </>
+    );
   }
 
   if (isSuccess && !articlesStore.articlesCount) {
@@ -64,12 +83,13 @@ console.log("const selTag created");
   return (
     <>
       <TagsCloud />
-      {tagsStore.selectedTag && (
+      {selectedTag && (
         <Tag
           onClose={handleOnClose}
+          color="#3C13AF"
           closable
         >
-          {tagsStore.selectedTag}
+          {selectedTag}
         </Tag>
       )}
       <Divider/>
@@ -84,7 +104,6 @@ console.log("const selTag created");
         align="center"
         justify="center"
         wrap="wrap"
-        // vertical
       >
         {articlesStore.articles.map((articleItem) => (
           <ArticleCard
