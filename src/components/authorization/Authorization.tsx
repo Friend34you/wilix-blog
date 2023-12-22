@@ -1,35 +1,31 @@
-import AuthForm from "./AuthForm.tsx";
 import {Divider, Flex, notification, Typography} from "antd";
-import {useState} from "react";
+import AuthForm from "./AuthForm.tsx";
+import type {FieldType} from "./authTypes.ts";
 import {Link, useNavigate} from "react-router-dom";
 import usersStore from "../../store/usersStore.ts";
+import {useState} from "react";
 import styled from "styled-components";
-import type {FieldType} from "./authTypes.ts";
-import { FormWrapper } from "./FormWrapper.tsx";
+import {FormWrapper} from "./FormWrapper.tsx";
 import {Routes} from "../router/routes.tsx";
 import {AuthTypes} from "./authTypes.ts";
 
 const {Title, Text} = Typography;
 
-const Registration = () => {
+const Authorization = () => {
   const [isDisabled, setIsDisabled] = useState(false);
   const navigate = useNavigate();
 
   const onFinish = (inputUserData: FieldType) => {
     //Уверены, что значения есть
-    const registerData = {
-      username: inputUserData.username!,
+    const loginData = {
       email: inputUserData.email!,
       password: inputUserData.password!
     };
 
     setIsDisabled(true);
     usersStore
-      .registerUser(registerData)
-      .then(() => {
-        notification.success({message: "You was successfully registered"});
-        navigate("/");
-      })
+      .loginUser(loginData)
+      .then(() => navigate("/"))
       .catch((error: Error) => notification.error({message: error.message}))
       .finally(() => setIsDisabled(false));
   };
@@ -39,7 +35,7 @@ const Registration = () => {
   };
 
   return (
-    <RegistrationWrapper
+    <AuthorizationWrapper
       align="center"
       vertical
     >
@@ -49,29 +45,30 @@ const Registration = () => {
         vertical
       >
         <Title>
-          Registration
+          Authorization
         </Title>
         <Text>
-          You already have account? <Link to={Routes.AUTHORIZATION}>SignIn</Link>
+          Create account <Link to={Routes.REGISTRATION}>SignUp</Link>
         </Text>
         <AuthForm
-          type={AuthTypes.REGISTRATION}
+          type={AuthTypes.AUTHORIZATION}
           disabled={isDisabled}
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
         />
       </FormWrapper>
-    </RegistrationWrapper>
+    </AuthorizationWrapper>
   );
 };
 
-const RegistrationWrapper = styled(Flex)`
+const AuthorizationWrapper = styled(Flex)`
   min-height: 80vh;
-  background: rgb(195,34,87);
-  background: linear-gradient(0deg, rgba(195,34,87,1) 0%, rgba(253,179,45,1) 100%);
-  
+  background: rgb(195, 34, 87);
+  background: linear-gradient(0deg, rgb(136, 34, 195) 0%, rgba(253, 179, 45, 1) 100%);
+
   @media (max-width: 768px) {
     background: none;
   }
 `;
-export default Registration;
+
+export default Authorization;

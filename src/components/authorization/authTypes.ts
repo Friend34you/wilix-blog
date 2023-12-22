@@ -3,3 +3,8 @@ export type FieldType = {
     password?: string;
     email?: string;
 }
+
+export enum AuthTypes {
+    REGISTRATION = "REGISTRATION",
+    AUTHORIZATION = "AUTHORIZATION"
+}

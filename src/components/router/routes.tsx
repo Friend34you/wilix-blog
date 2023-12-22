@@ -2,6 +2,8 @@ import type {RouteObject} from "react-router-dom";
 import App from "../App.tsx";
 import Article from "../article/Article.tsx";
 import Profile from "../profile/Profile.tsx";
+import Registration from "../authorization/Registration.tsx";
+import Authorization from "../authorization/Authorization.tsx";
 import NewArticle from "../NewArticle.tsx";
 import Articles from "../articlesFeed/Articles.tsx";
 
@@ -37,11 +39,11 @@ export const publicRoutes: RouteObject[] = [
   },
   {
     path: Routes.REGISTRATION,
-    element: <div>Регистрация</div>
+    element: <Registration />
   },
   {
     path: Routes.AUTHORIZATION,
-    element: <div>Авторизация</div>
+    element: <Authorization />
   },
 ];
 

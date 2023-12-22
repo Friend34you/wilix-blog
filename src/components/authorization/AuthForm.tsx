@@ -1,80 +1,124 @@
 import {Button, Flex, Form, Input} from "antd";
-import type {FC} from "react";
+import type {FC, ReactNode} from "react";
+import {useMemo} from "react";
 import styled from "styled-components";
 import type {ValidateErrorEntity} from "rc-field-form/lib/interface";
 import type {FieldType} from "./authTypes.ts";
+import {AuthTypes} from "./authTypes.ts";
+import type {Rule} from "antd/lib/form";
 
 interface AuthFormProps {
-    readonly type: "registration" | "authorization";
-    readonly onFinishFailed: (errorInfo: ValidateErrorEntity) => void;
-    readonly onFinish: (values: FieldType) => void;
+  readonly type: AuthTypes;
+  readonly onFinishFailed: (errorInfo: ValidateErrorEntity) => void;
+  readonly onFinish: (values: FieldType) => void;
+  readonly disabled: boolean
 }
 
-const StyledForm = styled(Form)`
-  max-width: 500px;
-`;
+type formItemType = {
+  label: string;
+  name: string;
+  rules: Rule[];
+  children: ReactNode
+}
 
-const AuthForm: FC<AuthFormProps> = ({onFinishFailed, onFinish, type}) => {
+const formItems: formItemType[] = [
+  {
+    label: "Username",
+    name: "username",
+    rules: [
+      {
+        required: true,
+        message: 'Please input your username!'
+      }],
+    children: <Input />
+  },
+  {
+    label: "Email",
+    name: "email",
+    rules: [
+      {
+        required: true,
+        message: 'Please input your email!'
+      },
+      {
+        type: 'email',
+        message: 'The input is not valid E-mail!',
+      }
+    ],
+    children: <Input />
+  },
+  {
+    label: "Password",
+    name: "password",
+    rules: [
+      {
+        required: true,
+        message: 'Please input your password!'
+      }],
+    children: <Input.Password />
+  },
+];
 
-    const [form] = StyledForm.useForm();
+const AuthForm: FC<AuthFormProps> = ({onFinishFailed, onFinish, type, disabled}) => {
 
-    const handleReset = () => form.resetFields();
+  const [form] = StyledForm.useForm();
 
-    return (
-        <StyledForm
-            autoComplete="off"
-            form={form}
-            initialValues={{remember: true}}
-            labelCol={{span: 7}}
-            name="basic"
-            onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
-            wrapperCol={{span: 17}}
+  const authFormItems = useMemo(() => {
+    if (type === AuthTypes.AUTHORIZATION) {
+      return formItems.filter((formItem) => formItem.name !== "username");
+    }
+    return formItems;
+  }, [type]);
+
+  const handleReset = () => form.resetFields();
+
+  return (
+    <StyledForm
+      form={form}
+      autoComplete="off"
+      name="basic"
+      disabled={disabled}
+      initialValues={{remember: true}}
+      labelCol={{span: 8}}
+      wrapperCol={{span: 18}}
+      onFinish={onFinish}
+      onFinishFailed={onFinishFailed}
+    >
+      {authFormItems.map((formItem) => (
+        <StyledForm.Item
+          key={formItem.name}
+          {...formItem}
         >
-            <StyledForm.Item<FieldType>
-                label="Username"
-                name="username"
-                rules={[{required: true, message: 'Please input your username!'}]}
-            >
-                <Input/>
-            </StyledForm.Item>
+          {formItem.children}
+        </StyledForm.Item>
+      ))}
+      <StyledForm.Item wrapperCol={{offset: 2}}>
+        <Flex
+          justify="center"
+          gap={10}
+        >
+          <Button
+            htmlType="submit"
+            type="primary"
+          >
+            SignUp
+          </Button>
 
-            {type === "registration" && (
-                <StyledForm.Item<FieldType>
-                    label="Email"
-                    name="email"
-                    rules={[{required: true, message: 'Please input your email!'}]}
-                >
-                    <Input/>
-                </StyledForm.Item>
-            )}
-
-            <StyledForm.Item<FieldType>
-                label="Password"
-                name="password"
-                rules={[{required: true, message: 'Please input your password!'}]}
-            >
-                <Input.Password/>
-            </StyledForm.Item>
-
-            <StyledForm.Item wrapperCol={{offset: 2}}>
-                <Flex justify="center">
-                    <Button
-                        htmlType="submit"
-                        type="primary">
-                        SignUp
-                    </Button>
-
-                    <Button
-                        htmlType="button"
-                        onClick={handleReset}
-                    >
-                        Reset
-                    </Button>
-                </Flex>
-            </StyledForm.Item>
-        </StyledForm>
-    );
+          <Button
+            onClick={handleReset}
+            htmlType="button"
+          >
+            Reset
+          </Button>
+        </Flex>
+      </StyledForm.Item>
+    </StyledForm>
+  );
 };
+
+const StyledForm = styled(Form)`
+  margin-top: 20px;
+  max-width: 1400px;
+`;
 
 export default AuthForm;
