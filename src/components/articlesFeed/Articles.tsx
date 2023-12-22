@@ -14,8 +14,7 @@ const Articles = () => {
 
   useEffect(() => {
     if (pathname.includes(Routes.FAVORITE_ARTICLES)) {
-      console.log("click");
-      // setMode(RequestModes.YOUR_ARTICLES_FEED);
+      setMode(RequestModes.YOUR_ARTICLES_FEED);
     }
   },[pathname]);
 
