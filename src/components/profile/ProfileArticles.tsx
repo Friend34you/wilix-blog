@@ -4,10 +4,10 @@ import {Divider, Flex, Pagination, Segmented, Spin} from "antd";
 import articlesStore from "../../store/articlesStore.ts";
 import ArticleCard from "../ArticleCard.tsx";
 import {observer} from "mobx-react-lite";
-import {RequestModes} from "./requestModes.ts";
+import {RequestModes} from "../../types/requestModes.ts";
 import {useProfileArticles} from "./useProfileArticles.ts";
 
-const articlesOptions = [RequestModes.PROFILE_ARTICLES, RequestModes.FAVORITE_ARTICLES];
+const articlesOptions = [RequestModes.PROFILE_ARTICLES, RequestModes.PROFILE_FAVORITE_ARTICLES];
 
 const ProfileArticles = observer(() => {
   const {

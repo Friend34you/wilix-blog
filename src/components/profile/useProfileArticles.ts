@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {RequestModes} from "./requestModes.ts";
+import {RequestModes} from "../../types/requestModes.ts";
 import profilesStore from "../../store/profilesStore.ts";
 import articlesStore from "../../store/articlesStore.ts";
 import {notification} from "antd";
@@ -26,7 +26,7 @@ export const useProfileArticles = () => {
       author: profilesStore.profile!.username,
       favorited: undefined
     };
-    if (mode === RequestModes.FAVORITE_ARTICLES) {
+    if (mode === RequestModes.PROFILE_FAVORITE_ARTICLES) {
       config = {
         author: undefined,
         favorited: profilesStore.profile!.username

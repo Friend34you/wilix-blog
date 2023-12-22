@@ -1,10 +1,14 @@
 import type {RouteObject} from "react-router-dom";
-import App from "../App.tsx";
 import Article from "../article/Article.tsx";
 import Profile from "../profile/Profile.tsx";
 import Registration from "../authorization/Registration.tsx";
 import Authorization from "../authorization/Authorization.tsx";
 import NewArticle from "../NewArticle.tsx";
+import Articles from "../articlesFeed/Articles.tsx";
+import Feed from "../articlesFeed/Feed.tsx";
+import PrivateRoute from "./PrivateRoute.tsx";
+import UserFeed from "../articlesFeed/UserFeed.tsx";
+import {Navigate} from "react-router-dom";
 
 export enum Routes {
   REGISTRATION = "/register",
@@ -17,16 +21,37 @@ export enum Routes {
   FAVORITE_ARTICLES = "/articles/favorite",
 }
 
-//TODO: добавить компоненты вместо заглушек
+//здесь отдельные независимые приватные роуты, остальные находятся в publicRoutes в обёртке PrivateRoute
+export const privateRoutes: RouteObject[] = [
+  {
+    path: Routes.CREATE_ARTICLE,
+    element: <NewArticle />
+  }
+];
+
+//Элемент с инексом не может содержать детей, поэтому используем Navigate и сразу перекидываем куда нам надо
 export const publicRoutes: RouteObject[] = [
   {
-    element: <App />,
+    element: <Navigate to={Routes.ARTICLES} />,
     index: true
   },
   {
-    path: Routes.ARTICLES,
-    element: <App />,
-    index: true
+    element: <Articles />,
+    children: [
+      {
+        path: Routes.ARTICLES,
+        element: <Feed />,
+      },
+      {
+        element: <PrivateRoute />,
+        children: [
+          {
+            path: Routes.FAVORITE_ARTICLES,
+            element: <UserFeed />
+          },
+        ]
+      }
+    ]
   },
   {
     path: Routes.ARTICLE,
@@ -46,14 +71,3 @@ export const publicRoutes: RouteObject[] = [
   },
 ];
 
-//TODO: тож самое что и выше
-export const privateRoutes: RouteObject[] = [
-  {
-    path: Routes.CREATE_ARTICLE,
-    element: <NewArticle />
-  },
-  {
-    path: Routes.FAVORITE_ARTICLES,
-    element: <div>Лайкнутые статьи</div>
-  },
-];

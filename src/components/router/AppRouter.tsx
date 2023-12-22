@@ -1,6 +1,6 @@
 import {Outlet, RouterProvider, createBrowserRouter} from "react-router-dom";
 import {privateRoutes, publicRoutes} from "./routes.tsx";
-import PrivateRoute from "./privateRoute.tsx";
+import PrivateRoute from "./PrivateRoute.tsx";
 import AppHeader from "../header/AppHeader.tsx";
 
 //TODO: вместо рутовой заглушки добавить полноценный компонент
