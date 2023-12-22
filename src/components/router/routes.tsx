@@ -8,6 +8,7 @@ import Articles from "../articlesFeed/Articles.tsx";
 import Feed from "../articlesFeed/Feed.tsx";
 import PrivateRoute from "./PrivateRoute.tsx";
 import UserFeed from "../articlesFeed/UserFeed.tsx";
+import {Navigate} from "react-router-dom";
 
 export enum Routes {
   REGISTRATION = "/register",
@@ -28,9 +29,10 @@ export const privateRoutes: RouteObject[] = [
   }
 ];
 
+//Элемент с инексом не может содержать детей, поэтому используем Navigate и сразу перекидываем куда нам надо
 export const publicRoutes: RouteObject[] = [
   {
-    element: <Articles />,
+    element: <Navigate to={Routes.ARTICLES} />,
     index: true
   },
   {

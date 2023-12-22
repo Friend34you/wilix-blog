@@ -9,13 +9,13 @@ const articlesOptions = [RequestModes.ALL_ARTICLES_FEED, RequestModes.YOUR_ARTIC
 
 const Articles = () => {
   const [mode, setMode] = useState<string | number>(RequestModes.ALL_ARTICLES_FEED);
-
   const navigate = useNavigate();
   const {pathname} = useLocation();
 
   useEffect(() => {
     if (pathname.includes(Routes.FAVORITE_ARTICLES)) {
-      setMode(RequestModes.YOUR_ARTICLES_FEED);
+      console.log("click");
+      // setMode(RequestModes.YOUR_ARTICLES_FEED);
     }
   },[pathname]);
 
