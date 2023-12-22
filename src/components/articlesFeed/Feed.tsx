@@ -75,7 +75,7 @@ const {
         simple
       />
       <ArticlesWrapper
-        align="center"
+        align="flex-start"
         gap={10}
         justify="center"
         wrap="wrap"

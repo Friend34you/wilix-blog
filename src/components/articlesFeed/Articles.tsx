@@ -12,7 +12,7 @@ const Articles = () => {
 
   const navigate = useNavigate();
   const {pathname} = useLocation();
-  
+
   useEffect(() => {
     if (pathname.includes(Routes.FAVORITE_ARTICLES)) {
       setMode(RequestModes.YOUR_ARTICLES_FEED);
@@ -33,7 +33,7 @@ const Articles = () => {
       align="center"
       vertical
     >
-      <Segmented
+      <StyledSegmented
         options={articlesOptions}
         value={mode}
         onChange={handleOnModeChange}
@@ -44,8 +44,12 @@ const Articles = () => {
 };
 
 const Wrapper = styled(Flex)`
-  padding: 10px;
-  min-height: 80vh;
+  padding: 5vh 0;
+  min-height: 100vh;
+`;
+
+const StyledSegmented = styled(Segmented)`
+  margin: 15px;
 `;
 
 export default Articles;

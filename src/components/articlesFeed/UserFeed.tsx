@@ -47,7 +47,7 @@ const UserFeed = observer(() => {
         simple
       />
       <ArticlesWrapper
-        align="center"
+        align="flex-start"
         justify="center"
         wrap="wrap"
       >

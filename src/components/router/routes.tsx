@@ -1,5 +1,4 @@
 import type {RouteObject} from "react-router-dom";
-import App from "../App.tsx";
 import Article from "../article/Article.tsx";
 import Profile from "../profile/Profile.tsx";
 import Registration from "../authorization/Registration.tsx";
@@ -31,7 +30,7 @@ export const privateRoutes: RouteObject[] = [
 
 export const publicRoutes: RouteObject[] = [
   {
-    element: <App />,
+    element: <Articles />,
     index: true
   },
   {
