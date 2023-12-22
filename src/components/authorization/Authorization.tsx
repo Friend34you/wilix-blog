@@ -14,8 +14,8 @@ const {Title, Text} = Typography;
 const Authorization = () => {
   const [isDisabled, setIsDisabled] = useState(false);
   const navigate = useNavigate();
-  const onFinish = (inputUserData: FieldType) => {
 
+  const onFinish = (inputUserData: FieldType) => {
     //Уверены, что значения есть
     const loginData = {
       email: inputUserData.email!,

@@ -14,8 +14,8 @@ const {Title, Text} = Typography;
 const Registration = () => {
   const [isDisabled, setIsDisabled] = useState(false);
   const navigate = useNavigate();
-  const onFinish = (inputUserData: FieldType) => {
 
+  const onFinish = (inputUserData: FieldType) => {
     //Уверены, что значения есть
     const registerData = {
       username: inputUserData.username!,
