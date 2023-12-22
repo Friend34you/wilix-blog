@@ -6,24 +6,26 @@ import articlesStore from "../../store/articlesStore.ts";
 import ArticleCard from "../ArticleCard.tsx";
 import styled from "styled-components";
 import {useEffect, useState} from "react";
+import {observer} from "mobx-react-lite";
 
 const ARTICLES_LIMIT = 10;
 const ARTICLES_OFFSET = 10;
 
-const Feed = () => {
+const Feed = observer(() => {
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
   const [currentPage, setCurrentPage] = useState(1);
-
-  const selectedTag = tagsStore.selectedTag;
+console.log("const selTag created");
+  // const selectedTag = tagsStore.selectedTag;
 
   useEffect(() => {
+    console.log("useEffect main");
     const pageNumberForRequest = (currentPage - 1) * ARTICLES_OFFSET;
 
     setIsLoading(true);
     articlesStore
-      .fetchArticles(ARTICLES_LIMIT, pageNumberForRequest, selectedTag)
+      .fetchArticles(ARTICLES_LIMIT, pageNumberForRequest, tagsStore.selectedTag)
       .then(() => {
         setIsSuccess(true);
       })
@@ -33,10 +35,11 @@ const Feed = () => {
       });
 
     return () => {
+      console.log("useEffect return");
       setIsSuccess(false);
-      tagsStore.selectedTag = undefined;
+      // tagsStore.selectedTag = undefined;
     };
-  }, [selectedTag, currentPage]);
+  }, [currentPage]);
 
   const handleOnPageNumberChange: PaginationProps['onChange'] = (page) => {
     setCurrentPage(page);
@@ -48,6 +51,14 @@ const Feed = () => {
 
   if (isLoading && !isSuccess) {
     return <Spin size="large" />;
+  }
+
+  if (isSuccess && !articlesStore.articlesCount) {
+    return (
+        <EmptyBlock align="center" justify="center">
+          <h1>Oops there is empty</h1>
+        </EmptyBlock>
+    );
   }
 
   return (
@@ -92,10 +103,17 @@ const Feed = () => {
       />
     </>
   );
-};
+});
 
 const ArticlesWrapper = styled(Flex)`
   background-color: cadetblue;
+  min-height: 75vh;
+`;
+
+
+const EmptyBlock = styled(Flex)`
+  height: 70vh;
+  width: inherit;
 `;
 
 export default Feed;
