@@ -42,6 +42,10 @@ const Logo = styled.div`
 const StyleHeader = styled(Header)`
   background-color: white;
   box-shadow: 0 11px 26px -16px rgba(34, 60, 80, 0.37);
+  
+  @media(max-width: 768px) {
+    padding: 0 10px;
+  }
 `;
 
 const StyledFlex = styled(Flex)`
