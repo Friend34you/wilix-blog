@@ -1,38 +1,21 @@
 import type { PaginationProps} from "antd";
-import {Divider, Flex, notification, Pagination, Spin} from "antd";
+import {Divider, Pagination, Spin} from "antd";
 import articlesStore from "../../store/articlesStore.ts";
+import {ArticlesWrapper, EmptyBlock} from "./StyledFeedCommon.ts";
 import ArticleCard from "../ArticleCard.tsx";
-import styled from "styled-components";
-import {useEffect, useState} from "react";
 import {observer} from "mobx-react-lite";
+import {useUserFeed} from "./useUserFeed.ts";
 
 const ARTICLES_LIMIT = 10;
 const ARTICLES_OFFSET = 10;
 
 const UserFeed = observer(() => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
-
-  const [currentPage, setCurrentPage] = useState(1);
-
-  useEffect(() => {
-    const pageNumberForRequest = (currentPage - 1) * ARTICLES_OFFSET;
-
-    setIsLoading(true);
-    articlesStore
-      .getFavoriteArticles(ARTICLES_LIMIT, pageNumberForRequest)
-      .then(() => {
-        setIsSuccess(true);
-      })
-      .catch((error: Error) => notification.error({message: error.message}))
-      .finally(() => {
-        setIsLoading(false);
-      });
-
-    return () => {
-      setIsSuccess(false);
-    };
-  }, [currentPage]);
+  const {
+    currentPage,
+    isLoading,
+    isSuccess,
+    setCurrentPage
+  } = useUserFeed(ARTICLES_LIMIT, ARTICLES_OFFSET);
 
   const handleOnPageNumberChange: PaginationProps['onChange'] = (page) => {
     setCurrentPage(page);
@@ -44,7 +27,10 @@ const UserFeed = observer(() => {
 
   if (isSuccess && !articlesStore.articlesCount) {
     return (
-      <EmptyBlock align="center" justify="center">
+      <EmptyBlock
+        align="center"
+        justify="center"
+      >
         <h1>Oops there is empty</h1>
       </EmptyBlock>
     );
@@ -83,15 +69,5 @@ const UserFeed = observer(() => {
     </>
   );
 });
-
-const ArticlesWrapper = styled(Flex)`
-  background-color: cadetblue;
-  min-height: 75vh;
-`;
-
-const EmptyBlock = styled(Flex)`
-  height: 70vh;
-  width: inherit;
-`;
 
 export default UserFeed;

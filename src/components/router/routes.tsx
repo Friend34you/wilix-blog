@@ -6,6 +6,9 @@ import Registration from "../authorization/Registration.tsx";
 import Authorization from "../authorization/Authorization.tsx";
 import NewArticle from "../NewArticle.tsx";
 import Articles from "../articlesFeed/Articles.tsx";
+import Feed from "../articlesFeed/Feed.tsx";
+import PrivateRoute from "./PrivateRoute.tsx";
+import UserFeed from "../articlesFeed/UserFeed.tsx";
 
 export enum Routes {
   REGISTRATION = "/register",
@@ -18,7 +21,14 @@ export enum Routes {
   FAVORITE_ARTICLES = "/articles/favorite",
 }
 
-//TODO: добавить компоненты вместо заглушек
+//здесь отдельные независимые приватные роуты, остальные находятся в publicRoutes в обёртке PrivateRoute
+export const privateRoutes: RouteObject[] = [
+  {
+    path: Routes.CREATE_ARTICLE,
+    element: <NewArticle />
+  }
+];
+
 export const publicRoutes: RouteObject[] = [
   {
     element: <App />,
@@ -29,10 +39,16 @@ export const publicRoutes: RouteObject[] = [
     children: [
       {
         path: Routes.ARTICLES,
-
+        element: <Feed />,
       },
       {
-        path: Routes.FAVORITE_ARTICLES,
+        element: <PrivateRoute />,
+        children: [
+          {
+            path: Routes.FAVORITE_ARTICLES,
+            element: <UserFeed />
+          },
+        ]
       }
     ]
   },
@@ -54,14 +70,3 @@ export const publicRoutes: RouteObject[] = [
   },
 ];
 
-//TODO: тож самое что и выше
-export const privateRoutes: RouteObject[] = [
-  {
-    path: Routes.CREATE_ARTICLE,
-    element: <NewArticle />
-  },
-  {
-    path: Routes.FAVORITE_ARTICLES,
-    element: <div>Лайкнутые статьи</div>
-  },
-];

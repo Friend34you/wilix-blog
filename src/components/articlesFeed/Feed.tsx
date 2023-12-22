@@ -1,50 +1,24 @@
 import TagsCloud from "../TagsCloud.tsx";
 import tagsStore from "../../store/tagsStore.ts";
 import type { PaginationProps} from "antd";
-import {Divider, Flex, notification, Pagination, Spin, Tag} from "antd";
+import {Divider, Pagination, Spin, Tag} from "antd";
 import articlesStore from "../../store/articlesStore.ts";
 import ArticleCard from "../ArticleCard.tsx";
-import styled from "styled-components";
-import {useEffect, useState} from "react";
 import {observer} from "mobx-react-lite";
+import {ArticlesWrapper, EmptyBlock} from "./StyledFeedCommon.ts";
+import {useFeed} from "./useFeed.ts";
 
 const ARTICLES_LIMIT = 10;
 const ARTICLES_OFFSET = 10;
 
 const Feed = observer(() => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
-
-  const [currentPage, setCurrentPage] = useState(1);
-  const selectedTag = tagsStore.selectedTag;
-
-  useEffect(() => {
-    const pageNumberForRequest = (currentPage - 1) * ARTICLES_OFFSET;
-    setIsLoading(true);
-    articlesStore
-      .fetchArticles(ARTICLES_LIMIT, pageNumberForRequest, selectedTag)
-      .then(() => {
-        setIsSuccess(true);
-      })
-      .catch((error: Error) => notification.error({message: error.message}))
-      .finally(() => {
-        setIsLoading(false);
-      });
-
-    return () => {
-      setIsSuccess(false);
-    };
-  }, [selectedTag, currentPage]);
-
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [selectedTag]);
-
-  useEffect(() => {
-    return () => {
-      tagsStore.selectedTag = undefined;
-    };
-  }, []);
+const {
+  isLoading,
+  isSuccess,
+  currentPage,
+  selectedTag,
+  setCurrentPage
+} = useFeed(ARTICLES_LIMIT, ARTICLES_OFFSET);
 
   const handleOnPageNumberChange: PaginationProps['onChange'] = (page) => {
     setCurrentPage(page);
@@ -102,6 +76,7 @@ const Feed = observer(() => {
       />
       <ArticlesWrapper
         align="center"
+        gap={10}
         justify="center"
         wrap="wrap"
       >
@@ -123,16 +98,5 @@ const Feed = observer(() => {
     </>
   );
 });
-
-const ArticlesWrapper = styled(Flex)`
-  background-color: cadetblue;
-  min-height: 75vh;
-`;
-
-
-const EmptyBlock = styled(Flex)`
-  height: 70vh;
-  width: inherit;
-`;
 
 export default Feed;
