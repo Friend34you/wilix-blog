@@ -50,8 +50,9 @@ const Profile = observer(() => {
 
 const ProfileWrapper = styled(Flex)`
   padding: 10px;
+  width: 100vw;
   overflow: scroll;
-  height: 85vh;
+  height: inherit;
 
   @media (max-width: 1600px) {
     height: auto;
