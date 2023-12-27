@@ -50,6 +50,7 @@ const Profile = observer(() => {
 
 const ProfileWrapper = styled(Flex)`
   padding: 10px;
+  width: 100vw;
   overflow: scroll;
   height: inherit;
 

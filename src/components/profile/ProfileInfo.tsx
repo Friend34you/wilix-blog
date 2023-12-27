@@ -66,6 +66,7 @@ const ProfileInfoWrapper = styled(Flex)`
   margin-top: 2vh;
   
   @media (max-width: 1600px) {
+    border-radius: 0;
     height: auto;
     width: 100vw;
     position: static;
