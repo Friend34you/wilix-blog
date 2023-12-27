@@ -1,6 +1,6 @@
 import AppHeader from "./header/AppHeader.tsx";
 import {Outlet} from "react-router-dom";
-import {Layout, Typography} from "antd";
+import {Flex, Layout, Typography} from "antd";
 import styled from "styled-components";
 import astronautImg from "./../assets/footerImg.svg";
 
@@ -14,12 +14,17 @@ const AppWrapper = () => {
         <Outlet />
       </AppMain>
       <AppFooter>
-        <StyledParagraph>
-          Some footer text. Do you like space and kitties? I think you do, so create your account and write lots of articles
-        </StyledParagraph>
-        <StyledParagraph>
-          One more text with description
-        </StyledParagraph>
+        <FooterFlex
+          vertical
+          justify={"center"}
+        >
+          <StyledParagraph>
+            Some footer text. Do you like space and kitties? I think you do, so create your account and write lots of articles
+          </StyledParagraph>
+          <StyledParagraph>
+            One more text with description
+          </StyledParagraph>
+        </FooterFlex>
       </AppFooter>
     </StyledLayout>
   );
@@ -41,6 +46,10 @@ const AppFooter = styled.footer`
   background-image: url(${astronautImg});
   background-repeat: no-repeat;
   background-position: right;
+`;
+
+const FooterFlex = styled(Flex)`
+  width: inherit;
 `;
 
 const StyledParagraph = styled(Paragraph)`
