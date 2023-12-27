@@ -1,9 +1,9 @@
 import {Flex, Spin, Typography} from "antd";
 import TagsList from "./TagsList.tsx";
 import styled from "styled-components";
-import tagsStore from "../store/tagsStore.ts";
 import {useEffect, useState} from "react";
-import {observer} from "mobx-react-lite";
+import {useUnit} from "effector-react";
+import tagsStoreEffector from "../store/TagsStoreEffector";
 
 const StyledFlex = styled(Flex)`
   padding: 10px;
@@ -30,20 +30,22 @@ const StyledWrapper = styled.div`
 
 const {Title} = Typography;
 
-const TagsCloud = observer(() => {
+const TagsCloud = () => {
   const [tagsLoading, setTagsLoading] = useState(false);
   const [tagsError, setTagsError] = useState<Error | null>(null);
 
+  const {tags} = useUnit(tagsStoreEffector.tags);
+
   useEffect(() => {
     setTagsLoading(true);
-    tagsStore
-      .fetchTags()
+    tagsStoreEffector
+      .fetchTags(undefined)
       .catch(setTagsError)
       .finally(() => setTagsLoading(false));
   }, []);
 
   const handleOnTagClick = (tag: string) => {
-    tagsStore.selectedTag = tag;
+    tagsStoreEffector.selectedTag(tag);
   };
 
   return (
@@ -63,12 +65,12 @@ const TagsCloud = observer(() => {
         )}
         <TagsList
           onTagClick={handleOnTagClick}
-          tags={tagsStore.tags}
+          tags={tags}
           tagsColor="blue"
         />
       </StyledFlex>
     </StyledWrapper>
   );
-});
+};
 
 export default TagsCloud;
