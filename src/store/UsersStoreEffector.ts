@@ -74,10 +74,12 @@ const fetchUserFx = createEffect(async () => {
   }
 });
 
-if (localStorage.getItem("token")) {
-  userAlreadyAuthed();
-  fetchUserFx();
-}
+const checkIsUserAuth = () => {
+  if (localStorage.getItem("token")) {
+    userAlreadyAuthed();
+    fetchUserFx();
+  }
+};
 
 $user.on(loginUserFx.doneData, (_, userData) => userData.user);
 $user.on(registerUserFx.doneData, (_, userData) => userData.user);
@@ -99,6 +101,9 @@ const usersStore = {
   fetchUser: fetchUserFx,
   loginUser: loginUserFx,
   logoutUser,
+  checkIsUserAuth,
 };
+
+checkIsUserAuth();
 
 export default usersStore;

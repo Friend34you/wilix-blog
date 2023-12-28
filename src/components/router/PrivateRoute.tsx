@@ -1,16 +1,18 @@
 import {Outlet, useNavigate} from "react-router-dom";
 import {useEffect} from "react";
-import usersStore from "../../store/usersStore.ts";
+import usersStore from "../../store/UsersStoreEffector";
 import {Routes} from "./routes.tsx";
+import {useUnit} from "effector-react";
 
 const PrivateRoute = () => {
   const navigate = useNavigate();
+  const isUserAuth = useUnit(usersStore.isUserAuth);
 
   useEffect(() => {
-    if (!usersStore.isUserAuth) {
+    if (!isUserAuth) {
       navigate(Routes.AUTHORIZATION);
     }
-  }, [navigate]);
+  }, [isUserAuth, navigate]);
 
   return <Outlet />;
 };

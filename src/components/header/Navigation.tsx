@@ -1,12 +1,12 @@
 import type {MenuProps} from "antd";
 import {Flex, Space, Spin} from "antd";
-import usersStore from "../../store/usersStore.ts";
+import usersStore from "../../store/UsersStoreEffector";
 import styled from "styled-components";
 import {UserOutlined} from "@ant-design/icons";
-import {observer} from "mobx-react-lite";
 import {Link} from "react-router-dom";
 import {Routes} from "../router/routes.tsx";
 import { Menu } from 'antd';
+import {useUnit} from "effector-react/compat";
 
 //Оставил здесь, так как требуется для элементов меню
 const StyledLink = styled(Link)`
@@ -61,8 +61,11 @@ const privateItems: MenuProps["items"] = [
   },
 ];
 
-const Navigation = observer(() => {
-  if (!usersStore.isUserAuth) {
+const Navigation = () => {
+  const isUserAuth = useUnit(usersStore.isUserAuth);
+  const user = useUnit(usersStore.user);
+
+  if (!isUserAuth) {
     return (
       <Flex align="center" vertical={true}>
         <StyledMenu
@@ -76,7 +79,7 @@ const Navigation = observer(() => {
     );
   }
 
-  if (usersStore.isUserAuth && !usersStore.user) {
+  if (isUserAuth && !user) {
     return (
       <Spin />
     );
@@ -91,15 +94,15 @@ const Navigation = observer(() => {
         triggerSubMenuAction="click"
         selectedKeys={[]}
       />
-      <StyledLink to={Routes.CURRENT_PROFILE + usersStore.user!.username}>
+      <StyledLink to={Routes.CURRENT_PROFILE + user!.username}>
         <Space align="center">
           <UserIcon />
-          {usersStore.user?.username}
+          {user?.username}
         </Space>
       </StyledLink>
     </Flex>
   );
-});
+};
 
 const StyledMenu = styled(Menu)`
   background-color: transparent;
