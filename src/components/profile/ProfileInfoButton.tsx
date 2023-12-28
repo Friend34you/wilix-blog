@@ -16,6 +16,9 @@ const ProfileInfoButton: FC<ProfileInfoButtonProps> = ({onFollowClick, isDisable
   const isUserAuth = useUnit(usersStore.isUserAuth);
   const user = useUnit(usersStore.user);
 
+  //добавил для разлогинивания
+  const handleOnLogout = () => usersStore.logoutUser();
+
   if (!isUserAuth) {
     return (
       <Link to={Routes.AUTHORIZATION}>
@@ -29,9 +32,14 @@ const ProfileInfoButton: FC<ProfileInfoButtonProps> = ({onFollowClick, isDisable
   //Редактирования профиля у нас нет, так что пока без ссылочной обёртки
   if (isUserAuth && user?.username === profilesStore.profile!.username) {
     return (
-      <StyledButton>
-        Edit Settings
-      </StyledButton>
+      <>
+        <StyledButton>
+          Edit Settings
+        </StyledButton>
+        <StyledButton onClick={handleOnLogout}>
+          LogOut
+        </StyledButton>
+      </>
     );
   }
 
