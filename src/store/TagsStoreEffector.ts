@@ -13,7 +13,6 @@ const selectedTagChanged = createEvent<string | null>("selected tag changed");
 const fetchTagsFx = createEffect(async () => {
   try {
     const response = await AxiosInstance.get<GetTagsResponseType>("/tags");
-    console.log("success", response.data);
     return response.data.tags;
   } catch (error) {
     throw new Error("Something went wrong:( " + error);
@@ -25,6 +24,7 @@ $selectedTag.on(selectedTagChanged, (_, data) => data);
 
 const tagsStore = {
   tags: $tags,
+  selectedTagValue: $selectedTag,
   selectedTag: selectedTagChanged,
   fetchTags: fetchTagsFx
 };

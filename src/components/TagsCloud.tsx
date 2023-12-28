@@ -3,7 +3,7 @@ import TagsList from "./TagsList.tsx";
 import styled from "styled-components";
 import {useEffect, useState} from "react";
 import {useUnit} from "effector-react";
-import tagsStoreEffector from "../store/TagsStoreEffector";
+import tagsStore from "../store/TagsStoreEffector";
 
 const StyledFlex = styled(Flex)`
   padding: 10px;
@@ -34,18 +34,18 @@ const TagsCloud = () => {
   const [tagsLoading, setTagsLoading] = useState(false);
   const [tagsError, setTagsError] = useState<Error | null>(null);
 
-  const {tags} = useUnit(tagsStoreEffector.tags);
+  const tags = useUnit(tagsStore.tags);
 
   useEffect(() => {
     setTagsLoading(true);
-    tagsStoreEffector
+    tagsStore
       .fetchTags(undefined)
       .catch(setTagsError)
       .finally(() => setTagsLoading(false));
   }, []);
 
   const handleOnTagClick = (tag: string) => {
-    tagsStoreEffector.selectedTag(tag);
+    tagsStore.selectedTag(tag);
   };
 
   return (

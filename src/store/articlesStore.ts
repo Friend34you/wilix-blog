@@ -38,7 +38,7 @@ class ArticlesStore {
   fetchArticles = async (
     limit = 10,
     offset = 0,
-    tag?: string,
+    tag: string | null,
     author?: string,
     favorited?: string
   ) => {
