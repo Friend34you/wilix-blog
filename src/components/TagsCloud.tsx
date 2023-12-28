@@ -1,8 +1,7 @@
 import {Flex, Spin, Typography} from "antd";
 import TagsList from "./TagsList.tsx";
 import styled from "styled-components";
-import {useEffect, useState} from "react";
-import {useUnit} from "effector-react";
+import {useGate, useUnit} from "effector-react";
 import tagsStore from "../store/TagsStoreEffector";
 
 const StyledFlex = styled(Flex)`
@@ -31,18 +30,11 @@ const StyledWrapper = styled.div`
 const {Title} = Typography;
 
 const TagsCloud = () => {
-  const [tagsLoading, setTagsLoading] = useState(false);
-  const [tagsError, setTagsError] = useState<Error | null>(null);
-
+  const tagsLoading = useUnit(tagsStore.fetchTags.pending);
   const tags = useUnit(tagsStore.tags);
+  const tagsError = useUnit(tagsStore.error);
 
-  useEffect(() => {
-    setTagsLoading(true);
-    tagsStore
-      .fetchTags(undefined)
-      .catch(setTagsError)
-      .finally(() => setTagsLoading(false));
-  }, []);
+  useGate(tagsStore.tagsCloudGate);
 
   const handleOnTagClick = (tag: string) => {
     tagsStore.selectedTag(tag);
