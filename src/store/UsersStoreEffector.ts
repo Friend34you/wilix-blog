@@ -20,24 +20,15 @@ type LoginUserType = Pick<UserType, "email"> & {
   password: string
 }
 
+//Сторы
 const $user = createStore<UserType | null>(null);
 const $isUserAuth = createStore(false);
 
-const createUserSession = (responseData: UserResponseType) => {
-  const {email, token, username} = responseData.user;
-  localStorage.setItem("token", token);
-  return {
-    isAuth: true,
-    user: {
-      email,
-      username,
-    }
-  };
-};
-
+//Ивенты
 const logoutUser = createEvent();
 const userAlreadyAuthed = createEvent();
 
+//Эффекты
 const registerUserFx = createEffect(async (userData: RegisterUserType) => {
   try {
     const response = await AxiosInstance.post<UserResponseType>("/users", {
@@ -74,6 +65,19 @@ const fetchUserFx = createEffect(async () => {
   }
 });
 
+//Хелперы
+function createUserSession(responseData: UserResponseType) {
+  const {email, token, username} = responseData.user;
+  localStorage.setItem("token", token);
+  return {
+    isAuth: true,
+    user: {
+      email,
+      username,
+    }
+  };
+}
+
 const checkIsUserAuth = () => {
   if (localStorage.getItem("token")) {
     userAlreadyAuthed();
@@ -81,6 +85,7 @@ const checkIsUserAuth = () => {
   }
 };
 
+//Взаимодействие
 $user.on(loginUserFx.doneData, (_, userData) => userData.user);
 $user.on(registerUserFx.doneData, (_, userData) => userData.user);
 $user.on(fetchUserFx.doneData, (_, userData) => userData);
@@ -101,7 +106,6 @@ const usersStore = {
   fetchUser: fetchUserFx,
   loginUser: loginUserFx,
   logoutUser,
-  checkIsUserAuth,
 };
 
 checkIsUserAuth();
