@@ -1,6 +1,6 @@
 import {Flex, Spin, Typography, notification} from "antd";
 import {useEffect, useState} from "react";
-import articlesStore from "../../store/articlesStore.ts";
+import articlesStore from "../../store/ArticlesStoreEffector";
 import TagsList from "../TagsList.tsx";
 import styled from "styled-components";
 import {observer} from "mobx-react-lite";
@@ -14,6 +14,8 @@ const {Title, Paragraph} = Typography;
 const Article = observer(() => {
   const [isLoading, setIsLoading] = useState(true);
   const [isSuccess, setIsSuccess] = useState(false);
+
+
 
   const article = articlesStore.currentArticle!;
   const path = useLocation().pathname.split("/");
