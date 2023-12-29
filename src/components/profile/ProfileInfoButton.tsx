@@ -1,10 +1,11 @@
-import profilesStore from "../../store/profilesStore.ts";
+import profilesStore from "../../store/ProfilesStoreEffector";
 import usersStore from "../../store/usersStore.ts";
 import {Link} from "react-router-dom";
 import {Routes} from "../router/routes.tsx";
 import styled from "styled-components";
 import {Button} from "antd";
 import type {FC} from "react";
+import {useUnit} from "effector-react";
 
 type ProfileInfoButtonProps = {
   readonly onFollowClick: () => void;
@@ -12,6 +13,8 @@ type ProfileInfoButtonProps = {
 }
 
 const ProfileInfoButton: FC<ProfileInfoButtonProps> = ({onFollowClick, isDisabled}) => {
+  const profile = useUnit(profilesStore.profile);
+
   if (!usersStore.isUserAuth) {
     return (
       <Link to={Routes.AUTHORIZATION}>
@@ -23,7 +26,7 @@ const ProfileInfoButton: FC<ProfileInfoButtonProps> = ({onFollowClick, isDisable
   }
 
   //Редактирования профиля у нас нет, так что пока без ссылочной обёртки
-  if (usersStore.isUserAuth && usersStore.user?.username === profilesStore.profile!.username) {
+  if (usersStore.isUserAuth && usersStore.user?.username === profile!.username) {
     return (
       <StyledButton>
         Edit Settings
@@ -36,7 +39,7 @@ const ProfileInfoButton: FC<ProfileInfoButtonProps> = ({onFollowClick, isDisable
       onClick={onFollowClick}
       disabled={isDisabled}
     >
-      {profilesStore.profile!.following ? "Unfollow" : "Follow"}
+      {profile!.following ? "Unfollow" : "Follow"}
     </StyledButton>
   );
 };

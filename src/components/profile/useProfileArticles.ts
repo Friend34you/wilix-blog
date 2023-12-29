@@ -1,8 +1,9 @@
 import {useEffect, useState} from "react";
 import {RequestModes} from "../../types/requestModes.ts";
-import profilesStore from "../../store/profilesStore.ts";
+import profilesStore from "../../store/ProfilesStoreEffector";
 import articlesStore from "../../store/articlesStore.ts";
 import {notification} from "antd";
+import {useUnit} from "effector-react";
 
 type FetchArticleConfigType = {
   author?: string;
@@ -18,18 +19,20 @@ export const useProfileArticles = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
+  const profile = useUnit(profilesStore.profile);
+
   const [currentPage, setCurrentPage] = useState(1);
   const [mode, setMode] = useState<string | number>(RequestModes.PROFILE_ARTICLES);
 
   useEffect(() => {
     let config: FetchArticleConfigType = {
-      author: profilesStore.profile!.username,
+      author: profile!.username,
       favorited: undefined
     };
     if (mode === RequestModes.PROFILE_FAVORITE_ARTICLES) {
       config = {
         author: undefined,
-        favorited: profilesStore.profile!.username
+        favorited: profile!.username
       };
     }
 
@@ -45,7 +48,7 @@ export const useProfileArticles = () => {
       .finally(() =>    {
         setIsLoading(false);
       });
-  }, [mode, currentPage]);
+  }, [profile, mode, currentPage]);
 
   return {
     setCurrentPage,

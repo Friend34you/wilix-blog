@@ -4,16 +4,20 @@ import articlesStore from "../../store/articlesStore.ts";
 import TagsList from "../TagsList.tsx";
 import styled from "styled-components";
 import {observer} from "mobx-react-lite";
-import profilesStore from "../../store/profilesStore.ts";
+import profilesStore from "../../store/ProfilesStoreEffector";
 import {useLocation} from "react-router-dom";
 import ArticleInteraction from "./ArticleInteraction.tsx";
 import ArticleAuthor from "./ArticleAuthor.tsx";
+import {useUnit} from "effector-react";
 
 const {Title, Paragraph} = Typography;
 
 const Article = observer(() => {
   const [isLoading, setIsLoading] = useState(true);
   const [isSuccess, setIsSuccess] = useState(false);
+
+  const profile = useUnit(profilesStore.profile);
+  const error = useUnit(profilesStore.toggleFollowError);
 
   const article = articlesStore.currentArticle!;
   const path = useLocation().pathname.split("/");
@@ -35,7 +39,7 @@ const Article = observer(() => {
     return () => {
       setIsSuccess(false);
       articlesStore.currentArticle = null;
-      profilesStore.profile = null;
+      profilesStore.profileChanged(null);
     };
   }, [slug]);
 
@@ -46,9 +50,11 @@ const Article = observer(() => {
   }
 
   function handleOnFollowClick() {
-    profilesStore
-      .toggleFollowUserProfile(article.author.username)
-      .catch((error: Error) => notification.error({message: error.message}));
+    profilesStore.toggleFollowUserProfile(article.author.username);
+
+    if (error) {
+      notification.error({message: error.message});
+    }
   }
 
   if (isLoading || !isSuccess) {
@@ -81,8 +87,8 @@ const Article = observer(() => {
         wrap="wrap"
       >
         <ArticleAuthor
-          authorName={profilesStore.profile!.username}
-          profileImg={profilesStore.profile!.image}
+          authorName={profile!.username}
+          profileImg={profile!.image}
         />
         <ArticleInteraction
           onFavoriteClick={handleOnFavoriteClick}
@@ -90,7 +96,7 @@ const Article = observer(() => {
           updatedAt={article.updatedAt}
           createdAt={article.createdAt}
           isFavorited={article.favorited}
-          isFollowed={profilesStore.profile!.following}
+          isFollowed={profile!.following}
         />
       </Flex>
       <StyledHr />

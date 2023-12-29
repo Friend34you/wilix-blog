@@ -13,12 +13,12 @@ type ToggleFollowUserProfileType = {
 
 //Сторы
 const $profile = createStore<IProfile | null>(null);
+const $toggleFollowError = createStore<Error | null>(null);
 
 //Ивенты
-const profileChanged = createEvent();
+const profileChanged = createEvent<IProfile | null>();
 const userProfileFollowToggled = createEvent<string>();
 const userProfileFetched = createEvent<string>();
-// const userProfileUnfetched = createEvent<string>();
 
 //Эффекты
 const fetchUserProfileFx = createEffect(async (username: string) => {
@@ -69,11 +69,16 @@ $profile.on(toggleFollowUserProfileFx.doneData, (state): IProfile => {
     following: !state!.following
   };
 });
+$toggleFollowError.on(toggleFollowUserProfileFx.failData, (_, error) => error);
+$toggleFollowError.reset(toggleFollowUserProfileFx.doneData);
 
 const profilesStore = {
   profile: $profile,
+  toggleFollowError: $toggleFollowError,
   fetchUserProfile: fetchUserProfileFx,
   toggleFollowUserProfile: userProfileFollowToggled,
+  toggleFollowLoading: fetchUserProfileFx.pending,
+  profileChanged
 };
 
 export default profilesStore;
