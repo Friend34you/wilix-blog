@@ -8,6 +8,7 @@ import profilesStore from "../../store/profilesStore.ts";
 import {useLocation} from "react-router-dom";
 import ArticleInteraction from "./ArticleInteraction.tsx";
 import ArticleAuthor from "./ArticleAuthor.tsx";
+import {useUnit} from "effector-react";
 
 const {Title, Paragraph} = Typography;
 
@@ -15,9 +16,8 @@ const Article = observer(() => {
   const [isLoading, setIsLoading] = useState(true);
   const [isSuccess, setIsSuccess] = useState(false);
 
+  const article = useUnit(articlesStore.currentArticle);
 
-
-  const article = articlesStore.currentArticle!;
   const path = useLocation().pathname.split("/");
   const slug = path[path.length - 1];
 
@@ -27,7 +27,7 @@ const Article = observer(() => {
       .getOneArticle(slug)
       .then(() => {
         profilesStore
-          .fetchUserProfile(articlesStore.currentArticle!.author.username)
+          .fetchUserProfile(article!.author.username)
           .then(() => setIsSuccess(true))
           .catch((error: Error) => notification.error({message: error.message}))
           .finally(() => setIsLoading(false));
@@ -36,20 +36,19 @@ const Article = observer(() => {
 
     return () => {
       setIsSuccess(false);
-      articlesStore.currentArticle = null;
+      articlesStore.currentArticleDefaulted();
       profilesStore.profile = null;
     };
-  }, [slug]);
+  }, [article, slug]);
 
   function handleOnFavoriteClick() {
-    articlesStore
-      .toggleFavoriteArticle(slug)
-      .catch((error: Error) => notification.error({message: error.message}));
+    articlesStore.articleFavoritedToggled(slug);
+      // .catch((error: Error) => notification.error({message: error.message}));
   }
 
   function handleOnFollowClick() {
     profilesStore
-      .toggleFollowUserProfile(article.author.username)
+      .toggleFollowUserProfile(article!.author.username)
       .catch((error: Error) => notification.error({message: error.message}));
   }
 
@@ -72,7 +71,7 @@ const Article = observer(() => {
     >
       <TitleWrapper>
         <Title>
-          {article.title}
+          {article!.title}
         </Title>
       </TitleWrapper>
 
@@ -89,20 +88,20 @@ const Article = observer(() => {
         <ArticleInteraction
           onFavoriteClick={handleOnFavoriteClick}
           onFollowClick={handleOnFollowClick}
-          updatedAt={article.updatedAt}
-          createdAt={article.createdAt}
-          isFavorited={article.favorited}
+          updatedAt={article!.updatedAt}
+          createdAt={article!.createdAt}
+          isFavorited={article!.favorited}
           isFollowed={profilesStore.profile!.following}
         />
       </Flex>
       <StyledHr />
 
       <StyledParagraph>
-        {article.body}
+        {article!.body}
       </StyledParagraph>
 
       <Flex>
-        <TagsList tags={article.tagList} />
+        <TagsList tags={article!.tagList} />
       </Flex>
     </Flex>
   );
