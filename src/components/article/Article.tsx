@@ -3,7 +3,6 @@ import {useEffect, useState} from "react";
 import articlesStore from "../../store/ArticlesStoreEffector";
 import TagsList from "../TagsList.tsx";
 import styled from "styled-components";
-import {observer} from "mobx-react-lite";
 import profilesStore from "../../store/profilesStore.ts";
 import {useLocation} from "react-router-dom";
 import ArticleInteraction from "./ArticleInteraction.tsx";
@@ -12,7 +11,7 @@ import {useUnit} from "effector-react";
 
 const {Title, Paragraph} = Typography;
 
-const Article = observer(() => {
+const Article = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isSuccess, setIsSuccess] = useState(false);
 
@@ -42,7 +41,7 @@ const Article = observer(() => {
   }, [article, slug]);
 
   function handleOnFavoriteClick() {
-    articlesStore.articleFavoritedToggled(slug);
+    articlesStore.toggleFavoriteArticle(slug);
       // .catch((error: Error) => notification.error({message: error.message}));
   }
 
@@ -105,7 +104,7 @@ const Article = observer(() => {
       </Flex>
     </Flex>
   );
-});
+};
 
 const TitleWrapper = styled.div`
   text-align: center;
