@@ -1,5 +1,5 @@
 import TagsCloud from "../TagsCloud.tsx";
-import tagsStore from "../../store/tagsStore.ts";
+import tagsStore from "../../store/TagsStoreEffector";
 import type { PaginationProps} from "antd";
 import {Divider, Pagination, Spin, Tag} from "antd";
 import articlesStore from "../../store/ArticlesStoreEffector.ts";
@@ -26,7 +26,7 @@ const Feed = () => {
   };
 
   const handleOnClose = () => {
-    tagsStore.selectedTag = undefined;
+    tagsStore.selectedTag(null);
   };
 
   if (isLoading || !isSuccess) {
