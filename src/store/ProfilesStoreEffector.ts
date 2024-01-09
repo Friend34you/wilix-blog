@@ -18,7 +18,6 @@ const $toggleFollowError = createStore<Error | null>(null);
 //Ивенты
 const profileChanged = createEvent<IProfile | null>();
 const userProfileFollowToggled = createEvent<string>();
-// const userProfileFetched = createEvent<string>();
 
 //Эффекты
 const fetchUserProfileFx = createEffect(async (username: string) => {

@@ -9,11 +9,10 @@ export const useFeed = (limit = 10, offset = 10) => {
   const [isLoading, setIsLoading] = useState(true);
   const [isSuccess, setIsSuccess] = useState(false);
 
-  const articlesCount = useUnit(articlesStore.articlesCount);
-  const articles = useUnit(articlesStore.articles);
-
   const [currentPage, setCurrentPage] = useState(1);
 
+  const articlesCount = useUnit(articlesStore.articlesCount);
+  const articles = useUnit(articlesStore.articles);
   const selectedTag = useUnit(tagsStore.selectedTagValue);
 
   useEffect(() => {
