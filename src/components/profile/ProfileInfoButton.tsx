@@ -1,5 +1,5 @@
+import usersStore from "../../store/UsersStoreEffector";
 import profilesStore from "../../store/ProfilesStoreEffector";
-import usersStore from "../../store/usersStore.ts";
 import {Link} from "react-router-dom";
 import {Routes} from "../router/routes.tsx";
 import styled from "styled-components";
@@ -13,9 +13,14 @@ type ProfileInfoButtonProps = {
 }
 
 const ProfileInfoButton: FC<ProfileInfoButtonProps> = ({onFollowClick, isDisabled}) => {
+  const isUserAuth = useUnit(usersStore.isUserAuth);
+  const user = useUnit(usersStore.user);
   const profile = useUnit(profilesStore.profile);
 
-  if (!usersStore.isUserAuth) {
+  //добавил для разлогинивания
+  const handleOnLogout = () => usersStore.logoutUser();
+
+  if (!isUserAuth) {
     return (
       <Link to={Routes.AUTHORIZATION}>
         <StyledButton>
@@ -26,11 +31,16 @@ const ProfileInfoButton: FC<ProfileInfoButtonProps> = ({onFollowClick, isDisable
   }
 
   //Редактирования профиля у нас нет, так что пока без ссылочной обёртки
-  if (usersStore.isUserAuth && usersStore.user?.username === profile!.username) {
+  if (isUserAuth && user?.username === profilesStore.profile!.username) {
     return (
-      <StyledButton>
-        Edit Settings
-      </StyledButton>
+      <>
+        <StyledButton>
+          Edit Settings
+        </StyledButton>
+        <StyledButton onClick={handleOnLogout}>
+          LogOut
+        </StyledButton>
+      </>
     );
   }
 
