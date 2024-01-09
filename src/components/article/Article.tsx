@@ -17,6 +17,10 @@ const Article = () => {
 
   const article = useUnit(articlesStore.currentArticle);
 
+  const profile = useUnit(profilesStore.profile);
+  const error = useUnit(profilesStore.toggleFollowError);
+
+  const article = articlesStore.currentArticle!;
   const path = useLocation().pathname.split("/");
   const slug = path[path.length - 1];
 
@@ -36,7 +40,7 @@ const Article = () => {
     return () => {
       setIsSuccess(false);
       articlesStore.currentArticleDefaulted();
-      profilesStore.profile = null;
+      profilesStore.profileChanged(null);
     };
   }, [slug]);
 
@@ -46,9 +50,11 @@ const Article = () => {
   }
 
   function handleOnFollowClick() {
-    profilesStore
-      .toggleFollowUserProfile(article!.author.username)
-      .catch((error: Error) => notification.error({message: error.message}));
+    profilesStore.toggleFollowUserProfile(article!.author.username);
+
+    if (error) {
+      notification.error({message: error.message});
+    }
   }
 
   if (isLoading || !isSuccess) {
@@ -81,8 +87,8 @@ const Article = () => {
         wrap="wrap"
       >
         <ArticleAuthor
-          authorName={profilesStore.profile!.username}
-          profileImg={profilesStore.profile!.image}
+          authorName={profile!.username}
+          profileImg={profile!.image}
         />
         <ArticleInteraction
           onFavoriteClick={handleOnFavoriteClick}
@@ -90,7 +96,7 @@ const Article = () => {
           updatedAt={article!.updatedAt}
           createdAt={article!.createdAt}
           isFavorited={article!.favorited}
-          isFollowed={profilesStore.profile!.following}
+          isFollowed={profile!.following}
         />
       </Flex>
       <StyledHr />
