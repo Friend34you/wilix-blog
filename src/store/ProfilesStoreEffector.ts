@@ -18,7 +18,7 @@ const $toggleFollowError = createStore<Error | null>(null);
 //Ивенты
 const profileChanged = createEvent<IProfile | null>();
 const userProfileFollowToggled = createEvent<string>();
-const userProfileFetched = createEvent<string>();
+// const userProfileFetched = createEvent<string>();
 
 //Эффекты
 const fetchUserProfileFx = createEffect(async (username: string) => {
@@ -43,19 +43,25 @@ const toggleFollowUserProfileFx = createEffect(async ({username, isFollowed}: To
   }
 });
 
-//Хелперы
-
+//TODO: нужно ли это? Пока оставил
 //Взаимодействие
+// sample({
+//   clock: userProfileFollowToggled,
+//   source: $profile,
+//   filter: (profileData) => !!profileData,
+//   fn: (_, username) => username,
+//   target: userProfileFetched,
+// });
+//
+// sample({
+//   clock: userProfileFetched,
+//   source: $profile,
+//   fn: (profileData, username): ToggleFollowUserProfileType => ({isFollowed: profileData!.following, username}),
+//   target: toggleFollowUserProfileFx
+// });
+
 sample({
   clock: userProfileFollowToggled,
-  source: $profile,
-  filter: (profileData) => !!profileData,
-  fn: (_, username) => username,
-  target: userProfileFetched,
-});
-
-sample({
-  clock: userProfileFetched,
   source: $profile,
   fn: (profileData, username): ToggleFollowUserProfileType => ({isFollowed: profileData!.following, username}),
   target: toggleFollowUserProfileFx
@@ -69,6 +75,7 @@ $profile.on(toggleFollowUserProfileFx.doneData, (state): IProfile => {
     following: !state!.following
   };
 });
+
 $toggleFollowError.on(toggleFollowUserProfileFx.failData, (_, error) => error);
 $toggleFollowError.reset(toggleFollowUserProfileFx.doneData);
 
