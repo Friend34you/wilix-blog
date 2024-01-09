@@ -43,7 +43,7 @@ const ProfileArticles = () => {
     );
   }
 
-  if (isSuccess && !articlesStore.articlesCount) {
+  if (isSuccess && !articlesCount) {
     return (
       <ProfileArticlesWrapper
         vertical

@@ -1,31 +1,33 @@
 import type { PaginationProps} from "antd";
 import {Divider, Pagination, Spin} from "antd";
-import articlesStore from "../../store/articlesStore.ts";
+import articlesStore from "../../store/ArticlesStoreEffector.ts";
 import {ArticlesWrapper, EmptyBlock} from "./StyledFeedCommon.ts";
 import ArticleCard from "../ArticleCard.tsx";
-import {observer} from "mobx-react-lite";
 import {useUserFeed} from "./useUserFeed.ts";
 
 const ARTICLES_LIMIT = 10;
 const ARTICLES_OFFSET = 10;
 
-const UserFeed = observer(() => {
+const UserFeed = () => {
   const {
+    articles,
+    articlesCount,
     currentPage,
     isLoading,
     isSuccess,
     setCurrentPage
   } = useUserFeed(ARTICLES_LIMIT, ARTICLES_OFFSET);
 
+
   const handleOnPageNumberChange: PaginationProps['onChange'] = (page) => {
     setCurrentPage(page);
   };
 
-  if (isLoading && !isSuccess) {
+  if (isLoading || !isSuccess) {
     return <Spin size="large" />;
   }
 
-  if (isSuccess && !articlesStore.articlesCount) {
+  if (isSuccess && !articlesCount) {
     return (
       <EmptyBlock
         align="center"
@@ -41,7 +43,7 @@ const UserFeed = observer(() => {
       <Divider/>
       <Pagination
         onChange={handleOnPageNumberChange}
-        total={articlesStore.articlesCount}
+        total={articlesCount}
         current={currentPage}
         showSizeChanger={false}
         simple
@@ -51,7 +53,7 @@ const UserFeed = observer(() => {
         justify="center"
         wrap="wrap"
       >
-        {articlesStore.articles.map((articleItem) => (
+        {articles.map((articleItem) => (
           <ArticleCard
             {...articleItem}
             key={articleItem.slug}
@@ -61,13 +63,13 @@ const UserFeed = observer(() => {
       </ArticlesWrapper>
       <Pagination
         onChange={handleOnPageNumberChange}
-        total={articlesStore.articlesCount}
+        total={articlesCount}
         current={currentPage}
         showSizeChanger={false}
         simple
       />
     </>
   );
-});
+};
 
 export default UserFeed;

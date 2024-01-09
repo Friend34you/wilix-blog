@@ -151,7 +151,7 @@ sample({
 
 $articles.on(createArticleFx.doneData, (state, newArticleData) => ({...state, newArticleData}));
 $articles.on(fetchArticlesFx.doneData, (_, data) => data.articles);
-$articles.on(getFavoriteArticlesFx.doneData, (_, articles) => articles);
+$articles.on(getFavoriteArticlesFx.doneData, (_, data) => data.articles);
 $articles.on(toggleFavoriteArticleFx.doneData, (state, newData) => state.map((article) => {
   if (article.slug === newData.articleSlug) {
     return {
@@ -173,6 +173,7 @@ $currentArticle.on(getOneArticleFx.doneData,(_, article) => article);
 
 $articlesCount.on(createArticleFx.doneData, (count) => count + 1);
 $articlesCount.on(fetchArticlesFx.doneData, (_, data) => data.articlesCount);
+$articlesCount.on(getFavoriteArticlesFx.doneData, (_, data) => data.articlesCount);
 
 $toggleFavoriteError.on(toggleFavoriteArticleFx.failData, (_, error) => error);
 $toggleFavoriteError.reset(toggleFavoriteArticleFx.doneData);
@@ -184,6 +185,7 @@ const articlesStore = {
   fetchArticles: fetchArticlesFx,
   getOneArticle: getOneArticleFx,
   createArticle: createArticleFx,
+  getFavoriteArticles: getFavoriteArticlesFx,
   toggleFavoriteLoading: toggleFavoriteArticleFx.pending,
   toggleFavoriteError: $toggleFavoriteError,
   toggleFavoriteArticle: articleFavoritedToggled,

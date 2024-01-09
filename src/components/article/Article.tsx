@@ -24,9 +24,9 @@ const Article = () => {
     setIsLoading(true);
     articlesStore
       .getOneArticle(slug)
-      .then(() => {
+      .then((articleData) => {
         profilesStore
-          .fetchUserProfile(article!.author.username)
+          .fetchUserProfile(articleData.author.username)
           .then(() => setIsSuccess(true))
           .catch((error: Error) => notification.error({message: error.message}))
           .finally(() => setIsLoading(false));
@@ -38,7 +38,7 @@ const Article = () => {
       articlesStore.currentArticleDefaulted();
       profilesStore.profile = null;
     };
-  }, [article, slug]);
+  }, [slug]);
 
   function handleOnFavoriteClick() {
     articlesStore.toggleFavoriteArticle(slug);
