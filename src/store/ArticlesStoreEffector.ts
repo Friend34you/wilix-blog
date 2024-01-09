@@ -180,12 +180,13 @@ $toggleFavoriteError.reset(toggleFavoriteArticleFx.doneData);
 const articlesStore = {
   articles: $articles,
   currentArticle: $currentArticle,
+  articlesCount: $articlesCount,
   fetchArticles: fetchArticlesFx,
   getOneArticle: getOneArticleFx,
   createArticle: createArticleFx,
   toggleFavoriteLoading: toggleFavoriteArticleFx.pending,
   toggleFavoriteError: $toggleFavoriteError,
-  articleFavoritedToggled,
+  toggleFavoriteArticle: articleFavoritedToggled,
   currentArticleDefaulted,
 };
 

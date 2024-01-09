@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 import {RequestModes} from "../../types/requestModes.ts";
 import profilesStore from "../../store/profilesStore.ts";
-import articlesStore from "../../store/articlesStore.ts";
+import articlesStore from "../../store/ArticlesStoreEffector.ts";
 import {notification} from "antd";
 
 type FetchArticleConfigType = {
@@ -37,7 +37,12 @@ export const useProfileArticles = () => {
 
     setIsLoading(true);
     articlesStore
-      .fetchArticles(ARTICLES_LIMIT, pageNumberForRequest, undefined, config.author, config.favorited)
+      .fetchArticles({
+        limit:  ARTICLES_LIMIT,
+        offset: pageNumberForRequest,
+        author: config.author,
+        favorited: config.favorited
+      })
       .then(() => {
         setIsSuccess(true);
       })
