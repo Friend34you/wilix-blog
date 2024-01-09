@@ -13,6 +13,7 @@ type ToggleFollowUserProfileType = {
 
 //Сторы
 const $profile = createStore<IProfile | null>(null);
+//пришлось создать отдельный стор для ошибки в данном месте, пока костыль, но в дальнейшем возможно ок
 const $toggleFollowError = createStore<Error | null>(null);
 
 //Ивенты
@@ -43,7 +44,7 @@ const toggleFollowUserProfileFx = createEffect(async ({username, isFollowed}: To
 });
 
 //TODO: нужно ли это? Пока оставил
-//Взаимодействие
+
 // sample({
 //   clock: userProfileFollowToggled,
 //   source: $profile,
@@ -59,6 +60,7 @@ const toggleFollowUserProfileFx = createEffect(async ({username, isFollowed}: To
 //   target: toggleFollowUserProfileFx
 // });
 
+//Взаимодействие
 sample({
   clock: userProfileFollowToggled,
   source: $profile,
