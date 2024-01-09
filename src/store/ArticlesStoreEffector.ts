@@ -7,7 +7,7 @@ type ArticleResponseType = { article: IArticle }
 type FetchArticlesParamsType = {
   limit: number,
   offset: number,
-  tag?: string,
+  tag: string | null,
   author?: string,
   favorited?: string,
 }

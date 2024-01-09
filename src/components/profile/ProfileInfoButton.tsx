@@ -31,7 +31,7 @@ const ProfileInfoButton: FC<ProfileInfoButtonProps> = ({onFollowClick, isDisable
   }
 
   //Редактирования профиля у нас нет, так что пока без ссылочной обёртки
-  if (isUserAuth && user?.username === profilesStore.profile!.username) {
+  if (isUserAuth && user?.username === profile!.username) {
     return (
       <>
         <StyledButton>
