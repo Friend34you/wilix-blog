@@ -41,7 +41,7 @@ export const useProfileArticles = () => {
     setIsLoading(true);
     articlesStore
       .fetchArticles({
-        limit:  ARTICLES_LIMIT,
+        limit: ARTICLES_LIMIT,
         offset: pageNumberForRequest,
         author: config.author,
         favorited: config.favorited
@@ -50,7 +50,7 @@ export const useProfileArticles = () => {
         setIsSuccess(true);
       })
       .catch((error: Error) => notification.error({message: error.message}))
-      .finally(() =>    {
+      .finally(() => {
         setIsLoading(false);
       });
   }, [profile, mode, currentPage]);

@@ -1,9 +1,9 @@
 import {Flex, Spin, Typography, notification} from "antd";
 import {useEffect, useState} from "react";
 import articlesStore from "../../store/ArticlesStoreEffector";
+import profilesStore from "../../store/ProfilesStoreEffector.ts";
 import TagsList from "../TagsList.tsx";
 import styled from "styled-components";
-import profilesStore from "../../store/profilesStore.ts";
 import {useLocation} from "react-router-dom";
 import ArticleInteraction from "./ArticleInteraction.tsx";
 import ArticleAuthor from "./ArticleAuthor.tsx";
@@ -16,11 +16,9 @@ const Article = () => {
   const [isSuccess, setIsSuccess] = useState(false);
 
   const article = useUnit(articlesStore.currentArticle);
-
   const profile = useUnit(profilesStore.profile);
   const error = useUnit(profilesStore.toggleFollowError);
 
-  const article = articlesStore.currentArticle!;
   const path = useLocation().pathname.split("/");
   const slug = path[path.length - 1];
 
@@ -46,7 +44,6 @@ const Article = () => {
 
   function handleOnFavoriteClick() {
     articlesStore.toggleFavoriteArticle(slug);
-      // .catch((error: Error) => notification.error({message: error.message}));
   }
 
   function handleOnFollowClick() {
