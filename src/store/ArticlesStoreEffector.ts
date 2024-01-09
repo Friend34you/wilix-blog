@@ -125,7 +125,7 @@ sample({
     targetArticle: articlesData.articles.find((article) => article.slug === articleSlug)!,
     articleSlug
   }),
-  target: articleFromCurrentArticleStoreTook
+  target: articleFromArticlesStoreTook
 });
 
 sample({
@@ -152,9 +152,6 @@ sample({
 $articles.on(createArticleFx.doneData, (state, newArticleData) => ({...state, newArticleData}));
 $articles.on(fetchArticlesFx.doneData, (_, data) => data.articles);
 $articles.on(getFavoriteArticlesFx.doneData, (_, articles) => articles);
-
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-expect-error
 $articles.on(toggleFavoriteArticleFx.doneData, (state, newData) => state.map((article) => {
   if (article.slug === newData.articleSlug) {
     return {
@@ -163,6 +160,7 @@ $articles.on(toggleFavoriteArticleFx.doneData, (state, newData) => state.map((ar
       favoritesCount: article.favoritesCount + newData.counterDigitIteration
     };
   }
+  return article;
 }));
 
 $currentArticle.on(toggleFavoriteArticleFx.doneData, (state, newData) => ({
