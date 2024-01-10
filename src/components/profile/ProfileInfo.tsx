@@ -1,6 +1,6 @@
 import {Avatar, Flex, notification, Typography} from "antd";
 import styled from "styled-components";
-import profilesStore from "../../store/ProfilesStoreEffector";
+import profilesStore from "../../store/ProfilesStore.ts";
 import {observer} from "mobx-react-lite";
 import ProfileInfoButton from "./ProfileInfoButton.tsx";
 import {useUnit} from "effector-react";

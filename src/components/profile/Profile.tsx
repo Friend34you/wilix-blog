@@ -1,6 +1,6 @@
 import {useLocation} from "react-router-dom";
 import {useEffect, useState} from "react";
-import profilesStore from "../../store/ProfilesStoreEffector";
+import profilesStore from "../../store/ProfilesStore.ts";
 import {Flex, notification, Spin} from "antd";
 import styled from "styled-components";
 import ProfileInfo from "./ProfileInfo.tsx";

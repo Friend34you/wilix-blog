@@ -1,6 +1,6 @@
 import {Outlet, useNavigate} from "react-router-dom";
 import {useEffect} from "react";
-import usersStore from "../../store/UsersStoreEffector";
+import usersStore from "../../store/UsersStore.ts";
 import {Routes} from "./routes.tsx";
 import {useUnit} from "effector-react";
 

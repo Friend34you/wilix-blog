@@ -2,7 +2,7 @@ import type {InputRef} from "antd";
 import {Button, Flex, Form, Input, notification, Typography} from "antd";
 import styled from "styled-components";
 import type {IArticle} from "../types/articleType.ts";
-import articlesStore from "../store/ArticlesStoreEffector.ts";
+import articlesStore from "../store/ArticlesStore.ts";
 import type {ReactNode} from "react";
 import { useRef, useState} from "react";
 import {InfoCircleOutlined} from "@ant-design/icons";

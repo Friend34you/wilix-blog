@@ -1,6 +1,6 @@
 import type { PaginationProps} from "antd";
 import {Divider, Pagination, Spin} from "antd";
-import articlesStore from "../../store/ArticlesStoreEffector.ts";
+import articlesStore from "../../store/ArticlesStore.ts";
 import {ArticlesWrapper, EmptyBlock} from "./StyledFeedCommon.ts";
 import ArticleCard from "../ArticleCard.tsx";
 import {useUserFeed} from "./useUserFeed.ts";
@@ -17,7 +17,6 @@ const UserFeed = () => {
     isSuccess,
     setCurrentPage
   } = useUserFeed(ARTICLES_LIMIT, ARTICLES_OFFSET);
-
 
   const handleOnPageNumberChange: PaginationProps['onChange'] = (page) => {
     setCurrentPage(page);

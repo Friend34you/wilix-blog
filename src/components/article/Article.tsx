@@ -1,7 +1,7 @@
 import {Flex, Spin, Typography, notification} from "antd";
-import {useEffect, useState} from "react";
-import articlesStore from "../../store/ArticlesStoreEffector";
-import profilesStore from "../../store/ProfilesStoreEffector.ts";
+import {useCallback, useEffect, useState} from "react";
+import articlesStore from "../../store/ArticlesStore.ts";
+import profilesStore from "../../store/ProfilesStore.ts";
 import TagsList from "../TagsList.tsx";
 import styled from "styled-components";
 import {useLocation} from "react-router-dom";
@@ -17,7 +17,8 @@ const Article = () => {
 
   const article = useUnit(articlesStore.currentArticle);
   const profile = useUnit(profilesStore.profile);
-  const error = useUnit(profilesStore.toggleFollowError);
+  const toggleFollowError = useUnit(profilesStore.toggleFollowError);
+  const toggleFavoriteError = useUnit(articlesStore.toggleFavoriteError);
 
   const path = useLocation().pathname.split("/");
   const slug = path[path.length - 1];
@@ -42,17 +43,21 @@ const Article = () => {
     };
   }, [slug]);
 
-  function handleOnFavoriteClick() {
-    articlesStore.toggleFavoriteArticle(slug);
-  }
-
-  function handleOnFollowClick() {
+  const handleOnFollowClick = useCallback(() => {
     profilesStore.toggleFollowUserProfile(article!.author.username);
 
-    if (error) {
-      notification.error({message: error.message});
+    if (toggleFollowError) {
+      notification.error({message: toggleFollowError.message});
     }
-  }
+  }, [article, toggleFollowError]);
+
+  const handleOnFavoriteClick = useCallback( () => {
+    articlesStore.toggleFavoriteArticle(slug);
+
+    if (toggleFavoriteError) {
+      notification.error({message: toggleFavoriteError.message});
+    }
+  }, [toggleFavoriteError, slug]);
 
   if (isLoading || !isSuccess) {
     return (

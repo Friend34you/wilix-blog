@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import articlesStore from "../../store/ArticlesStoreEffector.ts";
+import articlesStore from "../../store/ArticlesStore.ts";
 import {notification} from "antd";
 import {useUnit} from "effector-react/effector-react.umd";
 

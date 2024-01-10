@@ -2,7 +2,7 @@ import {Divider, Flex, notification, Typography} from "antd";
 import AuthForm from "./AuthForm.tsx";
 import type {FieldType} from "./authTypes.ts";
 import {Link, useNavigate} from "react-router-dom";
-import usersStore from "../../store/UsersStoreEffector";
+import usersStore from "../../store/UsersStore.ts";
 import {useState} from "react";
 import styled from "styled-components";
 import {FormWrapper} from "./FormWrapper.tsx";

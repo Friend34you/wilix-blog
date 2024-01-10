@@ -1,8 +1,8 @@
 import TagsCloud from "../TagsCloud.tsx";
-import tagsStore from "../../store/TagsStoreEffector";
+import tagsStore from "../../store/TagsStore.ts";
 import type { PaginationProps} from "antd";
 import {Divider, Pagination, Spin, Tag} from "antd";
-import articlesStore from "../../store/ArticlesStoreEffector.ts";
+import articlesStore from "../../store/ArticlesStore.ts";
 import ArticleCard from "../ArticleCard.tsx";
 import {ArticlesWrapper, EmptyBlock} from "./StyledFeedCommon.ts";
 import {useFeed} from "./useFeed.ts";

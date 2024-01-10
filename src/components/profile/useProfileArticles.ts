@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 import {RequestModes} from "../../types/requestModes.ts";
-import profilesStore from "../../store/ProfilesStoreEffector";
-import articlesStore from "../../store/ArticlesStoreEffector.ts";
+import profilesStore from "../../store/ProfilesStore.ts";
+import articlesStore from "../../store/ArticlesStore.ts";
 import {notification} from "antd";
 import {useUnit} from "effector-react";
 

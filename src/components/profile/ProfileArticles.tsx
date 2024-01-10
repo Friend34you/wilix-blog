@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import type { PaginationProps} from "antd";
 import {Divider, Flex, Pagination, Segmented, Spin} from "antd";
-import articlesStore from "../../store/ArticlesStoreEffector.ts";
+import articlesStore from "../../store/ArticlesStore.ts";
 import ArticleCard from "../ArticleCard.tsx";
 import {RequestModes} from "../../types/requestModes.ts";
 import {useProfileArticles} from "./useProfileArticles.ts";

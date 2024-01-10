@@ -1,6 +1,6 @@
 import type {MenuProps} from "antd";
 import {Flex, Space, Spin} from "antd";
-import usersStore from "../../store/UsersStoreEffector";
+import usersStore from "../../store/UsersStore.ts";
 import styled from "styled-components";
 import {UserOutlined} from "@ant-design/icons";
 import {Link} from "react-router-dom";

@@ -1,5 +1,5 @@
-import usersStore from "../../store/UsersStoreEffector";
-import profilesStore from "../../store/ProfilesStoreEffector";
+import usersStore from "../../store/UsersStore.ts";
+import profilesStore from "../../store/ProfilesStore.ts";
 import {Link} from "react-router-dom";
 import {Routes} from "../router/routes.tsx";
 import styled from "styled-components";

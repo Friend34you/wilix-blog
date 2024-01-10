@@ -2,7 +2,7 @@ import {Flex, Spin, Typography} from "antd";
 import TagsList from "./TagsList.tsx";
 import styled from "styled-components";
 import {useGate, useUnit} from "effector-react";
-import tagsStore from "../store/TagsStoreEffector";
+import tagsStore from "../store/TagsStore.ts";
 
 const StyledFlex = styled(Flex)`
   padding: 10px;

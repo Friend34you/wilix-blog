@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
-import articlesStore from "../../store/ArticlesStoreEffector.ts";
+import articlesStore from "../../store/ArticlesStore.ts";
 import {notification} from "antd";
-import tagsStore from "../../store/TagsStoreEffector";
+import tagsStore from "../../store/TagsStore.ts";
 import {useUnit} from "effector-react/effector-react.umd";
 
 //используется только в Feed компоненте, больше нигде не использовать
