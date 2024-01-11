@@ -92,9 +92,7 @@ const ArticleCard: FC<ArticleCardProps> = ({
 
       <hr/>
 
-      <TagsWrapper
-        justify="end"
-      >
+      <TagsWrapper justify="end">
         <TagsList tags={tagList} />
       </TagsWrapper>
     </StyledCard>
@@ -133,9 +131,10 @@ const StyledDescriptionText = styled(Text)`
 `;
 
 const TagsWrapper = styled(Flex)`
-  height: 25px;
+  height: 34px;
   display: block;
   overflow: scroll;
+  white-space: nowrap;
 `;
 
 export default ArticleCard;
