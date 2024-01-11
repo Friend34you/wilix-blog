@@ -22,7 +22,7 @@ const StyledWrapper = styled.div`
   top: 5vh;
   padding: 5px;
 
-  @media (max-width: 1024px) {
+  @media (max-width: 1300px) {
     display: block;
     position: static;
   }

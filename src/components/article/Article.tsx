@@ -137,6 +137,7 @@ const StyledHr = styled.hr`
 `;
 
 const StyledParagraph = styled(Paragraph)`
+  background-color: white;
   max-width: 1200px;
   min-width: 220px;
   font-size: 1rem;

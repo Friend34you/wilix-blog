@@ -66,7 +66,7 @@ const Registration = () => {
 };
 
 const RegistrationWrapper = styled(Flex)`
-  min-height: inherit;
+  height: inherit;
   background: rgb(195,34,87);
   background: linear-gradient(0deg, rgba(195,34,87,1) 0%, rgba(253,179,45,1) 100%);
   

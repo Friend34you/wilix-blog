@@ -62,7 +62,7 @@ const Authorization = () => {
 };
 
 const AuthorizationWrapper = styled(Flex)`
-  min-height: inherit;
+  height: inherit;
   background: rgb(195, 34, 87);
   background: linear-gradient(0deg, rgb(136, 34, 195) 0%, rgba(253, 179, 45, 1) 100%);
 

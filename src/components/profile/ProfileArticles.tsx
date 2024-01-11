@@ -111,7 +111,7 @@ const ProfileArticlesWrapper = styled(Flex)`
 `;
 
 const EmptyBlock = styled(Flex)`
-  height: 70vh;
+  height: inherit;
   width: inherit;
 `;
 
