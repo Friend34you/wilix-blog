@@ -44,7 +44,8 @@ const Articles = () => {
 
 const Wrapper = styled(Flex)`
   padding: 5vh 0;
-  min-height: 100vh;
+  height: inherit;
+  overflow: scroll;
 `;
 
 const StyledSegmented = styled(Segmented)`

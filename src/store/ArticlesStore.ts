@@ -33,6 +33,7 @@ const articleFavoritedToggled = createEvent<string>();
 const currentArticleDefaulted = createEvent();
 const articleFromCurrentArticleStoreTook = createEvent<ToggleFavoriteArticleParamsType>();
 const articleFromArticlesStoreTook = createEvent<ToggleFavoriteArticleParamsType>();
+const toggleFavoriteErrorDefaulted = createEvent();
 
 //Эффекты
 const fetchArticlesFx = createEffect(async ({
@@ -176,7 +177,7 @@ $articlesCount.on(fetchArticlesFx.doneData, (_, data) => data.articlesCount);
 $articlesCount.on(getFavoriteArticlesFx.doneData, (_, data) => data.articlesCount);
 
 $toggleFavoriteError.on(toggleFavoriteArticleFx.failData, (_, error) => error);
-$toggleFavoriteError.reset(toggleFavoriteArticleFx.doneData);
+$toggleFavoriteError.reset(toggleFavoriteArticleFx.doneData, toggleFavoriteErrorDefaulted);
 
 const articlesStore = {
   articles: $articles,
@@ -190,6 +191,7 @@ const articlesStore = {
   toggleFavoriteError: $toggleFavoriteError,
   toggleFavoriteArticle: articleFavoritedToggled,
   currentArticleDefaulted,
+  toggleFavoriteErrorDefaulted
 };
 
 export default articlesStore;

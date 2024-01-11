@@ -7,7 +7,7 @@ import ArticleCard from "../ArticleCard.tsx";
 import {ArticlesWrapper, EmptyBlock} from "./StyledFeedCommon.ts";
 import {useFeed} from "./useFeed.ts";
 import {useUnit} from "effector-react";
-import {useCallback} from "react";
+import {useEffect} from "react";
 
 const ARTICLES_LIMIT = 10;
 const ARTICLES_OFFSET = 10;
@@ -23,14 +23,17 @@ const Feed = () => {
     setCurrentPage
   } = useFeed(ARTICLES_LIMIT, ARTICLES_OFFSET);
 
+  //TODO: можно вывнести в отдельный хук и использовать в хуках "страниц-компонентов"
   const toggleFavoriteError = useUnit(articlesStore.toggleFavoriteError);
 
-  const handleOnFavoriteClick = useCallback( (slug: string) => {
-    articlesStore.toggleFavoriteArticle(slug);
-
+  useEffect(() => {
     if (toggleFavoriteError) {
       notification.error({message: toggleFavoriteError.message});
     }
+
+    return () => {
+      articlesStore.toggleFavoriteErrorDefaulted();
+    };
   }, [toggleFavoriteError]);
 
   const handleOnPageNumberChange: PaginationProps['onChange'] = (page) => {
@@ -39,6 +42,10 @@ const Feed = () => {
 
   const handleOnClose = () => {
     tagsStore.selectedTag(null);
+  };
+
+  const handleOnFavoriteClick = (slug: string) => {
+    return () => articlesStore.toggleFavoriteArticle(slug);
   };
 
   if (isLoading || !isSuccess) {
@@ -97,7 +104,7 @@ const Feed = () => {
           <ArticleCard
             {...articleItem}
             key={articleItem.slug}
-            onFavoriteClick={() => handleOnFavoriteClick(articleItem.slug)}
+            onFavoriteClick={handleOnFavoriteClick(articleItem.slug)}
           />
         ))}
       </ArticlesWrapper>

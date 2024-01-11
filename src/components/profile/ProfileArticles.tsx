@@ -6,7 +6,7 @@ import ArticleCard from "../ArticleCard.tsx";
 import {RequestModes} from "../../types/requestModes.ts";
 import {useProfileArticles} from "./useProfileArticles.ts";
 import {useUnit} from "effector-react";
-import {useCallback} from "react";
+import {useEffect} from "react";
 
 const articlesOptions = [RequestModes.PROFILE_ARTICLES, RequestModes.PROFILE_FAVORITE_ARTICLES];
 
@@ -23,15 +23,22 @@ const ProfileArticles = () => {
   const articles = useUnit(articlesStore.articles);
   const articlesCount = useUnit(articlesStore.articlesCount);
 
+  //TODO: можно вывнести в отдельный хук и использовать в хуках "страниц-компонентов"
   const toggleFavoriteError = useUnit(articlesStore.toggleFavoriteError);
 
-  const handleOnFavoriteClick = useCallback( (slug: string) => {
-    articlesStore.toggleFavoriteArticle(slug);
-
+  useEffect(() => {
     if (toggleFavoriteError) {
       notification.error({message: toggleFavoriteError.message});
     }
+
+    return () => {
+      articlesStore.toggleFavoriteErrorDefaulted();
+    };
   }, [toggleFavoriteError]);
+
+  const handleOnFavoriteClick = (slug: string) => {
+    return () => articlesStore.toggleFavoriteArticle(slug);
+  };
 
   const handleOnPageNumberChange: PaginationProps['onChange'] = (page) => {
     setCurrentPage(page);
@@ -96,7 +103,7 @@ const ProfileArticles = () => {
           <ArticleCard
             {...articleItem}
             key={articleItem.slug}
-            onFavoriteClick={() => handleOnFavoriteClick(articleItem.slug)}
+            onFavoriteClick={handleOnFavoriteClick(articleItem.slug)}
           />
         ))}
       </Flex>
