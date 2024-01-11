@@ -39,7 +39,7 @@ const rules: NewArticleFormRules = {
     },
     {
       max: 30,
-      message: "max title length - 30"
+      message: "max title length - 50"
     }
   ],
   description: [
@@ -53,7 +53,7 @@ const rules: NewArticleFormRules = {
     },
     {
       max: 45,
-      message: "max description length - 45"
+      message: "max description length - 120"
     }
   ],
   body: [
@@ -95,9 +95,11 @@ const formItems: formItemType[] = [
   },
 ];
 
+const TAGS_INITIAL_VALUE: string[] = [];
+
 const NewArticle = () => {
   const [isDisabled, setIsDisabled] = useState(false);
-  const [tags, setTags] = useState<string[]>([]);
+  const [tags, setTags] = useState<string[]>(TAGS_INITIAL_VALUE);
 
   const [form] = StyledForm.useForm();
   const tagInput = useRef<InputRef>(null);
@@ -110,6 +112,10 @@ const NewArticle = () => {
   };
 
   const handleOnTagsInputPressEnter = () => {
+    if (form.getFieldError("tagList").length !== 0) {
+      return;
+    }
+
     const newTag = form.getFieldValue("tagList").trim();
     if (!tags) {
       setTags([newTag]);
@@ -136,6 +142,7 @@ const NewArticle = () => {
       .then(() => {
         notification.success({message: "Article successfully created"});
         form.resetFields();
+        setTags(TAGS_INITIAL_VALUE);
       })
       .catch((error: Error) => notification.error({message: error.message}))
       .finally(() => setIsDisabled(false));
