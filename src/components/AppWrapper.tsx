@@ -16,7 +16,7 @@ const AppWrapper = () => {
       <AppFooter>
         <FooterFlex
           vertical
-          justify={"center"}
+          justify="center"
         >
           <StyledParagraph>
             Some footer text. Do you like space and kitties? I think you do, so create your account and write lots of articles
@@ -31,11 +31,12 @@ const AppWrapper = () => {
 };
 
 const StyledLayout = styled(Layout)`
-  background-color: white;
+  background-color: #f6f5f5;
 `;
 
 const AppMain = styled.main`
-  min-height: 90vh;
+  height: 94vh;
+  overflow: scroll;
 `;
 
 const AppFooter = styled.footer`
