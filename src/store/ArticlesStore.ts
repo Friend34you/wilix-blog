@@ -177,7 +177,7 @@ $articlesCount.on(fetchArticlesFx.doneData, (_, data) => data.articlesCount);
 $articlesCount.on(getFavoriteArticlesFx.doneData, (_, data) => data.articlesCount);
 
 $toggleFavoriteError.on(toggleFavoriteArticleFx.failData, (_, error) => error);
-$toggleFavoriteError.reset(toggleFavoriteArticleFx.doneData, toggleFavoriteErrorDefaulted);
+$toggleFavoriteError.reset([toggleFavoriteArticleFx.doneData, toggleFavoriteErrorDefaulted]);
 
 const articlesStore = {
   articles: $articles,

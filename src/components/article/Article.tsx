@@ -1,5 +1,5 @@
 import {Flex, Spin, Typography, notification} from "antd";
-import {useCallback, useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import articlesStore from "../../store/ArticlesStore.ts";
 import profilesStore from "../../store/ProfilesStore.ts";
 import TagsList from "../TagsList.tsx";
@@ -12,6 +12,7 @@ import {useUnit} from "effector-react";
 const {Title, Paragraph} = Typography;
 
 const Article = () => {
+  //TODO: можно вынести всю логику из компонента в хук
   const [isLoading, setIsLoading] = useState(true);
   const [isSuccess, setIsSuccess] = useState(false);
 
@@ -43,21 +44,30 @@ const Article = () => {
     };
   }, [slug]);
 
-  const handleOnFollowClick = useCallback(() => {
-    profilesStore.toggleFollowUserProfile(article!.author.username);
-
-    if (toggleFollowError) {
-      notification.error({message: toggleFollowError.message});
-    }
-  }, [article, toggleFollowError]);
-
-  const handleOnFavoriteClick = useCallback( () => {
-    articlesStore.toggleFavoriteArticle(slug);
-
+  //TODO: можно вывнести в отдельный хук и использовать в хуках "страниц-компонентов"
+  useEffect(() => {
     if (toggleFavoriteError) {
       notification.error({message: toggleFavoriteError.message});
     }
-  }, [toggleFavoriteError, slug]);
+
+    return () => {
+      articlesStore.toggleFavoriteErrorDefaulted();
+    };
+  }, [toggleFavoriteError]);
+
+  useEffect(() => {
+    if (toggleFollowError) {
+      notification.error({message: toggleFollowError.message});
+    }
+
+    return () => {
+      profilesStore.toggleFollowErrorDefaulted();
+    };
+  }, [toggleFollowError]);
+
+  const handleOnFavoriteClick = () => articlesStore.toggleFavoriteArticle(slug);
+
+  const handleOnFollowClick = () => profilesStore.toggleFollowUserProfile(article!.author.username);
 
   if (isLoading || !isSuccess) {
     return (

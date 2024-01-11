@@ -19,6 +19,7 @@ const $toggleFollowError = createStore<Error | null>(null);
 //Ивенты
 const profileChanged = createEvent<IProfile | null>();
 const userProfileFollowToggled = createEvent<string>();
+const toggleFollowErrorDefaulted = createEvent();
 
 //Эффекты
 const fetchUserProfileFx = createEffect(async (username: string) => {
@@ -78,7 +79,7 @@ $profile.on(toggleFollowUserProfileFx.doneData, (state): IProfile => {
 });
 
 $toggleFollowError.on(toggleFollowUserProfileFx.failData, (_, error) => error);
-$toggleFollowError.reset(toggleFollowUserProfileFx.doneData);
+$toggleFollowError.reset([toggleFollowUserProfileFx.doneData, toggleFollowErrorDefaulted]);
 
 const profilesStore = {
   profile: $profile,
@@ -86,7 +87,8 @@ const profilesStore = {
   fetchUserProfile: fetchUserProfileFx,
   toggleFollowUserProfile: userProfileFollowToggled,
   toggleFollowLoading: fetchUserProfileFx.pending,
-  profileChanged
+  profileChanged,
+  toggleFollowErrorDefaulted
 };
 
 export default profilesStore;
