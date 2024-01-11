@@ -1,11 +1,12 @@
 import styled from "styled-components";
 import type { PaginationProps} from "antd";
-import {Divider, Flex, Pagination, Segmented, Spin} from "antd";
+import {Divider, Flex, notification, Pagination, Segmented, Spin} from "antd";
 import articlesStore from "../../store/ArticlesStore.ts";
 import ArticleCard from "../ArticleCard.tsx";
 import {RequestModes} from "../../types/requestModes.ts";
 import {useProfileArticles} from "./useProfileArticles.ts";
 import {useUnit} from "effector-react";
+import {useCallback} from "react";
 
 const articlesOptions = [RequestModes.PROFILE_ARTICLES, RequestModes.PROFILE_FAVORITE_ARTICLES];
 
@@ -21,6 +22,16 @@ const ProfileArticles = () => {
 
   const articles = useUnit(articlesStore.articles);
   const articlesCount = useUnit(articlesStore.articlesCount);
+
+  const toggleFavoriteError = useUnit(articlesStore.toggleFavoriteError);
+
+  const handleOnFavoriteClick = useCallback( (slug: string) => {
+    articlesStore.toggleFavoriteArticle(slug);
+
+    if (toggleFavoriteError) {
+      notification.error({message: toggleFavoriteError.message});
+    }
+  }, [toggleFavoriteError]);
 
   const handleOnPageNumberChange: PaginationProps['onChange'] = (page) => {
     setCurrentPage(page);
@@ -85,7 +96,7 @@ const ProfileArticles = () => {
           <ArticleCard
             {...articleItem}
             key={articleItem.slug}
-            onFavoriteClick={() => articlesStore.toggleFavoriteArticle(articleItem.slug)}
+            onFavoriteClick={() => handleOnFavoriteClick(articleItem.slug)}
           />
         ))}
       </Flex>

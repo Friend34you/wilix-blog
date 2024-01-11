@@ -30,8 +30,8 @@ const StyledWrapper = styled.div`
 const {Title} = Typography;
 
 const TagsCloud = () => {
-  const tagsLoading = useUnit(tagsStore.fetchTags.pending);
   const tags = useUnit(tagsStore.tags);
+  const tagsLoading = useUnit(tagsStore.fetchTags.pending);
   const tagsError = useUnit(tagsStore.error);
 
   useGate(tagsStore.tagsCloudGate);
@@ -39,6 +39,12 @@ const TagsCloud = () => {
   const handleOnTagClick = (tag: string) => {
     tagsStore.selectedTag(tag);
   };
+
+  if (tagsLoading) {
+    return (
+      <Spin/>
+    );
+  }
 
   return (
     <StyledWrapper>
@@ -49,9 +55,6 @@ const TagsCloud = () => {
         justify="space-evenly"
         wrap="wrap"
       >
-        {tagsLoading && (
-          <Spin/>
-        )}
         {tagsError && (
           <p>{tagsError.message}</p>
         )}

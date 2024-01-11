@@ -1,9 +1,11 @@
 import type { PaginationProps} from "antd";
-import {Divider, Pagination, Spin} from "antd";
+import {Divider, notification, Pagination, Spin} from "antd";
 import articlesStore from "../../store/ArticlesStore.ts";
 import {ArticlesWrapper, EmptyBlock} from "./StyledFeedCommon.ts";
 import ArticleCard from "../ArticleCard.tsx";
 import {useUserFeed} from "./useUserFeed.ts";
+import {useUnit} from "effector-react";
+import {useCallback} from "react";
 
 const ARTICLES_LIMIT = 10;
 const ARTICLES_OFFSET = 10;
@@ -17,6 +19,16 @@ const UserFeed = () => {
     isSuccess,
     setCurrentPage
   } = useUserFeed(ARTICLES_LIMIT, ARTICLES_OFFSET);
+
+  const toggleFavoriteError = useUnit(articlesStore.toggleFavoriteError);
+
+  const handleOnFavoriteClick = useCallback( (slug: string) => {
+    articlesStore.toggleFavoriteArticle(slug);
+
+    if (toggleFavoriteError) {
+      notification.error({message: toggleFavoriteError.message});
+    }
+  }, [toggleFavoriteError]);
 
   const handleOnPageNumberChange: PaginationProps['onChange'] = (page) => {
     setCurrentPage(page);
@@ -56,7 +68,7 @@ const UserFeed = () => {
           <ArticleCard
             {...articleItem}
             key={articleItem.slug}
-            onFavoriteClick={() => articlesStore.toggleFavoriteArticle(articleItem.slug)}
+            onFavoriteClick={() => handleOnFavoriteClick(articleItem.slug)}
           />
         ))}
       </ArticlesWrapper>

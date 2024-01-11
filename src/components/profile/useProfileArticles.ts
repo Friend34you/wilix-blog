@@ -44,7 +44,8 @@ export const useProfileArticles = () => {
         limit: ARTICLES_LIMIT,
         offset: pageNumberForRequest,
         author: config.author,
-        favorited: config.favorited
+        favorited: config.favorited,
+        tag: null
       })
       .then(() => {
         setIsSuccess(true);

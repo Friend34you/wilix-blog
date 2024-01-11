@@ -1,11 +1,13 @@
 import TagsCloud from "../TagsCloud.tsx";
 import tagsStore from "../../store/TagsStore.ts";
 import type { PaginationProps} from "antd";
-import {Divider, Pagination, Spin, Tag} from "antd";
+import {Divider, notification, Pagination, Spin, Tag} from "antd";
 import articlesStore from "../../store/ArticlesStore.ts";
 import ArticleCard from "../ArticleCard.tsx";
 import {ArticlesWrapper, EmptyBlock} from "./StyledFeedCommon.ts";
 import {useFeed} from "./useFeed.ts";
+import {useUnit} from "effector-react";
+import {useCallback} from "react";
 
 const ARTICLES_LIMIT = 10;
 const ARTICLES_OFFSET = 10;
@@ -20,6 +22,16 @@ const Feed = () => {
     selectedTag,
     setCurrentPage
   } = useFeed(ARTICLES_LIMIT, ARTICLES_OFFSET);
+
+  const toggleFavoriteError = useUnit(articlesStore.toggleFavoriteError);
+
+  const handleOnFavoriteClick = useCallback( (slug: string) => {
+    articlesStore.toggleFavoriteArticle(slug);
+
+    if (toggleFavoriteError) {
+      notification.error({message: toggleFavoriteError.message});
+    }
+  }, [toggleFavoriteError]);
 
   const handleOnPageNumberChange: PaginationProps['onChange'] = (page) => {
     setCurrentPage(page);
@@ -85,7 +97,7 @@ const Feed = () => {
           <ArticleCard
             {...articleItem}
             key={articleItem.slug}
-            onFavoriteClick={() => articlesStore.toggleFavoriteArticle(articleItem.slug)}
+            onFavoriteClick={() => handleOnFavoriteClick(articleItem.slug)}
           />
         ))}
       </ArticlesWrapper>
