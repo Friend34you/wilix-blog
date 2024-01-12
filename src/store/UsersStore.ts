@@ -106,8 +106,7 @@ const usersStore = {
   fetchUser: fetchUserFx,
   loginUser: loginUserFx,
   logoutUser,
+  checkIsUserAuth
 };
-
-checkIsUserAuth();
 
 export default usersStore;

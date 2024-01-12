@@ -6,10 +6,10 @@ describe('UsersStore', () => {
   test("login user", async () => {
     const mockResponse = {
       isAuth: true,
-      token: "sometoken",
+      token: "someToken",
       user: {
-        email: "pedro@mail.ru",
-        username: "Pedro Pascal",
+        email: "exampleMail@mail.ru",
+        username: "example Pascal",
       }
     };
 
@@ -24,14 +24,14 @@ describe('UsersStore', () => {
     await allSettled(usersStore.loginUser, {
       scope,
       params: {
-        email: "pedro@mail.ru",
-        password: "1234"
+        email: "exampleMail@mail.ru",
+        password: "some password"
       }
     });
 
     expect(scope.getState(usersStore.user)).toEqual({
-      email: "pedro@mail.ru",
-      username: "Pedro Pascal",
+      email: "exampleMail@mail.ru",
+      username: "example Pascal",
     });
   });
 });
