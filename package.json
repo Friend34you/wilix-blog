@@ -9,7 +9,8 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "start": "npm run dev",
-    "lint:fix": "eslint --fix ."
+    "lint:fix": "eslint --fix .",
+    "test" : "vitest"
   },
   "dependencies": {
     "@ant-design/icons": "^5.2.6",
@@ -39,6 +40,7 @@
     "eslint-plugin-react-refresh": "^0.4.4",
     "typescript": "^5.2.2",
     "vite": "^5.0.0",
-    "vite-plugin-eslint": "^1.8.1"
+    "vite-plugin-eslint": "^1.8.1",
+    "vitest": "^1.1.3"
   }
 }
