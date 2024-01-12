@@ -1,12 +1,16 @@
 import styled from "styled-components";
 import type { PaginationProps} from "antd";
-import {Divider, Flex, notification, Pagination, Segmented, Spin} from "antd";
+import {Divider, Flex, Pagination, Segmented, Spin} from "antd";
 import articlesStore from "../../store/ArticlesStore.ts";
 import ArticleCard from "../ArticleCard.tsx";
 import {RequestModes} from "../../types/requestModes.ts";
 import {useProfileArticles} from "./useProfileArticles.ts";
 import {useUnit} from "effector-react";
-import {useEffect} from "react";
+import {useCallback} from "react";
+import usersStore from "../../store/UsersStore.ts";
+import {useNavigate} from "react-router-dom";
+import {useFavoriteError} from "../../hooks/useFavoriteError.ts";
+import {Routes} from "../router/routes.tsx";
 
 const articlesOptions = [RequestModes.PROFILE_ARTICLES, RequestModes.PROFILE_FAVORITE_ARTICLES];
 
@@ -23,22 +27,19 @@ const ProfileArticles = () => {
   const articles = useUnit(articlesStore.articles);
   const articlesCount = useUnit(articlesStore.articlesCount);
 
-  //TODO: можно вывнести в отдельный хук и использовать в хуках "страниц-компонентов"
-  const toggleFavoriteError = useUnit(articlesStore.toggleFavoriteError);
+  const isUserAuth = useUnit(usersStore.isUserAuth);
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    if (toggleFavoriteError) {
-      notification.error({message: toggleFavoriteError.message});
-    }
-
+  useFavoriteError();
+  const handleOnFavoriteClick = useCallback((slug: string) => {
     return () => {
-      articlesStore.toggleFavoriteErrorDefaulted();
+      if (!isUserAuth) {
+        navigate(Routes.AUTHORIZATION);
+        return;
+      }
+      articlesStore.toggleFavoriteArticle(slug);
     };
-  }, [toggleFavoriteError]);
-
-  const handleOnFavoriteClick = (slug: string) => {
-    return () => articlesStore.toggleFavoriteArticle(slug);
-  };
+  }, [isUserAuth, navigate]);
 
   const handleOnPageNumberChange: PaginationProps['onChange'] = (page) => {
     setCurrentPage(page);

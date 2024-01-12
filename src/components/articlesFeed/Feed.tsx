@@ -1,13 +1,17 @@
 import TagsCloud from "../TagsCloud.tsx";
 import tagsStore from "../../store/TagsStore.ts";
 import type { PaginationProps} from "antd";
-import {Divider, notification, Pagination, Spin, Tag} from "antd";
+import {Divider, Pagination, Spin, Tag} from "antd";
 import articlesStore from "../../store/ArticlesStore.ts";
 import ArticleCard from "../ArticleCard.tsx";
 import {ArticlesWrapper, EmptyBlock} from "./StyledFeedCommon.ts";
 import {useFeed} from "./useFeed.ts";
+import {useFavoriteError} from "../../hooks/useFavoriteError.ts";
+import {useNavigate} from "react-router-dom";
+import {Routes} from "../router/routes.tsx";
 import {useUnit} from "effector-react";
-import {useEffect} from "react";
+import usersStore from "../../store/UsersStore.ts";
+import {useCallback} from "react";
 
 const ARTICLES_LIMIT = 10;
 const ARTICLES_OFFSET = 10;
@@ -19,22 +23,23 @@ const Feed = () => {
     isLoading,
     isSuccess,
     currentPage,
-    selectedTag,
+    selectedTagValue,
     setCurrentPage
   } = useFeed(ARTICLES_LIMIT, ARTICLES_OFFSET);
 
-  //TODO: можно вывнести в отдельный хук и использовать в хуках "страниц-компонентов"
-  const toggleFavoriteError = useUnit(articlesStore.toggleFavoriteError);
+  const isUserAuth = useUnit(usersStore.isUserAuth);
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    if (toggleFavoriteError) {
-      notification.error({message: toggleFavoriteError.message});
-    }
-
+  useFavoriteError();
+  const handleOnFavoriteClick = useCallback((slug: string) => {
     return () => {
-      articlesStore.toggleFavoriteErrorDefaulted();
+      if (!isUserAuth) {
+        navigate(Routes.AUTHORIZATION);
+        return;
+      }
+      articlesStore.toggleFavoriteArticle(slug);
     };
-  }, [toggleFavoriteError]);
+  }, [isUserAuth, navigate]);
 
   const handleOnPageNumberChange: PaginationProps['onChange'] = (page) => {
     setCurrentPage(page);
@@ -44,21 +49,17 @@ const Feed = () => {
     tagsStore.selectedTag(null);
   };
 
-  const handleOnFavoriteClick = (slug: string) => {
-    return () => articlesStore.toggleFavoriteArticle(slug);
-  };
-
   if (isLoading || !isSuccess) {
     return (
       <>
         <TagsCloud />
-        {selectedTag && (
+        {selectedTagValue && (
           <Tag
             onClose={handleOnClose}
             color="#3C13AF"
             closable
           >
-            {selectedTag}
+            {selectedTagValue}
           </Tag>
         )}
         <Spin size="large" />
@@ -77,13 +78,13 @@ const Feed = () => {
   return (
     <>
       <TagsCloud />
-      {selectedTag && (
+      {selectedTagValue && (
         <Tag
           onClose={handleOnClose}
           color="#3C13AF"
           closable
         >
-          {selectedTag}
+          {selectedTagValue}
         </Tag>
       )}
       <Divider/>

@@ -13,7 +13,7 @@ export const useFeed = (limit = 10, offset = 10) => {
 
   const articlesCount = useUnit(articlesStore.articlesCount);
   const articles = useUnit(articlesStore.articles);
-  const selectedTag = useUnit(tagsStore.selectedTagValue);
+  const selectedTagValue = useUnit(tagsStore.selectedTagValue);
 
   useEffect(() => {
     const pageNumberForRequest = (currentPage - 1) * offset;
@@ -23,7 +23,7 @@ export const useFeed = (limit = 10, offset = 10) => {
       .fetchArticles({
         limit,
         offset: pageNumberForRequest,
-        tag: selectedTag
+        tag: selectedTagValue
       })
       .then(() => setIsSuccess(true))
       .catch((error: Error) => notification.error({message: error.message}))
@@ -32,11 +32,11 @@ export const useFeed = (limit = 10, offset = 10) => {
     return () => {
       setIsSuccess(false);
     };
-  }, [limit, offset, selectedTag, currentPage]);
+  }, [limit, offset, selectedTagValue, currentPage]);
 
   useEffect(() => {
     setCurrentPage(1);
-  }, [selectedTag]);
+  }, [selectedTagValue]);
 
   useEffect(() => {
     return () => {
@@ -50,7 +50,7 @@ export const useFeed = (limit = 10, offset = 10) => {
     isLoading,
     isSuccess,
     currentPage,
-    selectedTag,
+    selectedTagValue: selectedTagValue,
     setCurrentPage
   };
 };
