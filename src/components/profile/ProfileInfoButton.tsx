@@ -30,17 +30,11 @@ const ProfileInfoButton: FC<ProfileInfoButtonProps> = ({onFollowClick, isDisable
     );
   }
 
-  //Редактирования профиля у нас нет, так что пока без ссылочной обёртки
   if (isUserAuth && user?.username === profile!.username) {
     return (
-      <>
-        <StyledButton>
-          Edit Settings
-        </StyledButton>
-        <StyledButton onClick={handleOnLogout}>
-          LogOut
-        </StyledButton>
-      </>
+      <StyledButton onClick={handleOnLogout}>
+        LogOut
+      </StyledButton>
     );
   }
 
