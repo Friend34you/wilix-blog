@@ -23,7 +23,7 @@ const Article = () => {
   const article = useUnit(articlesStore.currentArticle);
   const profile = useUnit(profilesStore.profile);
   const isUserAuth = useUnit(usersStore.isUserAuth);
-refactored;
+
   const navigate = useNavigate();
   const path = useLocation().pathname.split("/");
   const slug = path[path.length - 1];
