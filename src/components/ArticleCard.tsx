@@ -25,7 +25,6 @@ const ArticleCard: FC<ArticleCardProps> = ({
   createdAt,
   description,
   title,
-  updatedAt,
   author,
   tagList,
   favoritesCount,
@@ -62,14 +61,9 @@ const ArticleCard: FC<ArticleCardProps> = ({
               {author.username}
             </Text>
           </Link>
-          <Flex vertical={true}>
-            <StyledDateText>
-              created: {formatDate(createdAt)}
-            </StyledDateText>
-            <StyledDateText>
-              edited: {formatDate(updatedAt)}
-            </StyledDateText>
-          </Flex>
+          <StyledDateText>
+            {formatDate(createdAt)}
+          </StyledDateText>
         </Space>
         <Button
           onClick={onFavoriteClick}
