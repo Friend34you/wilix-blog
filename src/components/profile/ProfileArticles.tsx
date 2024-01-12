@@ -1,15 +1,20 @@
 import styled from "styled-components";
 import type { PaginationProps} from "antd";
 import {Divider, Flex, Pagination, Segmented, Spin} from "antd";
-import articlesStore from "../../store/articlesStore.ts";
+import articlesStore from "../../store/ArticlesStore.ts";
 import ArticleCard from "../ArticleCard.tsx";
-import {observer} from "mobx-react-lite";
 import {RequestModes} from "../../types/requestModes.ts";
 import {useProfileArticles} from "./useProfileArticles.ts";
+import {useUnit} from "effector-react";
+import {useCallback} from "react";
+import usersStore from "../../store/UsersStore.ts";
+import {useNavigate} from "react-router-dom";
+import {useFavoriteError} from "../../hooks/useFavoriteError.ts";
+import {Routes} from "../router/routes.tsx";
 
 const articlesOptions = [RequestModes.PROFILE_ARTICLES, RequestModes.PROFILE_FAVORITE_ARTICLES];
 
-const ProfileArticles = observer(() => {
+const ProfileArticles = () => {
   const {
     mode,
     currentPage,
@@ -18,6 +23,23 @@ const ProfileArticles = observer(() => {
     isSuccess,
     isLoading
   } = useProfileArticles();
+
+  const articles = useUnit(articlesStore.articles);
+  const articlesCount = useUnit(articlesStore.articlesCount);
+
+  const isUserAuth = useUnit(usersStore.isUserAuth);
+  const navigate = useNavigate();
+
+  useFavoriteError();
+  const handleOnFavoriteClick = useCallback((slug: string) => {
+    return () => {
+      if (!isUserAuth) {
+        navigate(Routes.AUTHORIZATION);
+        return;
+      }
+      articlesStore.toggleFavoriteArticle(slug);
+    };
+  }, [isUserAuth, navigate]);
 
   const handleOnPageNumberChange: PaginationProps['onChange'] = (page) => {
     setCurrentPage(page);
@@ -40,7 +62,7 @@ const ProfileArticles = observer(() => {
     );
   }
 
-  if (isSuccess && !articlesStore.articlesCount) {
+  if (isSuccess && !articlesCount) {
     return (
       <ProfileArticlesWrapper
         vertical
@@ -72,30 +94,30 @@ const ProfileArticles = observer(() => {
       <Divider />
       <Pagination
         onChange={handleOnPageNumberChange}
-        total={articlesStore.articlesCount}
+        total={articlesCount}
         current={currentPage}
         showSizeChanger={false}
         simple
       />
       <Flex vertical>
-        {articlesStore.articles.map(articleItem => (
+        {articles.map(articleItem => (
           <ArticleCard
             {...articleItem}
             key={articleItem.slug}
-            onFavoriteClick={() => articlesStore.toggleFavoriteArticle(articleItem.slug)}
+            onFavoriteClick={handleOnFavoriteClick(articleItem.slug)}
           />
         ))}
       </Flex>
       <Pagination
         onChange={handleOnPageNumberChange}
-        total={articlesStore.articlesCount}
+        total={articlesCount}
         current={currentPage}
         showSizeChanger={false}
         simple
       />
     </ProfileArticlesWrapper>
   );
-});
+};
 
 const ProfileArticlesWrapper = styled(Flex)`
   margin-left: 18vw;
@@ -111,7 +133,7 @@ const ProfileArticlesWrapper = styled(Flex)`
 `;
 
 const EmptyBlock = styled(Flex)`
-  height: 70vh;
+  height: inherit;
   width: inherit;
 `;
 

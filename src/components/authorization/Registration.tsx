@@ -2,7 +2,7 @@ import AuthForm from "./AuthForm.tsx";
 import {Divider, Flex, notification, Typography} from "antd";
 import {useState} from "react";
 import {Link, useNavigate} from "react-router-dom";
-import usersStore from "../../store/usersStore.ts";
+import usersStore from "../../store/UsersStore.ts";
 import styled from "styled-components";
 import type {FieldType} from "./authTypes.ts";
 import { FormWrapper } from "./FormWrapper.tsx";
@@ -66,7 +66,7 @@ const Registration = () => {
 };
 
 const RegistrationWrapper = styled(Flex)`
-  min-height: inherit;
+  height: inherit;
   background: rgb(195,34,87);
   background: linear-gradient(0deg, rgba(195,34,87,1) 0%, rgba(253,179,45,1) 100%);
   

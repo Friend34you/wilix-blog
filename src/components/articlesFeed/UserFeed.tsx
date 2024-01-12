@@ -1,31 +1,52 @@
 import type { PaginationProps} from "antd";
 import {Divider, Pagination, Spin} from "antd";
-import articlesStore from "../../store/articlesStore.ts";
+import articlesStore from "../../store/ArticlesStore.ts";
 import {ArticlesWrapper, EmptyBlock} from "./StyledFeedCommon.ts";
 import ArticleCard from "../ArticleCard.tsx";
-import {observer} from "mobx-react-lite";
 import {useUserFeed} from "./useUserFeed.ts";
+import {useUnit} from "effector-react";
+import usersStore from "../../store/UsersStore.ts";
+import {useNavigate} from "react-router-dom";
+import {useFavoriteError} from "../../hooks/useFavoriteError.ts";
+import {Routes} from "../router/routes.tsx";
+import {useCallback} from "react";
 
 const ARTICLES_LIMIT = 10;
 const ARTICLES_OFFSET = 10;
 
-const UserFeed = observer(() => {
+const UserFeed = () => {
   const {
+    articles,
+    articlesCount,
     currentPage,
     isLoading,
     isSuccess,
     setCurrentPage
   } = useUserFeed(ARTICLES_LIMIT, ARTICLES_OFFSET);
 
+  const isUserAuth = useUnit(usersStore.isUserAuth);
+  const navigate = useNavigate();
+
+  useFavoriteError();
+  const handleOnFavoriteClick = useCallback((slug: string) => {
+    return () => {
+      if (!isUserAuth) {
+        navigate(Routes.AUTHORIZATION);
+        return;
+      }
+      articlesStore.toggleFavoriteArticle(slug);
+    };
+  }, [isUserAuth, navigate]);
+
   const handleOnPageNumberChange: PaginationProps['onChange'] = (page) => {
     setCurrentPage(page);
   };
 
-  if (isLoading && !isSuccess) {
+  if (isLoading || !isSuccess) {
     return <Spin size="large" />;
   }
 
-  if (isSuccess && !articlesStore.articlesCount) {
+  if (isSuccess && !articlesCount) {
     return (
       <EmptyBlock
         align="center"
@@ -41,7 +62,7 @@ const UserFeed = observer(() => {
       <Divider/>
       <Pagination
         onChange={handleOnPageNumberChange}
-        total={articlesStore.articlesCount}
+        total={articlesCount}
         current={currentPage}
         showSizeChanger={false}
         simple
@@ -51,23 +72,23 @@ const UserFeed = observer(() => {
         justify="center"
         wrap="wrap"
       >
-        {articlesStore.articles.map((articleItem) => (
+        {articles.map((articleItem) => (
           <ArticleCard
             {...articleItem}
             key={articleItem.slug}
-            onFavoriteClick={() => articlesStore.toggleFavoriteArticle(articleItem.slug)}
+            onFavoriteClick={handleOnFavoriteClick(articleItem.slug)}
           />
         ))}
       </ArticlesWrapper>
       <Pagination
         onChange={handleOnPageNumberChange}
-        total={articlesStore.articlesCount}
+        total={articlesCount}
         current={currentPage}
         showSizeChanger={false}
         simple
       />
     </>
   );
-});
+};
 
 export default UserFeed;

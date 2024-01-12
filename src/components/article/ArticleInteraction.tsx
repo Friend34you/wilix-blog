@@ -1,12 +1,11 @@
 import type {FC} from "react";
 import {CheckOutlined, HeartOutlined, StarOutlined} from "@ant-design/icons";
-import {Button, Flex, Typography} from "antd";
+import {Button, Typography} from "antd";
 import {formatDate} from "../../helpers/formatDate.ts";
 import styled from "styled-components";
 
 type ArticleInteractionProps = {
   readonly createdAt: string,
-  readonly updatedAt: string,
   readonly onFollowClick: () => void,
   readonly onFavoriteClick: () => void,
   readonly isFavorited: boolean,
@@ -17,7 +16,6 @@ const {Text} = Typography;
 
 const ArticleInteraction: FC<ArticleInteractionProps> = ({
  createdAt,
- updatedAt,
  isFavorited,
  isFollowed,
  onFollowClick,
@@ -25,14 +23,9 @@ const ArticleInteraction: FC<ArticleInteractionProps> = ({
 }) => {
   return (
     <>
-      <Flex vertical>
-        <StyledDateText>
-          created: {formatDate(createdAt)}
-        </StyledDateText>
-        <StyledDateText>
-          edited: {formatDate(updatedAt)}
-        </StyledDateText>
-      </Flex>
+      <StyledDateText>
+        {formatDate(createdAt)}
+      </StyledDateText>
 
       <Button
         icon={isFollowed ? <CheckOutlined /> : <HeartOutlined />}

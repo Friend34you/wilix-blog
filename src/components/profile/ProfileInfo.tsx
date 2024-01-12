@@ -1,22 +1,23 @@
 import {Avatar, Flex, notification, Typography} from "antd";
 import styled from "styled-components";
-import profilesStore from "../../store/profilesStore.ts";
+import profilesStore from "../../store/ProfilesStore.ts";
 import {observer} from "mobx-react-lite";
-import {useState} from "react";
 import ProfileInfoButton from "./ProfileInfoButton.tsx";
+import {useUnit} from "effector-react";
 
 const {Paragraph} = Typography;
 
 //знаем, что используется ток в Profile, поэтому выцепляем данные напрямую
 const ProfileInfo = observer(() => {
-  const [isDisabled, setIsDisabled] = useState(false);
-
+  const profile = useUnit(profilesStore.profile);
+  const error = useUnit(profilesStore.toggleFollowError);
+  const isDisabled = useUnit(profilesStore.toggleFollowLoading);
   const handleOnFollowClick = () => {
-    setIsDisabled(true);
-    profilesStore
-      .toggleFollowUserProfile(profilesStore.profile!.username)
-      .catch((error: Error) => notification.error({message: error.message}))
-      .finally(() => setIsDisabled(false));
+    profilesStore.toggleFollowUserProfile(profile!.username);
+
+    if (error) {
+      notification.error({message: error.message});
+    }
   };
 
   return (
@@ -34,19 +35,19 @@ const ProfileInfo = observer(() => {
           shape="square"
           size={130}
           gap={100}
-          src={profilesStore.profile!.image}
+          src={profile!.image}
         >
-          {profilesStore.profile!.username}
+          {profile!.username}
         </Avatar>
-        {profilesStore.profile!.username}
+        {profile!.username}
       </ProfileCard>
       <ProfileInfoButton
         onFollowClick={handleOnFollowClick}
         isDisabled={isDisabled}
       />
-      {profilesStore.profile!.bio && (
+      {profile!.bio && (
         <AuthorBio>
-          {profilesStore.profile!.bio}
+          {profile!.bio}
         </AuthorBio>
       )}
     </ProfileInfoWrapper>

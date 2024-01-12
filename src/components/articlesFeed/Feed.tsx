@@ -1,44 +1,65 @@
 import TagsCloud from "../TagsCloud.tsx";
-import tagsStore from "../../store/tagsStore.ts";
+import tagsStore from "../../store/TagsStore.ts";
 import type { PaginationProps} from "antd";
 import {Divider, Pagination, Spin, Tag} from "antd";
-import articlesStore from "../../store/articlesStore.ts";
+import articlesStore from "../../store/ArticlesStore.ts";
 import ArticleCard from "../ArticleCard.tsx";
-import {observer} from "mobx-react-lite";
 import {ArticlesWrapper, EmptyBlock} from "./StyledFeedCommon.ts";
 import {useFeed} from "./useFeed.ts";
+import {useFavoriteError} from "../../hooks/useFavoriteError.ts";
+import {useNavigate} from "react-router-dom";
+import {Routes} from "../router/routes.tsx";
+import {useUnit} from "effector-react";
+import usersStore from "../../store/UsersStore.ts";
+import {useCallback} from "react";
 
 const ARTICLES_LIMIT = 10;
 const ARTICLES_OFFSET = 10;
 
-const Feed = observer(() => {
-const {
-  isLoading,
-  isSuccess,
-  currentPage,
-  selectedTag,
-  setCurrentPage
-} = useFeed(ARTICLES_LIMIT, ARTICLES_OFFSET);
+const Feed = () => {
+  const {
+    articles,
+    articlesCount,
+    isLoading,
+    isSuccess,
+    currentPage,
+    selectedTagValue,
+    setCurrentPage
+  } = useFeed(ARTICLES_LIMIT, ARTICLES_OFFSET);
+
+  const isUserAuth = useUnit(usersStore.isUserAuth);
+  const navigate = useNavigate();
+
+  useFavoriteError();
+  const handleOnFavoriteClick = useCallback((slug: string) => {
+    return () => {
+      if (!isUserAuth) {
+        navigate(Routes.AUTHORIZATION);
+        return;
+      }
+      articlesStore.toggleFavoriteArticle(slug);
+    };
+  }, [isUserAuth, navigate]);
 
   const handleOnPageNumberChange: PaginationProps['onChange'] = (page) => {
     setCurrentPage(page);
   };
 
   const handleOnClose = () => {
-    tagsStore.selectedTag = undefined;
+    tagsStore.selectedTag(null);
   };
 
-  if (isLoading && !isSuccess) {
+  if (isLoading || !isSuccess) {
     return (
       <>
         <TagsCloud />
-        {selectedTag && (
+        {selectedTagValue && (
           <Tag
             onClose={handleOnClose}
             color="#3C13AF"
             closable
           >
-            {selectedTag}
+            {selectedTagValue}
           </Tag>
         )}
         <Spin size="large" />
@@ -46,7 +67,7 @@ const {
     );
   }
 
-  if (isSuccess && !articlesStore.articlesCount) {
+  if (isSuccess && !articlesCount) {
     return (
         <EmptyBlock align="center" justify="center">
           <h1>Oops there is empty</h1>
@@ -57,19 +78,19 @@ const {
   return (
     <>
       <TagsCloud />
-      {selectedTag && (
+      {selectedTagValue && (
         <Tag
           onClose={handleOnClose}
           color="#3C13AF"
           closable
         >
-          {selectedTag}
+          {selectedTagValue}
         </Tag>
       )}
       <Divider/>
       <Pagination
         onChange={handleOnPageNumberChange}
-        total={articlesStore.articlesCount}
+        total={articlesCount}
         current={currentPage}
         showSizeChanger={false}
         simple
@@ -80,23 +101,23 @@ const {
         justify="center"
         wrap="wrap"
       >
-        {articlesStore.articles.map((articleItem) => (
+        {articles.map((articleItem) => (
           <ArticleCard
             {...articleItem}
             key={articleItem.slug}
-            onFavoriteClick={() => articlesStore.toggleFavoriteArticle(articleItem.slug)}
+            onFavoriteClick={handleOnFavoriteClick(articleItem.slug)}
           />
         ))}
       </ArticlesWrapper>
       <Pagination
         onChange={handleOnPageNumberChange}
-        total={articlesStore.articlesCount}
+        total={articlesCount}
         current={currentPage}
         showSizeChanger={false}
         simple
       />
     </>
   );
-});
+};
 
 export default Feed;

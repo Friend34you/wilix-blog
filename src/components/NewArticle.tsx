@@ -2,7 +2,7 @@ import type {InputRef} from "antd";
 import {Button, Flex, Form, Input, notification, Typography} from "antd";
 import styled from "styled-components";
 import type {IArticle} from "../types/articleType.ts";
-import articlesStore from "../store/articlesStore.ts";
+import articlesStore from "../store/ArticlesStore.ts";
 import type {ReactNode} from "react";
 import { useRef, useState} from "react";
 import {InfoCircleOutlined} from "@ant-design/icons";
@@ -39,7 +39,7 @@ const rules: NewArticleFormRules = {
     },
     {
       max: 30,
-      message: "max title length - 30"
+      message: "max title length - 50"
     }
   ],
   description: [
@@ -53,7 +53,7 @@ const rules: NewArticleFormRules = {
     },
     {
       max: 45,
-      message: "max description length - 45"
+      message: "max description length - 120"
     }
   ],
   body: [
@@ -95,9 +95,11 @@ const formItems: formItemType[] = [
   },
 ];
 
+const TAGS_INITIAL_VALUE: string[] = [];
+
 const NewArticle = () => {
   const [isDisabled, setIsDisabled] = useState(false);
-  const [tags, setTags] = useState<string[]>([]);
+  const [tags, setTags] = useState<string[]>(TAGS_INITIAL_VALUE);
 
   const [form] = StyledForm.useForm();
   const tagInput = useRef<InputRef>(null);
@@ -110,6 +112,10 @@ const NewArticle = () => {
   };
 
   const handleOnTagsInputPressEnter = () => {
+    if (form.getFieldError("tagList").length !== 0) {
+      return;
+    }
+
     const newTag = form.getFieldValue("tagList").trim();
     if (!tags) {
       setTags([newTag]);
@@ -136,6 +142,7 @@ const NewArticle = () => {
       .then(() => {
         notification.success({message: "Article successfully created"});
         form.resetFields();
+        setTags(TAGS_INITIAL_VALUE);
       })
       .catch((error: Error) => notification.error({message: error.message}))
       .finally(() => setIsDisabled(false));
@@ -230,7 +237,8 @@ const NewArticle = () => {
 };
 
 const NewArticleWrapper = styled(Flex)`
-  min-height: 90vh;
+  height: inherit;
+  overflow: scroll;
   padding: 10vh 0;
   background-color: #330000;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25' viewBox='0 0 800 400'%3E%3Cdefs%3E%3CradialGradient id='a' cx='396' cy='281' r='514' gradientUnits='userSpaceOnUse'%3E%3Cstop offset='0' stop-color='%2372179B'/%3E%3Cstop offset='1' stop-color='%23330000'/%3E%3C/radialGradient%3E%3ClinearGradient id='b' gradientUnits='userSpaceOnUse' x1='400' y1='148' x2='400' y2='333'%3E%3Cstop offset='0' stop-color='%23FA3' stop-opacity='0'/%3E%3Cstop offset='1' stop-color='%23FA3' stop-opacity='0.5'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23a)' width='800' height='400'/%3E%3Cg fill-opacity='0.4'%3E%3Ccircle fill='url(%23b)' cx='267.5' cy='61' r='300'/%3E%3Ccircle fill='url(%23b)' cx='532.5' cy='61' r='300'/%3E%3Ccircle fill='url(%23b)' cx='400' cy='30' r='300'/%3E%3C/g%3E%3C/svg%3E");
@@ -255,7 +263,7 @@ const FormWrapper = styled(Flex)`
   
   @media (max-width: 768px) {
     box-shadow: none;
-    padding: 0;
+    padding: 0 7px;
     width: 100%;
   }
 `;

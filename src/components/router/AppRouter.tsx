@@ -3,7 +3,6 @@ import {privateRoutes, publicRoutes} from "./routes.tsx";
 import PrivateRoute from "./PrivateRoute.tsx";
 import AppWrapper from "../AppWrapper.tsx";
 
-//TODO: вместо рутовой заглушки добавить полноценный компонент
 //TODO: добавить NotFound component
 const router = createBrowserRouter([
   {

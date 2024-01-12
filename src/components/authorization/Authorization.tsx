@@ -2,7 +2,7 @@ import {Divider, Flex, notification, Typography} from "antd";
 import AuthForm from "./AuthForm.tsx";
 import type {FieldType} from "./authTypes.ts";
 import {Link, useNavigate} from "react-router-dom";
-import usersStore from "../../store/usersStore.ts";
+import usersStore from "../../store/UsersStore.ts";
 import {useState} from "react";
 import styled from "styled-components";
 import {FormWrapper} from "./FormWrapper.tsx";
@@ -62,7 +62,7 @@ const Authorization = () => {
 };
 
 const AuthorizationWrapper = styled(Flex)`
-  min-height: inherit;
+  height: inherit;
   background: rgb(195, 34, 87);
   background: linear-gradient(0deg, rgb(136, 34, 195) 0%, rgba(253, 179, 45, 1) 100%);
 

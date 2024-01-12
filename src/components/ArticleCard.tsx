@@ -21,21 +21,10 @@ type favoriteButtonPropsType = {
 
 const {Text, Title} = Typography;
 
-const StyledCard = styled(Card)`
-  margin: 40px 5px;
-  max-width: 600px;
-  box-shadow: 0px 4px 6px -1px rgba(34, 60, 80, 0.2);
-`;
-
-const StyledDateText = styled(Text)`
-  font-size: 12px;
-`;
-
 const ArticleCard: FC<ArticleCardProps> = ({
   createdAt,
   description,
   title,
-  updatedAt,
   author,
   tagList,
   favoritesCount,
@@ -72,14 +61,9 @@ const ArticleCard: FC<ArticleCardProps> = ({
               {author.username}
             </Text>
           </Link>
-          <Flex vertical={true}>
-            <StyledDateText>
-              created: {formatDate(createdAt)}
-            </StyledDateText>
-            <StyledDateText>
-              edited: {formatDate(updatedAt)}
-            </StyledDateText>
-          </Flex>
+          <StyledDateText>
+            {formatDate(createdAt)}
+          </StyledDateText>
         </Space>
         <Button
           onClick={onFavoriteClick}
@@ -92,24 +76,59 @@ const ArticleCard: FC<ArticleCardProps> = ({
       <Link
         to={"/articles/" + slug}
       >
-        <Title level={4}>
+        <StyledTitle level={4}>
           {title}
-        </Title>
-        <Text>
+        </StyledTitle>
+        <StyledDescriptionText>
           {description}
-        </Text>
+        </StyledDescriptionText>
       </Link>
 
       <hr/>
 
-      <Flex
-        justify="end"
-        wrap="wrap"
-      >
+      <TagsWrapper justify="end">
         <TagsList tags={tagList} />
-      </Flex>
+      </TagsWrapper>
     </StyledCard>
   );
 };
+
+const StyledCard = styled(Card)`
+  margin: 20px 5px;
+  width: 425px;
+  height: 260px;
+  box-shadow: 0 4px 6px -1px rgba(34, 60, 80, 0.2);
+  
+  @media(max-width: 425px) {
+    width: 100vw;
+    margin: 15px 0;
+  }
+`;
+
+const StyledDateText = styled(Text)`
+  font-size: 12px;
+`;
+
+const StyledTitle = styled(Title)`
+  height: 30px;
+  width: 90%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
+
+const StyledDescriptionText = styled(Text)`
+  height: 50px;
+  display: block;
+  overflow: scroll;
+  font-size: 12px;
+`;
+
+const TagsWrapper = styled(Flex)`
+  height: 34px;
+  display: block;
+  overflow: scroll;
+  white-space: nowrap;
+`;
 
 export default ArticleCard;

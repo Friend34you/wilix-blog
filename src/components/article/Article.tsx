@@ -1,21 +1,29 @@
 import {Flex, Spin, Typography, notification} from "antd";
-import {useEffect, useState} from "react";
-import articlesStore from "../../store/articlesStore.ts";
+import {useCallback, useEffect, useState} from "react";
+import articlesStore from "../../store/ArticlesStore.ts";
+import profilesStore from "../../store/ProfilesStore.ts";
 import TagsList from "../TagsList.tsx";
 import styled from "styled-components";
-import {observer} from "mobx-react-lite";
-import profilesStore from "../../store/profilesStore.ts";
-import {useLocation} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import ArticleInteraction from "./ArticleInteraction.tsx";
 import ArticleAuthor from "./ArticleAuthor.tsx";
+import {useUnit} from "effector-react";
+import usersStore from "../../store/UsersStore.ts";
+import {useFavoriteError} from "../../hooks/useFavoriteError.ts";
+import {Routes} from "../router/routes.tsx";
+import {useFollowError} from "../../hooks/useFollowError.ts";
 
 const {Title, Paragraph} = Typography;
 
-const Article = observer(() => {
+const Article = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isSuccess, setIsSuccess] = useState(false);
 
-  const article = articlesStore.currentArticle!;
+  const article = useUnit(articlesStore.currentArticle);
+  const profile = useUnit(profilesStore.profile);
+  const isUserAuth = useUnit(usersStore.isUserAuth);
+
+  const navigate = useNavigate();
   const path = useLocation().pathname.split("/");
   const slug = path[path.length - 1];
 
@@ -23,9 +31,9 @@ const Article = observer(() => {
     setIsLoading(true);
     articlesStore
       .getOneArticle(slug)
-      .then(() => {
+      .then((articleData) => {
         profilesStore
-          .fetchUserProfile(articlesStore.currentArticle!.author.username)
+          .fetchUserProfile(articleData.author.username)
           .then(() => setIsSuccess(true))
           .catch((error: Error) => notification.error({message: error.message}))
           .finally(() => setIsLoading(false));
@@ -34,22 +42,29 @@ const Article = observer(() => {
 
     return () => {
       setIsSuccess(false);
-      articlesStore.currentArticle = null;
-      profilesStore.profile = null;
+      articlesStore.currentArticleDefaulted();
+      profilesStore.profileChanged(null);
     };
   }, [slug]);
 
-  function handleOnFavoriteClick() {
-    articlesStore
-      .toggleFavoriteArticle(slug)
-      .catch((error: Error) => notification.error({message: error.message}));
-  }
+  useFavoriteError();
+  useFollowError();
 
-  function handleOnFollowClick() {
-    profilesStore
-      .toggleFollowUserProfile(article.author.username)
-      .catch((error: Error) => notification.error({message: error.message}));
-  }
+  const handleOnFavoriteClick = useCallback(() => {
+    if (!isUserAuth) {
+      navigate(Routes.AUTHORIZATION);
+      return;
+    }
+    articlesStore.toggleFavoriteArticle(slug);
+  }, [isUserAuth, navigate, slug]);
+
+  const handleOnFollowClick = useCallback(() => {
+    if (!isUserAuth) {
+      navigate(Routes.AUTHORIZATION);
+      return;
+    }
+    profilesStore.toggleFollowUserProfile(article!.author.username);
+  }, [article, isUserAuth, navigate]);
 
   if (isLoading || !isSuccess) {
     return (
@@ -70,7 +85,7 @@ const Article = observer(() => {
     >
       <TitleWrapper>
         <Title>
-          {article.title}
+          {article!.title}
         </Title>
       </TitleWrapper>
 
@@ -81,30 +96,29 @@ const Article = observer(() => {
         wrap="wrap"
       >
         <ArticleAuthor
-          authorName={profilesStore.profile!.username}
-          profileImg={profilesStore.profile!.image}
+          authorName={profile!.username}
+          profileImg={profile!.image}
         />
         <ArticleInteraction
           onFavoriteClick={handleOnFavoriteClick}
           onFollowClick={handleOnFollowClick}
-          updatedAt={article.updatedAt}
-          createdAt={article.createdAt}
-          isFavorited={article.favorited}
-          isFollowed={profilesStore.profile!.following}
+          createdAt={article!.createdAt}
+          isFavorited={article!.favorited}
+          isFollowed={profile!.following}
         />
       </Flex>
       <StyledHr />
 
       <StyledParagraph>
-        {article.body}
+        {article!.body}
       </StyledParagraph>
 
       <Flex>
-        <TagsList tags={article.tagList} />
+        <TagsList tags={article!.tagList} />
       </Flex>
     </Flex>
   );
-});
+};
 
 const TitleWrapper = styled.div`
   text-align: center;
@@ -137,6 +151,7 @@ const StyledHr = styled.hr`
 `;
 
 const StyledParagraph = styled(Paragraph)`
+  background-color: white;
   max-width: 1200px;
   min-width: 220px;
   font-size: 1rem;

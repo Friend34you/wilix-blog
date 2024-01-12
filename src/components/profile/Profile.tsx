@@ -1,6 +1,6 @@
 import {useLocation} from "react-router-dom";
 import {useEffect, useState} from "react";
-import profilesStore from "../../store/profilesStore.ts";
+import profilesStore from "../../store/ProfilesStore.ts";
 import {Flex, notification, Spin} from "antd";
 import styled from "styled-components";
 import ProfileInfo from "./ProfileInfo.tsx";
@@ -24,7 +24,7 @@ const Profile = observer(() => {
 
     return () => {
       setIsSuccess(false);
-      profilesStore.profile = null;
+      profilesStore.profileChanged(null);
     };
   }, [profileFromURL]);
 
