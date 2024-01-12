@@ -17,7 +17,6 @@ const ProfileInfoButton: FC<ProfileInfoButtonProps> = ({onFollowClick, isDisable
   const user = useUnit(usersStore.user);
   const profile = useUnit(profilesStore.profile);
 
-  //добавил для разлогинивания
   const handleOnLogout = () => usersStore.logoutUser();
 
   if (!isUserAuth) {

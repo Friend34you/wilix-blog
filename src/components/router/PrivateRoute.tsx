@@ -14,7 +14,9 @@ const PrivateRoute = () => {
     }
   }, [isUserAuth, navigate]);
 
-  return <Outlet />;
+  if (isUserAuth) {
+    return <Outlet />;
+  }
 };
 
 export default PrivateRoute;
