@@ -116,7 +116,11 @@ const StyledMenu = styled(Menu)`
 `;
 
 const UserIcon = styled(UserOutlined)`
-  font-size: 25px;;
+  font-size: 25px;
+  
+  @media(max-width: 375px) {
+    font-size: 20px;
+  }
 `;
 
 export default Navigation;

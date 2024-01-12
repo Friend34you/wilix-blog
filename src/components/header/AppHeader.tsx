@@ -37,6 +37,11 @@ const Logo = styled.div`
   height: 65px;
   width: 80px;
   min-width: 30px;
+
+  @media(max-width: 375px) {
+    height: 45px;
+    width: 60px;
+  }
 `;
 
 const StyleHeader = styled(Header)`
@@ -45,6 +50,10 @@ const StyleHeader = styled(Header)`
   
   @media(max-width: 768px) {
     padding: 0 10px;
+  }
+
+  @media(max-width: 325px) {
+    padding: 0 5px;
   }
 `;
 
@@ -62,6 +71,10 @@ const StyledText = styled(Text)`
   color: #3716af;
   font-size: 18px;
   font-weight: bold;
+  
+  @media(max-width: 375px) {
+    font-size: 14px;
+  }
 `;
 
 export default AppHeader;
