@@ -263,7 +263,7 @@ const FormWrapper = styled(Flex)`
   
   @media (max-width: 768px) {
     box-shadow: none;
-    padding: 0;
+    padding: 0 7px;
     width: 100%;
   }
 `;
