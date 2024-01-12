@@ -16,7 +16,6 @@ import {useFollowError} from "../../hooks/useFollowError.ts";
 const {Title, Paragraph} = Typography;
 
 const Article = () => {
-  //TODO: можно вынести всю логику из компонента в хук
   const [isLoading, setIsLoading] = useState(true);
   const [isSuccess, setIsSuccess] = useState(false);
 
