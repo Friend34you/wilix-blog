@@ -63,3 +63,23 @@ test('try to load 1 article (with fake req)', async ({page}) => {
   await expect(page.getByRole('heading', {name: 'Серезный пост с большим заголо'})).toBeVisible();
 });
 
+test('try to reset fields', async ({ page }) => {
+  await page.goto('http://localhost:5173/');
+  await page.goto('http://localhost:5173/articles/');
+  await page.locator('div:nth-child(9) > .ant-card-body > div > .ant-btn').click();
+  await page.getByRole('main').getByRole('link', { name: 'SignUp' }).click();
+  await page.getByLabel('Username').click();
+  await page.getByLabel('Username').fill('playwrightTest');
+  await page.getByLabel('Username').press('Tab');
+  await page.getByLabel('Email').fill('pl');
+  await page.getByLabel('Email').press('CapsLock');
+  await page.getByLabel('Email').fill('play@test.com');
+  await page.getByLabel('Email').press('Tab');
+  await page.getByLabel('Password').fill('playpass');
+  await page.getByRole('button', { name: 'Reset' }).click();
+
+  await expect(page.getByLabel('Username')).toHaveValue("");
+  await expect(page.getByLabel('Email')).toHaveValue("");
+  await expect(page.getByLabel('Password')).toHaveValue("");
+});
+
