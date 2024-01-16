@@ -1,4 +1,4 @@
-{
+export const article ={
   "article": {
     "slug": "sereznyj-post-s-bolshim-zagolo-sy6p39",
     "title": "Серезный пост с большим заголо",
@@ -23,4 +23,4 @@
       "following": false
     }
   }
-}
+};

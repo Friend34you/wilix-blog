@@ -67,6 +67,23 @@ test('create post (success)', async () => {
   await expect(page.getByText('Article successfully created')).toBeVisible();
 });
 
+test("logout", async () => {
+  await page.route("*/**/api/profiles/playwrightTest", (route) => {
+    route.fulfill({
+      json: {
+        "profile": {
+          "username": "playwrightTest",
+          "following": false
+        }
+      }
+    });
+  });
+
+  await page.getByRole('link', { name: 'user playwrightTest' }).click();
+  await page.getByRole('button', { name: 'LogOut' }).click();
+  await expect(page.getByRole('link', { name: 'SignIn' })).toBeVisible();
+});
+
 test.afterAll(async () => {
   await page.close();
 });

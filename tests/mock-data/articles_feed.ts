@@ -1,4 +1,4 @@
-{
+export const articlesFeed = {
   "articles": [
     {
       "slug": "big-text-to-test-hxl70y",

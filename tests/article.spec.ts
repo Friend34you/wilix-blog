@@ -1,6 +1,6 @@
 import {test, expect} from '@playwright/test';
-import article from "./mock-data/article.json";
-import articlesFeed from "./mock-data/articles_feed.json";
+import {article} from "./mock-data/article";
+import {articlesFeed} from "./mock-data/articles_feed.ts";
 
 test('try to load 1 article (with fake req)', async ({page}) => {
   await page.goto('http://localhost:5173/');
@@ -37,11 +37,17 @@ test('feed tag clicked', async ({page}) => {
 test('load articles', async ({page}) => {
   await page.goto('http://localhost:5173/');
 
-  await page.route("*/**/api/articles/", (route) => {
+  await page.route("*/**/api/articles?limit=10&offset=0", (route) => {
     route.fulfill({json: articlesFeed});
   });
 
   await page.goto('http://localhost:5173/articles/');
 
   await expect(page.getByRole('link', { name: 'BIG TEXT TO TEST decription' })).toBeVisible();
+});
+
+test("fvorite article (unauth)", async ({page}) => {
+  await page.goto('http://localhost:5173/');
+  await page.getByRole('button', { name: 'star 2' }).click();
+  await expect(page.getByText("Authorization")).toBeVisible();
 });
