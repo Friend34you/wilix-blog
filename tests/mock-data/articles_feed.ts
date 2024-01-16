@@ -44,4 +44,4 @@ export const articlesFeed = {
     }
   ],
   "articlesCount": 2
-}
+};
