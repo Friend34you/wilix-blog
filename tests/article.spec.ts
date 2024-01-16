@@ -6,7 +6,7 @@ import {loadEnv} from "vite";
 test.beforeEach(async ({page}) =>{
   await page.goto('http://localhost:5173/');
 });
-test('try to load 1 article (with fake req)', async ({page}) => {
+test('load 1 article (with fake req)', async ({page}) => {
 
   await page.route("*/**/api/articles/sereznyj-post-s-bolshim-zagolo-sy6p39", async (route) => {
     await route.fulfill({json: article});
@@ -60,7 +60,7 @@ test("favorite article (unauth)", async ({page}) => {
   await expect(page.getByText("Authorization")).toBeVisible();
 });
 
-test('try to see user feed (unauth)', async ({page}) => {
+test('see user feed (unauth)', async ({page}) => {
   await page.getByText('Global articles feed').click();
   await page.getByText('Global articles feed').click();
   await expect(page.getByText('Global articles feed')).toBeVisible();
@@ -68,7 +68,7 @@ test('try to see user feed (unauth)', async ({page}) => {
   await expect(page.getByRole('heading', {name: 'Authorization'})).toBeVisible();
 });
 
-test('try to see user feed (with auth)', async ({ page }) => {
+test('see user feed (with auth)', async ({ page }) => {
   const env = {...loadEnv("", "./")};
 
   await page.getByRole('link', { name: 'SignIn' }).click();
