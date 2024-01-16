@@ -1,36 +1,12 @@
 import {test, expect} from '@playwright/test';
+import article from "./mock-data/article.json";
+import articlesFeed from "./mock-data/articles_feed.json";
 
 test('try to load 1 article (with fake req)', async ({page}) => {
   await page.goto('http://localhost:5173/');
 
   await page.route("*/**/api/articles/sereznyj-post-s-bolshim-zagolo-sy6p39", async (route) => {
-    const json = {
-      "article": {
-        "slug": "sereznyj-post-s-bolshim-zagolo-sy6p39",
-        "title": "Серезный пост с большим заголо",
-        "description": "Какое-то описание максимальной длины",
-        "body": "Замокад",
-        "createdAt": "2024-01-11T10:10:54.059Z",
-        "updatedAt": "2024-01-12T09:28:33.523Z",
-        "tagList": [
-          "тег",
-          "тег2",
-          "тег3",
-          "тег4",
-          "тег5",
-          "тег6",
-          "тег7"
-        ],
-        "favorited": false,
-        "favoritesCount": 1,
-        "author": {
-          "username": "blakuto",
-          "image": "https://static.productionready.io/images/smiley-cyrus.jpg",
-          "following": false
-        }
-      }
-    };
-    await route.fulfill({json});
+    await route.fulfill({json: article});
   });
 
   await page.goto('http://localhost:5173/articles/');
@@ -38,10 +14,34 @@ test('try to load 1 article (with fake req)', async ({page}) => {
   await expect(page.getByRole('heading', {name: 'Серезный пост с большим заголо'})).toBeVisible();
 });
 
-test('feed tag clicked', async ({ page }) => {
+test('feed tag clicked', async ({page}) => {
   await page.goto('http://localhost:5173/');
+
+  await page.route("*/**/api/tags", (route) => {
+    const json = {
+      tags: ["wilix", "tag1", "tag2", "tag3"]
+    };
+
+    route.fulfill({json});
+  });
+
   await page.goto('http://localhost:5173/articles/');
-  await expect(page.getByText('12anotherOnebig')).toBeVisible();
+
+  await expect(page.getByText('wilixtag1tag2tag3')).toBeVisible();
   await page.getByText('wilix').nth(1).click();
   await expect(page.locator('.sc-kfzCjt > span')).toBeVisible();
+  await page.getByLabel('close').locator('path').click();
+  await expect(page.locator('.sc-kfzCjt > span')).not.toBeVisible();
+});
+
+test('load articles', async ({page}) => {
+  await page.goto('http://localhost:5173/');
+
+  await page.route("*/**/api/articles/", (route) => {
+    route.fulfill({json: articlesFeed});
+  });
+
+  await page.goto('http://localhost:5173/articles/');
+
+  await expect(page.getByRole('link', { name: 'BIG TEXT TO TEST decription' })).toBeVisible();
 });
