@@ -16,7 +16,7 @@ export const Default: Story = {
   parameters: {
     msw: {
       handlers: [
-        rest.get('/tags', (_, res, ctx) => {
+        rest.get('http://localhost:3000/api/tags', (_, res, ctx) => {
           return res(
             ctx.json({
               tags: ["tag1", "msw tag"]
