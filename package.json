@@ -10,7 +10,9 @@
     "preview": "vite preview",
     "start": "npm run dev",
     "lint:fix": "eslint --fix .",
-    "test": "vitest"
+    "test": "vitest",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "dependencies": {
     "@ant-design/icons": "^5.2.6",
@@ -30,6 +32,14 @@
   "devDependencies": {
     "@mobx-devtools/tools": "^0.0.4",
     "@playwright/test": "^1.40.1",
+    "@storybook/addon-essentials": "^7.6.9",
+    "@storybook/addon-interactions": "^7.6.9",
+    "@storybook/addon-links": "^7.6.9",
+    "@storybook/addon-onboarding": "^1.0.10",
+    "@storybook/blocks": "^7.6.9",
+    "@storybook/react": "^7.6.9",
+    "@storybook/react-vite": "^7.6.9",
+    "@storybook/test": "^7.6.9",
     "@types/jest": "^29.5.11",
     "@types/node": "^20.11.2",
     "@types/react": "^18.2.37",
@@ -41,6 +51,7 @@
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.4",
+    "storybook": "^7.6.9",
     "typescript": "^5.2.2",
     "vite": "^5.0.0",
     "vite-plugin-eslint": "^1.8.1",
