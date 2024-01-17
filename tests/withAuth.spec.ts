@@ -85,7 +85,6 @@ test("favorite article (auth)", async ({page}) => {
   await page.route("*/**/api/articles?limit=10&offset=0", (route) => {
     route.fulfill({json: articlesFeed});
   });
-//todo проверить
   await page.route("*/**/api/articles/*/favorite", (route) => {
     route.fulfill({
       json: {
