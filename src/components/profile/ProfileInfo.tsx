@@ -30,6 +30,7 @@ const ProfileInfo = observer(() => {
         vertical
         align="center"
         gap={10}
+        data-testid="profile-username"
       >
         <Avatar
           shape="square"
