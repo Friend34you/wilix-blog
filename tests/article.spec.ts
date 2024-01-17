@@ -8,7 +8,7 @@ test.beforeEach(async ({page}) =>{
 });
 test('load 1 article (with fake req)', async ({page}) => {
 
-  await page.route("*/**/api/articles/sereznyj-post-s-bolshim-zagolo-sy6p39", async (route) => {
+  await page.route("*/**/api/articles/*", async (route) => {
     await route.fulfill({json: article});
   });
 
@@ -84,7 +84,7 @@ test('see user feed (with auth)', async ({ page }) => {
 
 test('favorite on article page (unauth)', async ({page}) => {
 
-  await page.route("*/**/api/articles/sereznyj-post-s-bolshim-zagolo-sy6p39", async (route) => {
+  await page.route("*/**/api/articles/*", async (route) => {
     await route.fulfill({json: article});
   });
 
@@ -98,7 +98,7 @@ test('favorite on article page (unauth)', async ({page}) => {
 
 test('follow user on article page (unauth)', async ({page}) => {
 
-  await page.route("*/**/api/articles/sereznyj-post-s-bolshim-zagolo-sy6p39", async (route) => {
+  await page.route("*/**/api/articles/*", async (route) => {
     await route.fulfill({json: article});
   });
 

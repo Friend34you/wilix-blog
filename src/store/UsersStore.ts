@@ -68,7 +68,6 @@ const fetchUserFx = createEffect(async () => {
 //Хелперы
 function createUserSession(responseData: UserResponseType) {
   const {email, token, username} = responseData.user;
-  console.log(responseData.user);
   localStorage.setItem("token", token);
   return {
     isAuth: true,

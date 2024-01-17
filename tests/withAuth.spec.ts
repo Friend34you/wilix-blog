@@ -33,7 +33,7 @@ test.beforeEach("auth", async ({page}) => {
 
 test('check is clicked profile correct', async ({page}) => {
   await page.locator('.ant-flex > .ant-space > div').first().click();
-  await expect(  page.getByTestId("profile-username").getByText("blakuto")).toBeVisible();
+  await expect(page.getByTestId("profile-username").getByText("blakuto")).toBeVisible();
 });
 
 test('create post (success)', async ({page}) => {
@@ -65,7 +65,7 @@ test('create post (success)', async ({page}) => {
 });
 
 test("logout", async ({page}) => {
-  await page.route("*/**/api/profiles/playwrightTest", (route) => {
+  await page.route("*/**/api/profiles/*", (route) => {
     route.fulfill({
       json: {
         "profile": {
@@ -76,17 +76,17 @@ test("logout", async ({page}) => {
     });
   });
 
-  await page.getByRole('link', { name: 'user playwrightTest' }).click();
-  await page.getByRole('button', { name: 'LogOut' }).click();
-  await expect(page.getByRole('link', { name: 'SignIn' })).toBeVisible();
+  await page.getByRole('link', {name: 'user playwrightTest'}).click();
+  await page.getByRole('button', {name: 'LogOut'}).click();
+  await expect(page.getByRole('link', {name: 'SignIn'})).toBeVisible();
 });
 
 test("favorite article (auth)", async ({page}) => {
   await page.route("*/**/api/articles?limit=10&offset=0", (route) => {
     route.fulfill({json: articlesFeed});
   });
-
-  await page.route("*/**/api/articles/big-text-to-test-hxl70y/favorite", (route) => {
+//todo проверить
+  await page.route("*/**/api/articles/*/favorite", (route) => {
     route.fulfill({
       json: {
         "article": {
@@ -103,14 +103,14 @@ test("favorite article (auth)", async ({page}) => {
 
 test('favorite on article page (auth)', async ({page}) => {
 
-  await page.route("*/**/api/articles/sereznyj-post-s-bolshim-zagolo-sy6p39", async (route) => {
+  await page.route("*/**/api/articles/*", async (route) => {
     await route.fulfill({json: article});
   });
 
   await page.getByRole('link', {name: 'Серезный пост с большим заголо Какое-то описание максимальной длины'}).click();
   await expect(page.getByRole('heading', {name: 'Серезный пост с большим заголо'})).toBeVisible();
 
-  await page.route("*/**/api/articles/sereznyj-post-s-bolshim-zagolo-sy6p39/favorite", (route) => {
+  await page.route("*/**/api/articles/*/favorite", (route) => {
     route.fulfill({
       json: {
         "article": {
@@ -121,8 +121,8 @@ test('favorite on article page (auth)', async ({page}) => {
     });
   });
 
-  await page.getByRole('button', { name: 'star favorite' }).click();
-  await expect(page.getByRole('button', { name: 'check favorited' })).toBeVisible();
+  await page.getByRole('button', {name: 'star favorite'}).click();
+  await expect(page.getByRole('button', {name: 'check favorited'})).toBeVisible();
 });
 
 test('follow user on article page (auth)', async ({page}) => {
@@ -145,7 +145,7 @@ test('follow user on article page (auth)', async ({page}) => {
   await page.getByRole('link', {name: 'Серезный пост с большим заголо Какое-то описание максимальной длины'}).click();
   await expect(page.getByRole('heading', {name: 'Серезный пост с большим заголо'})).toBeVisible();
 
-  await page.route("*/**/api/profiles/blakuto/follow", async (route) => {
+  await page.route("*/**/api/profiles/*/follow", async (route) => {
     await route.fulfill({
       json: {
         profile: {
@@ -156,6 +156,6 @@ test('follow user on article page (auth)', async ({page}) => {
     });
   });
 
-  await page.getByRole('button', { name: 'heart follow' }).click();
-  await expect(page.getByRole('button', { name: 'check followed' })).toBeVisible();
+  await page.getByRole('button', {name: 'heart follow'}).click();
+  await expect(page.getByRole('button', {name: 'check followed'})).toBeVisible();
 });
