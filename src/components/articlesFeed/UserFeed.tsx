@@ -8,8 +8,8 @@ import {useUnit} from "effector-react";
 import usersStore from "../../store/UsersStore.ts";
 import {useNavigate} from "react-router-dom";
 import {useFavoriteError} from "../../hooks/useFavoriteError.ts";
-import {Routes} from "../router/routes.tsx";
 import {useCallback} from "react";
+import {Routes} from "../router/routesPaths.ts";
 
 const ARTICLES_LIMIT = 10;
 const ARTICLES_OFFSET = 10;

@@ -3,7 +3,7 @@ import styled from "styled-components";
 import {useEffect, useState} from "react";
 import {RequestModes} from "../../types/requestModes.ts";
 import {Outlet, useLocation, useNavigate} from "react-router-dom";
-import {Routes} from "../router/routes.tsx";
+import {Routes} from "../router/routesPaths.ts";
 
 const articlesOptions = [RequestModes.ALL_ARTICLES_FEED, RequestModes.YOUR_ARTICLES_FEED];
 

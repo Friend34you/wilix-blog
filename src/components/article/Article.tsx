@@ -10,8 +10,8 @@ import ArticleAuthor from "./ArticleAuthor.tsx";
 import {useUnit} from "effector-react";
 import usersStore from "../../store/UsersStore.ts";
 import {useFavoriteError} from "../../hooks/useFavoriteError.ts";
-import {Routes} from "../router/routes.tsx";
 import {useFollowError} from "../../hooks/useFollowError.ts";
+import {Routes} from "../router/routesPaths.ts";
 
 const {Title, Paragraph} = Typography;
 

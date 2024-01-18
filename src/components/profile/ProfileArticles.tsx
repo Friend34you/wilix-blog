@@ -10,7 +10,7 @@ import {useCallback} from "react";
 import usersStore from "../../store/UsersStore.ts";
 import {useNavigate} from "react-router-dom";
 import {useFavoriteError} from "../../hooks/useFavoriteError.ts";
-import {Routes} from "../router/routes.tsx";
+import {Routes} from "../router/routesPaths.ts";
 
 const articlesOptions = [RequestModes.PROFILE_ARTICLES, RequestModes.PROFILE_FAVORITE_ARTICLES];
 
