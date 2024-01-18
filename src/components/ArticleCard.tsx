@@ -7,7 +7,6 @@ import type {IArticle} from "../types/articleType.ts";
 import {formatDate} from "../helpers/formatDate.ts";
 import TagsList from "./TagsList.tsx";
 import {Link} from "react-router-dom";
-
 import {Routes} from "./router/routesPaths.ts";
 
 interface ArticleCardProps extends IArticle{
