@@ -27,3 +27,17 @@ export const Default: Story = {
     },
   }
 };
+
+export const Error: Story = {
+  parameters: {
+    msw: {
+      handlers: [
+        rest.get('http://localhost:3000/api/tags', (_, res, ctx) => {
+          return res(
+            ctx.status(500)
+          );
+        }),
+      ]
+    },
+  }
+};

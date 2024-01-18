@@ -35,6 +35,8 @@ sample({
 
 $tags.on(fetchTagsFx.doneData, (_, tagsData) => tagsData);
 $error.on(fetchTagsFx.failData, (_, errorData) => errorData);
+$error.reset(fetchTagsFx.doneData);
+
 $selectedTag.on(selectedTagChanged, (_, data) => data);
 
 const tagsStore = {
