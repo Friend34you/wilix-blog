@@ -1,10 +1,10 @@
 import type {Meta, StoryObj} from "@storybook/react";
 import {withRouter} from "storybook-addon-react-router-v6";
-import Article from "../components/article/Article.tsx";
+import Article from "../../components/article/Article.tsx";
 import {rest} from "msw";
 
 const meta: Meta<typeof Article> = {
-  title: "Article",
+  title: "Article/ArticlePage",
   component: Article,
   decorators: [withRouter]
 };

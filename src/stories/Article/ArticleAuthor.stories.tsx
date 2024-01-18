@@ -1,9 +1,9 @@
 import type {Meta, StoryObj} from "@storybook/react";
 import {withRouter} from "storybook-addon-react-router-v6";
-import ArticleAuthor from "../components/article/ArticleAuthor.tsx";
+import ArticleAuthor from "../../components/article/ArticleAuthor.tsx";
 
 const meta: Meta<typeof ArticleAuthor> = {
-  title: "ArticleAuthor",
+  title: "Article/ArticleAuthor",
   component: ArticleAuthor,
   tags: ['autodocs'],
   decorators: [withRouter]

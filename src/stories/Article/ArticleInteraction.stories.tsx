@@ -1,10 +1,10 @@
 import type {Meta, StoryObj} from "@storybook/react";
 import {withRouter} from "storybook-addon-react-router-v6";
-import ArticleInteraction from "../components/article/ArticleInteraction.tsx";
+import ArticleInteraction from "../../components/article/ArticleInteraction.tsx";
 import {Flex} from "antd";
 
 const meta: Meta<typeof ArticleInteraction> = {
-  title: "ArticleInteraction",
+  title: "Article/ArticleInteraction",
   component: ArticleInteraction,
   tags: ['autodocs'],
   decorators: [withRouter]
