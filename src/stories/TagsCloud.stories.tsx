@@ -5,7 +5,6 @@ import {rest} from "msw";
 const meta: Meta<typeof TagsCloud> = {
   title: "TagsCloud",
   component: TagsCloud,
-  tags: ['autodocs'],
 };
 
 export default meta;

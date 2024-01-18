@@ -6,7 +6,6 @@ import Profile from "../components/profile/Profile.tsx";
 const meta: Meta<typeof Profile> = {
   title: "Profile",
   component: Profile,
-  tags: ['autodocs'],
   decorators: [withRouter]
 };
 
