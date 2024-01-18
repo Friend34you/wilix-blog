@@ -4,9 +4,9 @@ import usersStore from "../../store/UsersStore.ts";
 import styled from "styled-components";
 import {UserOutlined} from "@ant-design/icons";
 import {Link} from "react-router-dom";
-import {Routes} from "../router/routes.tsx";
 import { Menu } from 'antd';
 import {useUnit} from "effector-react/compat";
+import {Routes} from "../router/routesPaths.ts";
 
 //Оставил здесь, так как требуется для элементов меню
 const StyledLink = styled(Link)`

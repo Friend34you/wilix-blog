@@ -1,4 +1,5 @@
 import type {RouteObject} from "react-router-dom";
+import {Navigate} from "react-router-dom";
 import Article from "../article/Article.tsx";
 import Profile from "../profile/Profile.tsx";
 import Registration from "../authorization/Registration.tsx";
@@ -8,18 +9,7 @@ import Articles from "../articlesFeed/Articles.tsx";
 import Feed from "../articlesFeed/Feed.tsx";
 import PrivateRoute from "./PrivateRoute.tsx";
 import UserFeed from "../articlesFeed/UserFeed.tsx";
-import {Navigate} from "react-router-dom";
-
-export enum Routes {
-  REGISTRATION = "/register",
-  AUTHORIZATION = "/login",
-  ARTICLE = "/articles/:articleSlug",
-  ARTICLES = "/articles/",
-  CREATE_ARTICLE = "/new-article",
-  PROFILE = "/profiles/:profileName",
-  CURRENT_PROFILE = "/profiles/",
-  FAVORITE_ARTICLES = "/articles/favorite",
-}
+import {Routes} from "./routesPaths.ts";
 
 //здесь отдельные независимые приватные роуты, остальные находятся в publicRoutes в обёртке PrivateRoute
 export const privateRoutes: RouteObject[] = [

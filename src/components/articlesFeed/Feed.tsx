@@ -8,10 +8,10 @@ import {ArticlesWrapper, EmptyBlock} from "./StyledFeedCommon.ts";
 import {useFeed} from "./useFeed.ts";
 import {useFavoriteError} from "../../hooks/useFavoriteError.ts";
 import {useNavigate} from "react-router-dom";
-import {Routes} from "../router/routes.tsx";
 import {useUnit} from "effector-react";
 import usersStore from "../../store/UsersStore.ts";
 import {useCallback} from "react";
+import {Routes} from "../router/routesPaths.ts";
 
 const ARTICLES_LIMIT = 10;
 const ARTICLES_OFFSET = 10;

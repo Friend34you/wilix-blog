@@ -1,8 +1,8 @@
 import type {FC} from "react";
 import {Link} from "react-router-dom";
-import {Routes} from "../router/routes.tsx";
 import {Avatar, Flex, Typography} from "antd";
 import styled from "styled-components";
+import {Routes} from "../router/routesPaths.ts";
 
 type ArticleAuthorProps = {
   readonly authorName: string,

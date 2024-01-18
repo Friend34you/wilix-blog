@@ -1,11 +1,11 @@
 import usersStore from "../../store/UsersStore.ts";
 import profilesStore from "../../store/ProfilesStore.ts";
 import {Link} from "react-router-dom";
-import {Routes} from "../router/routes.tsx";
 import styled from "styled-components";
 import {Button} from "antd";
 import type {FC} from "react";
 import {useUnit} from "effector-react";
+import {Routes} from "../router/routesPaths.ts";
 
 type ProfileInfoButtonProps = {
   readonly onFollowClick: () => void;

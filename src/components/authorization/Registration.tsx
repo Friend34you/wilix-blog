@@ -6,8 +6,8 @@ import usersStore from "../../store/UsersStore.ts";
 import styled from "styled-components";
 import type {FieldType} from "./authTypes.ts";
 import { FormWrapper } from "./FormWrapper.tsx";
-import {Routes} from "../router/routes.tsx";
 import {AuthTypes} from "./authTypes.ts";
+import {Routes} from "../router/routesPaths.ts";
 
 const {Title, Text} = Typography;
 

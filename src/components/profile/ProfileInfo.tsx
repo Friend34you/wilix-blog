@@ -1,14 +1,13 @@
 import {Avatar, Flex, notification, Typography} from "antd";
 import styled from "styled-components";
 import profilesStore from "../../store/ProfilesStore.ts";
-import {observer} from "mobx-react-lite";
 import ProfileInfoButton from "./ProfileInfoButton.tsx";
 import {useUnit} from "effector-react";
 
 const {Paragraph} = Typography;
 
 //знаем, что используется ток в Profile, поэтому выцепляем данные напрямую
-const ProfileInfo = observer(() => {
+const ProfileInfo = () => {
   const profile = useUnit(profilesStore.profile);
   const error = useUnit(profilesStore.toggleFollowError);
   const isDisabled = useUnit(profilesStore.toggleFollowLoading);
@@ -53,7 +52,7 @@ const ProfileInfo = observer(() => {
       )}
     </ProfileInfoWrapper>
   );
-});
+};
 
 const ProfileInfoWrapper = styled(Flex)`
   background: -webkit-linear-gradient(143deg, #21053b,#d43573);                        
